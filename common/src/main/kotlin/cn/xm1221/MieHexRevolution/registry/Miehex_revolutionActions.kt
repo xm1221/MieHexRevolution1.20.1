@@ -14,6 +14,7 @@ import cn.xm1221.MieHexRevolution.casting.actions.spells.monitor.OpMonitorSet
 import cn.xm1221.MieHexRevolution.casting.actions.useful.OpMax
 import cn.xm1221.MieHexRevolution.casting.actions.useful.OpMin
 import cn.xm1221.MieHexRevolution.casting.actions.useful.OpPages
+import cn.xm1221.MieHexRevolution.casting.actions.useful.list.OpIndexes
 
 object Miehex_revolutionActions : Miehex_revolutionRegistrar<ActionRegistryEntry>(
     HexRegistries.ACTION,
@@ -30,6 +31,7 @@ object Miehex_revolutionActions : Miehex_revolutionRegistrar<ActionRegistryEntry
     val CAMERA_SET = make("monitor/set", HexDir.NORTH_EAST,"wqqqqwqedwwde", OpMonitorSet())
     val CAMERA_GET = make("monitor/get",HexDir.NORTH_EAST,"qwawqwaqewdwewd", OpMonitorGet())
     val IDEA_SET = make("idea/set", HexDir.EAST,"wqaqqqqqeawqwqwqwqwqw", OpIdeaBlockSet())
+    val INDEXES = make("indexes", HexDir.EAST,"qqqqqdeee", OpIndexes())
     private fun make(name: String, startDir: HexDir, signature: String, action: Action) =
         make(name, startDir, signature) { action }
 
