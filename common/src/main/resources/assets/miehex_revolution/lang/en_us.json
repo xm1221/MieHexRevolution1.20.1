@@ -7,6 +7,7 @@
   "hexcasting.action.miehex_revolution:page": "Scholar's Page-Turn",
   "hexcasting.action.miehex_revolution:loader/time": "Temporal Anchor",
   "hexcasting.action.miehex_revolution:use": "Void Hand",
+  "hexcasting.action.miehex_revolution:idea/set": "Construct Idea Block",
   "hexcasting.mishap.invalid_value.class.monitor": "an entity capable of receiving soul projection",
   "hexcasting.mishap.invalid_value.class.player": "a player",
   "hex_monitor.entry.monitor": "Soul Projection",
@@ -23,5 +24,7 @@
   "miehex_revolution.page.loader/time": "I anchor a region of space to the ticking of the world's heart, compelling it to remain loaded for a time. Accepts a position vector and a duration in ticks. The chunk containing the position will be kept loaded for the specified duration. Media cost scales with duration.",
   "miehex_revolution.entry.use_block": "Remote Block Interaction",
   "miehex_revolution.page.use": "I reach across the void and interact with a block as if I were standing before it. Accepts a position vector. Simulates a right-click on the block at that location. The block must be within normal casting range.",
-  "block.miehex_revolution.idea_full": "Idea Block"
+  "block.miehex_revolution.idea_full": "Idea Block",
+  "miehex_revolution.entry.idea_block": "Idea Block",
+  "miehex_revolution.page.idea/set": "I construct a block from pure thought, allowing it to assume the appearance of other blocks. Accepts a position vector and manifests an Idea Block at that location. Once placed, right-click with any block to change its appearance; shift-right-click with an empty hand to reset it."
 }
