@@ -9,6 +9,8 @@ import org.apache.logging.log4j.Logger
 import cn.xm1221.MieHexRevolution.config.Miehex_revolutionServerConfig
 import cn.xm1221.MieHexRevolution.networking.Miehex_revolutionNetworking
 import cn.xm1221.MieHexRevolution.registry.Miehex_revolutionActions
+import cn.xm1221.MieHexRevolution.registry.Miehex_revolutionBlocks
+import cn.xm1221.MieHexRevolution.registry.Miehex_revolutionBlockEntities
 import net.minecraft.core.Registry
 import net.minecraft.core.registries.Registries
 import net.minecraft.tags.TagKey
@@ -48,6 +50,8 @@ object Miehex_revolution {
         initRegistries(
             Miehex_revolutionActions,
         )
+        Miehex_revolutionBlocks.init()
+        Miehex_revolutionBlockEntities.init()
         Miehex_revolutionNetworking.init()
     }
 
