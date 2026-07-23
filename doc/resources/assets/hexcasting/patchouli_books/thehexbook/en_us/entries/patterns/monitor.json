@@ -1,0 +1,27 @@
+{
+  "name": "hex_monitor.entry.monitor",
+  "category": "hexcasting:patterns",
+  "icon": "minecraft:ender_eye",
+  "sortnum": 5,
+  "advancement": "hexcasting:root",
+  "read_by_default": false,
+  "pages": [
+    {
+      "type": "hexcasting:pattern",
+      "op_id": "miehex_revolution:monitor/set",
+      "anchor": "miehex_revolution:monitor/set",
+      "input": "entity",
+      "output": "",
+      "text": "hex_monitor.advice.monitor/set"
+    },
+    {
+      "type": "hexcasting:pattern",
+      "op_id": "miehex_revolution:monitor/get",
+      "anchor": "miehex_revolution:monitor/get",
+      "input": "player",
+      "output": "",
+      "text": "hex_monitor.advice.monitor/get"
+    }
+
+  ]
+}
