@@ -8,6 +8,7 @@ import at.petrak.hexcasting.common.lib.HexRegistries
 import at.petrak.hexcasting.common.lib.hex.HexActions
 import cn.xm1221.MieHexRevolution.casting.actions.spells.OpUseBlock
 import cn.xm1221.MieHexRevolution.casting.actions.spells.OpWorldLoader
+import cn.xm1221.MieHexRevolution.casting.actions.spells.idea.OpIdeaBlockSet
 import cn.xm1221.MieHexRevolution.casting.actions.spells.monitor.OpMonitorGet
 import cn.xm1221.MieHexRevolution.casting.actions.spells.monitor.OpMonitorSet
 import cn.xm1221.MieHexRevolution.casting.actions.useful.OpMax
@@ -28,7 +29,7 @@ object Miehex_revolutionActions : Miehex_revolutionRegistrar<ActionRegistryEntry
     val USE_BLOCK = make("use", HexDir.NORTH_EAST,"deewqqa", OpUseBlock())
     val CAMERA_SET = make("monitor/set", HexDir.NORTH_EAST,"wqqqqwqedwwde", OpMonitorSet())
     val CAMERA_GET = make("monitor/get",HexDir.NORTH_EAST,"qwawqwaqewdwewd", OpMonitorGet())
-
+    val IDEA_SET = make("idea/set", HexDir.EAST,"wqaqqqqqeawqwqwqwqwqw", OpIdeaBlockSet())
     private fun make(name: String, startDir: HexDir, signature: String, action: Action) =
         make(name, startDir, signature) { action }
 

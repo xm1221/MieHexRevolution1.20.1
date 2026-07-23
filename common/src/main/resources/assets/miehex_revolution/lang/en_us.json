@@ -22,5 +22,6 @@
   "miehex_revolution.entry.loader": "Chunk Loading",
   "miehex_revolution.page.loader/time": "I anchor a region of space to the ticking of the world's heart, compelling it to remain loaded for a time. Accepts a position vector and a duration in ticks. The chunk containing the position will be kept loaded for the specified duration. Media cost scales with duration.",
   "miehex_revolution.entry.use_block": "Remote Block Interaction",
-  "miehex_revolution.page.use": "I reach across the void and interact with a block as if I were standing before it. Accepts a position vector. Simulates a right-click on the block at that location. The block must be within normal casting range."
+  "miehex_revolution.page.use": "I reach across the void and interact with a block as if I were standing before it. Accepts a position vector. Simulates a right-click on the block at that location. The block must be within normal casting range.",
+  "block.miehex_revolution.idea_full": "Idea Block"
 }
