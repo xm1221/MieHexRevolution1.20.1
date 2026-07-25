@@ -1,0 +1,26 @@
+{
+  "name": "miehex_revolution.entry.list_patterns",
+  "category": "hexcasting:patterns",
+  "icon": "minecraft:book",
+  "sortnum": 4,
+  "advancement": "hexcasting:root",
+  "read_by_default": true,
+  "pages": [
+    {
+      "type": "hexcasting:pattern",
+      "op_id": "miehex_revolution:eval_in",
+      "anchor": "miehex_revolution:eval_in",
+      "input": "list, [pattern]",
+      "output": "many",
+      "text": "miehex_revolution.page.eval_in"
+    },
+    {
+      "type": "hexcasting:pattern",
+      "op_id": "miehex_revolution:indexes",
+      "anchor": "miehex_revolution:indexes",
+      "input": "list, any",
+      "output": "[num]",
+      "text": "miehex_revolution.page.indexes"
+    }
+  ]
+}
