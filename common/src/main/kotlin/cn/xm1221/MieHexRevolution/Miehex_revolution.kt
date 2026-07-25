@@ -11,6 +11,7 @@ import cn.xm1221.MieHexRevolution.networking.Miehex_revolutionNetworking
 import cn.xm1221.MieHexRevolution.registry.Miehex_revolutionActions
 import cn.xm1221.MieHexRevolution.registry.Miehex_revolutionBlocks
 import cn.xm1221.MieHexRevolution.registry.Miehex_revolutionBlockEntities
+import cn.xm1221.MieHexRevolution.registry.Miehex_revolutionFrames
 import net.minecraft.core.Registry
 import net.minecraft.core.registries.Registries
 import net.minecraft.tags.TagKey
@@ -49,11 +50,13 @@ object Miehex_revolution {
         Miehex_revolutionServerConfig.init()
         initRegistries(
             Miehex_revolutionActions,
+            Miehex_revolutionFrames
         )
         Miehex_revolutionBlocks.init()
         Miehex_revolutionBlockEntities.init()
         Miehex_revolutionNetworking.init()
     }
+
 
     fun initServer() {
         Miehex_revolutionServerConfig.initServer()

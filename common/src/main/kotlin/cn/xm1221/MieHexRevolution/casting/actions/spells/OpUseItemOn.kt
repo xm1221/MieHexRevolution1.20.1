@@ -7,13 +7,13 @@ import at.petrak.hexcasting.api.casting.getBlockPos
 import at.petrak.hexcasting.api.casting.iota.Iota
 import at.petrak.hexcasting.api.casting.mishaps.MishapBadCaster
 import at.petrak.hexcasting.api.casting.mishaps.MishapBadLocation
+import at.petrak.hexcasting.ktxt.UseOnContext
 import net.minecraft.core.Direction
 import net.minecraft.server.level.ServerPlayer
 import net.minecraft.world.phys.BlockHitResult
 import net.minecraft.world.phys.Vec3
-import org.joml.Vector3d
 
-class OpUseBlock : SpellAction{
+class OpUseItemOn: SpellAction {
     override val argc: Int
         get() = 1
 
@@ -23,7 +23,6 @@ class OpUseBlock : SpellAction{
     ): SpellAction.Result {
         val vec = args.getBlockPos(0,argc)
         val VEC = Vec3(vec.x.toDouble(), vec.y.toDouble(), vec.z.toDouble())
-        val blockstate = env.world.getBlockState(vec)
         val caster = env.castingEntity
         if(caster !is ServerPlayer) {
             throw MishapBadCaster()
@@ -31,17 +30,16 @@ class OpUseBlock : SpellAction{
         if(!env.isVecInRange(VEC)){
             throw MishapBadLocation(VEC)
         }
+        val item = caster.getItemInHand(env.otherHand)
         return SpellAction.Result(
-            effect = object: RenderedSpell{
+            effect = object: RenderedSpell {
                 override fun cast(env: CastingEnvironment) {
-                    blockstate.block.use(blockstate,env.world,vec, caster,env.otherHand, BlockHitResult(VEC,
-                        Direction.NORTH,vec,false)
-                          )
+                    item.useOn(UseOnContext(env.world,caster,env.otherHand,caster.getItemInHand(env.otherHand),
+                        BlockHitResult(VEC, Direction.NORTH, vec,false)))
                 }
             },
             cost = 0,
             particles = listOf(),
         )
     }
-
 }

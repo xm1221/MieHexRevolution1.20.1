@@ -3,6 +3,7 @@
   "package": "cn.xm1221.MieHexRevolution.mixin",
   "compatibilityLevel": "JAVA_17",
   "minVersion": "0.8",
+  "refmap": "miehex_revolution-common.refmap.json",
   "client": [
   ],
   "mixins": [
