@@ -29,6 +29,7 @@ loom {
         // default: miehex_revolution-common-common-refmap.json
         // fixed:   miehex_revolution-common.refmap.json
         defaultRefmapName = "${base.archivesName.get()}.refmap.json"
+        useLegacyMixinAp = false
     }
 }
 
