@@ -12,6 +12,7 @@
   "hexcasting.action.miehex_revolution:idea/set": "Construct Idea Block",
   "hexcasting.action.miehex_revolution:eval_in": "Delimiting Stratagem",
   "hexcasting.action.miehex_revolution:indexes": "Locator's Stratagem",
+  "hexcasting.action.miehex_revolution:interact": "Void Hand: Superior",
   "hexcasting.mishap.invalid_value.class.monitor": "an entity capable of receiving soul projection",
   "hexcasting.mishap.invalid_value.class.player": "a player",
   "hex_monitor.entry.monitor": "Soul Projection",
@@ -35,5 +36,7 @@
   "miehex_revolution.page.use_on/with": "I draw two things from the aether and apply one to the block. Accepts a position vector and an item entity iota. Uses the given item on the target block.",
   "block.miehex_revolution.idea_full": "Idea Block",
   "miehex_revolution.entry.idea_block": "Idea Block",
-  "miehex_revolution.page.idea/set": "I construct a block from pure thought, allowing it to assume the appearance of other blocks. Accepts a position vector and manifests an Idea Block at that location. Once placed, right-click with any block to change its appearance; shift-right-click with an empty hand to reset it."
+  "miehex_revolution.page.idea/set": "I construct a block from pure thought, allowing it to assume the appearance of other blocks. Accepts a position vector and manifests an Idea Block at that location. Once placed, right-click with any block to change its appearance; shift-right-click with an empty hand to reset it.",
+  "miehex_revolution.page.interact.1": "I extend my reach across the void to interact with a distant entity. Accepts an entity and a boolean. If true, attacks the target; if false, right-clicks the target. Media cost grows exponentially with horizontal distance.",
+  "miehex_revolution.page.interact.2": "This is a Great Spell. Its media cost is 2^(|Δx| + |Δz|), doubling for each block of horizontal offset. Equally useful for intimate conversation or remote retribution."
 }

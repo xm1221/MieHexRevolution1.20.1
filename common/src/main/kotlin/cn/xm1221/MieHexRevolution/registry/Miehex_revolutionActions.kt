@@ -6,6 +6,7 @@ import at.petrak.hexcasting.api.casting.math.HexDir
 import at.petrak.hexcasting.api.casting.math.HexPattern
 import at.petrak.hexcasting.common.lib.HexRegistries
 import at.petrak.hexcasting.common.lib.hex.HexActions
+import cn.xm1221.MieHexRevolution.casting.actions.spells.OpEntityInteract
 import cn.xm1221.MieHexRevolution.casting.actions.spells.OpUseBlock
 import cn.xm1221.MieHexRevolution.casting.actions.spells.OpUseItemOn
 import cn.xm1221.MieHexRevolution.casting.actions.spells.OpUseWithItemEntity
@@ -38,6 +39,8 @@ object Miehex_revolutionActions : Miehex_revolutionRegistrar<ActionRegistryEntry
     val IDEA_SET = make("idea/set", HexDir.EAST,"wqaqqqqqeawqwqwqwqwqw", OpIdeaBlockSet())
     val EVAL_IN = make("eval_in", HexDir.SOUTH_EAST,"wdwewawqwqw", OpEvalInList())
     val INDEXES = make("indexes", HexDir.EAST,"qqqqqdeee", OpIndexes())
+    val ENTITY_IN = make("interact", HexDir.SOUTH_WEST,"dwqqwqwqwaweaqqqqedwqqwqwqwaqeeedqaedwqqwqwqwaweaqqqq",
+        OpEntityInteract())
     private fun make(name: String, startDir: HexDir, signature: String, action: Action) =
         make(name, startDir, signature) { action }
 
