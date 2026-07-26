@@ -1,8 +1,0 @@
-{
-  "replace": false,
-  "values": [
-    "minecraft:allay",
-    "hexcasting:wall_scroll",
-    "minecraft:player"
-  ]
-}
