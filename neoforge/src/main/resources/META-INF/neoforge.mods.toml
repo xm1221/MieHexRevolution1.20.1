@@ -1,0 +1,45 @@
+modLoader = "javafml"
+loaderVersion = "[4,)"
+license = "MIT"
+
+[[mods]]
+modId = "miehex_revolution"
+version = "${version}"
+displayName = "MieHex:Revolution"
+authors = "xm1221"
+description = "MieHex:Revolution addon for Hex Casting."
+
+[[dependencies.miehex_revolution]]
+modId = "neoforge"
+type = "required"
+versionRange = "[21.1,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.miehex_revolution]]
+modId = "minecraft"
+type = "required"
+versionRange = "[1.21.1,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.miehex_revolution]]
+modId = "kotlinforforge"
+type = "required"
+versionRange = "[5,)"
+ordering = "AFTER"
+side = "BOTH"
+
+[[dependencies.miehex_revolution]]
+modId = "architectury"
+type = "required"
+versionRange = "[13,)"
+ordering = "AFTER"
+side = "BOTH"
+
+[[dependencies.miehex_revolution]]
+modId = "hexcasting"
+type = "required"
+versionRange = "[0,)"
+ordering = "AFTER"
+side = "BOTH"
