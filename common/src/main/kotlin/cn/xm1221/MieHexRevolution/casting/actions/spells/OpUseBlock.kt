@@ -41,7 +41,7 @@ class OpUseBlock : SpellAction{
                 }
             },
             cost = 0,
-            particles = listOf(),
+            emptyList<ParticleSpray>(), 0,
         )
     }
 

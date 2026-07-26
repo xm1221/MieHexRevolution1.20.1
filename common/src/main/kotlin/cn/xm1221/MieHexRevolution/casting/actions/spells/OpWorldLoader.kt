@@ -1,6 +1,7 @@
 package cn.xm1221.MieHexRevolution.casting.actions.spells
 
 import at.petrak.hexcasting.api.casting.RenderedSpell
+import at.petrak.hexcasting.api.casting.ParticleSpray
 import at.petrak.hexcasting.api.casting.castables.SpellAction
 import at.petrak.hexcasting.api.casting.eval.CastingEnvironment
 import at.petrak.hexcasting.api.casting.getBlockPos
@@ -40,7 +41,7 @@ class OpWorldLoader {
 
          },
                 cost = time.toLong(),
-                particles = listOf(),
+                emptyList<ParticleSpray>(), 0,
             )
         }
 
@@ -70,7 +71,7 @@ class OpWorldLoader {
                     }
         },
                 cost = 20* MediaConstants.DUST_UNIT,
-                particles = listOf(),
+                emptyList<ParticleSpray>(), 0,
             )
     }
 

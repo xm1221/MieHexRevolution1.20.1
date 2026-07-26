@@ -59,8 +59,8 @@ subprojects {
         mappings loom.officialMojangMappings()
         compileOnly(annotationProcessor("io.github.llamalad7:mixinextras-common:0.5.0"))
 
-        modImplementation("at.petra-k.hexcasting:hexcasting-${nameForRef}-${project.minecraft_version}:${project.hexcastingVersion}") { transitive = false }
-        modImplementation("at.petra-k.paucal:paucal-${nameForRef}-${project.minecraft_version}:${project.paucalVersion}") { transitive = false }
+       // modImplementation("at.petra-k.hexcasting:hexcasting-${nameForRef}-${project.minecraft_version}:${project.hexcastingVersion}") { transitive = false }
+       // modImplementation("at.petra-k.paucal:paucal-${nameForRef}-${project.minecraft_version}:${project.paucalVersion}") { transitive = false }
         modImplementation("vazkii.patchouli:Patchouli:${project.patchouliVersion}-${nameForRef.toUpperCase()}")
 
         implementation fileTree(dir: "libs", include: '*.jar')

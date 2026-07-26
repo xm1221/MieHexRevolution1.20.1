@@ -1,6 +1,7 @@
 package cn.xm1221.MieHexRevolution.block.idea
 
 import net.minecraft.core.BlockPos
+import net.minecraft.core.HolderLookup
 import net.minecraft.nbt.CompoundTag
 import net.minecraft.nbt.NbtUtils
 import net.minecraft.network.protocol.Packet
@@ -53,18 +54,18 @@ class IdeaBlockEntity(
     override fun getUpdatePacket(): Packet<ClientGamePacketListener> =
         ClientboundBlockEntityDataPacket.create(this)
 
-    override fun getUpdateTag(): CompoundTag =
-        saveWithoutMetadata()
+    override fun getUpdateTag(registries: HolderLookup.Provider): CompoundTag =
+        saveWithoutMetadata(registries)
 
-    override fun load(tag: CompoundTag) {
-        super.load(tag)
+    override fun loadAdditional(tag: CompoundTag, registries: HolderLookup.Provider) {
+        super.loadAdditional(tag, registries)
         if (tag.contains("Material")) {
-            material = NbtUtils.readBlockState(BuiltInRegistries.BLOCK.asLookup(), tag.getCompound("Material"))
+            material = NbtUtils.readBlockState(registries, tag.getCompound("Material"))
         }
     }
 
-    override fun saveAdditional(tag: CompoundTag) {
-        super.saveAdditional(tag)
+    override fun saveAdditional(tag: CompoundTag, registries: HolderLookup.Provider) {
+        super.saveAdditional(tag, registries)
         tag.put("Material", NbtUtils.writeBlockState(material))
     }
 

@@ -1,6 +1,7 @@
 package cn.xm1221.MieHexRevolution.casting.actions.spells
 
 import at.petrak.hexcasting.api.casting.RenderedSpell
+import at.petrak.hexcasting.api.casting.ParticleSpray
 import at.petrak.hexcasting.api.casting.castables.SpellAction
 import at.petrak.hexcasting.api.casting.eval.CastingEnvironment
 import at.petrak.hexcasting.api.casting.getBlockPos
@@ -45,7 +46,7 @@ class OpUseWithItemEntity() : SpellAction {
                 }
             },
             cost = 0,
-            particles = listOf(),
+            emptyList<ParticleSpray>(), 0,
         )
     }
 }

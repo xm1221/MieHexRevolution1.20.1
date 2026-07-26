@@ -1,6 +1,7 @@
 package cn.xm1221.MieHexRevolution.casting.actions.spells.monitor
 
 import at.petrak.hexcasting.api.casting.RenderedSpell
+import at.petrak.hexcasting.api.casting.ParticleSpray
 import at.petrak.hexcasting.api.casting.castables.SpellAction
 import at.petrak.hexcasting.api.casting.eval.CastingEnvironment
 import at.petrak.hexcasting.api.casting.getEntity
@@ -52,7 +53,7 @@ class OpMonitorSet : SpellAction {
 
                    },
                    cost = 5 * MediaConstants.DUST_UNIT,
-                   particles = listOf()
+                   emptyList<ParticleSpray>(), 0
                )
                return res
 

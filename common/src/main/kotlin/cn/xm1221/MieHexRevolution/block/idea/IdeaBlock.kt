@@ -127,7 +127,7 @@ abstract class IdeaBlock(properties: Properties) : Block(properties), EntityBloc
         return super.getSoundType(state)
     }
 
-   fun getCloneItemStack(
+   override fun getCloneItemStack(
         blockState: BlockState, target: HitResult, level: LevelReader, pos: BlockPos, player: Player?
     ): ItemStack {
         return ItemStack(this)
