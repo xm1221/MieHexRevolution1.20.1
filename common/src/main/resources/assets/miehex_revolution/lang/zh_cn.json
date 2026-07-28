@@ -13,6 +13,9 @@
   "hexcasting.action.miehex_revolution:eval_in": "画地为牢之策略",
   "hexcasting.action.miehex_revolution:indexes": "大定位器之策略",
   "hexcasting.action.miehex_revolution:interact": "虚空之手 卓越型",
+  "hexcasting.action.miehex_revolution:idea_shard/write": "铭刻理念碎片",
+  "hexcasting.mishap.bad_offhand_item.idea_shard": "理念碎片",
+  "hexcasting.mishap.bad_offhand_item.quenched_shard": "淬灵晶碎片",
   "hexcasting.mishap.invalid_value.class.monitor": "可以接受灵魂投射的实体",
   "hexcasting.mishap.invalid_value.class.player": "玩家",
   "hex_monitor.entry.monitor": "灵魂投射",
@@ -38,5 +41,10 @@
   "miehex_revolution.entry.idea_block": "理念方块",
   "miehex_revolution.page.idea/set": "我用理念构建方块，使其能够模仿其他方块的外形。接受一个坐标向量，在指定位置生成一个理念方块。放置后，手持任意方块右键即可改变其外观，空手潜行右键则可将其还原。",
   "miehex_revolution.page.interact.1": "我延伸我的触及，跨越虚空与遥远的实体互动。接受一个实体和一个布尔值。若为真，则攻击目标实体；若为假，则对目标实体模拟右键交互。媒质消耗随水平距离指数增长。",
-  "miehex_revolution.page.interact.2": "这是一个卓越法术。其媒质消耗为 2 的施法者到目标的两个水平轴向距离之和的次方数目的万分之一紫水晶粉，仅考虑水平距离，每多一格消耗便翻一倍。对于亲密交流或远程惩戒均颇为有效。"
+  "miehex_revolution.page.interact.2": "这是一个卓越法术。其媒质消耗为 2 的施法者到目标的两个水平轴向距离之和的次方数目的万分之一紫水晶粉，仅考虑水平距离，每多一格消耗便翻一倍。对于亲密交流或远程惩戒均颇为有效。",
+  "item.miehex_revolution.idea_shard": "理念碎片",
+  "miehex_revolution.entry.idea_shard": "理念碎片",
+  "miehex_revolution.page.idea_shard.1": "借助永恒的理念，跨越空间展现人力所做的奇迹",
+  "miehex_revolution.page.idea_shard.2": "理念碎片是一枚浸透了媒质的淬灵晶碎片，其中可以铭刻一个iota与一串图案。手持理念碎片右键，即可执行其中铭刻的法术，如果储存的Iota是向量或实体，无论距离多远，那对应的位置都视作在施法范围中。执行后碎片将被消耗。媒质消耗全部由碎片自身的储魔承担，也即30份紫水晶粉。",
+  "miehex_revolution.page.idea_shard/write": "接受一个任意Iota与一个图案列表，消耗副手的一枚淬灵晶碎片，在施法者位置生成一枚铭刻了目标与法术的理念碎片。"
 }

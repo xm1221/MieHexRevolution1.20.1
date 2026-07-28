@@ -12,6 +12,7 @@ import cn.xm1221.MieHexRevolution.casting.actions.spells.OpUseItemOn
 import cn.xm1221.MieHexRevolution.casting.actions.spells.OpUseWithItemEntity
 import cn.xm1221.MieHexRevolution.casting.actions.spells.OpWorldLoader
 import cn.xm1221.MieHexRevolution.casting.actions.spells.idea.OpIdeaBlockSet
+import cn.xm1221.MieHexRevolution.casting.actions.spells.idea.OpIdeaShardWrite
 import cn.xm1221.MieHexRevolution.casting.actions.spells.monitor.OpMonitorGet
 import cn.xm1221.MieHexRevolution.casting.actions.spells.monitor.OpMonitorSet
 import cn.xm1221.MieHexRevolution.casting.actions.useful.OpMax
@@ -41,6 +42,8 @@ object Miehex_revolutionActions : Miehex_revolutionRegistrar<ActionRegistryEntry
     val INDEXES = make("indexes", HexDir.EAST,"qqqqqdeee", OpIndexes())
     val ENTITY_IN = make("interact", HexDir.SOUTH_WEST,"dwqqwqwqwaweaqqqqedwqqwqwqwaqeeedqaedwqqwqwqwaweaqqqq",
         OpEntityInteract())
+
+    val IDEA_WRITE = make("idea_shard/write", HexDir.EAST,"waqqqq", OpIdeaShardWrite())
     private fun make(name: String, startDir: HexDir, signature: String, action: Action) =
         make(name, startDir, signature) { action }
 

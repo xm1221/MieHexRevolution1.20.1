@@ -8,6 +8,7 @@ import at.petrak.hexcasting.api.casting.getBool
 import at.petrak.hexcasting.api.casting.getEntity
 import at.petrak.hexcasting.api.casting.iota.Iota
 import at.petrak.hexcasting.api.casting.mishaps.MishapBadCaster
+import net.minecraft.world.entity.LivingEntity
 import net.minecraft.world.entity.player.Player
 import kotlin.math.abs
 import kotlin.math.pow
@@ -35,6 +36,9 @@ class OpEntityInteract: SpellAction {
                     }
                     else{
                         target.interact(caster,env.otherHand)
+                        if(target is LivingEntity) {
+                            caster.getItemInHand(env.otherHand).interactLivingEntity(caster,target,env.otherHand)
+                        }
                     }
                 }
             },

@@ -14,6 +14,7 @@ class ForgeMiehex_revolution {
             addListener(ForgeMiehex_revolutionClient::init)
             addListener(ForgeMiehex_revolutionDatagen::init)
             addListener(ForgeMiehex_revolutionServer::init)
+            register(ForgeMiehex_revolutionClient)
         }
         Miehex_revolution.init()
     }
