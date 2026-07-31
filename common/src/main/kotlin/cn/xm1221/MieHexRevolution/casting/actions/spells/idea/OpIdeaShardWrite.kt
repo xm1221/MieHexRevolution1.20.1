@@ -8,6 +8,8 @@ import at.petrak.hexcasting.api.casting.iota.Iota
 import at.petrak.hexcasting.api.casting.mishaps.MishapBadCaster
 import at.petrak.hexcasting.api.casting.mishaps.MishapBadOffhandItem
 import at.petrak.hexcasting.api.misc.MediaConstants
+import at.petrak.hexcasting.api.utils.putLong
+import at.petrak.hexcasting.common.items.magic.ItemMediaHolder
 import at.petrak.hexcasting.common.lib.HexItems
 import cn.xm1221.MieHexRevolution.item.ItemIdeaShard
 import cn.xm1221.MieHexRevolution.registry.Miehex_revolutionBlocks
@@ -46,6 +48,7 @@ class OpIdeaShardWrite: SpellAction {
             val stack = ItemStack(shard)
             shard.writeDatum(stack, data)
             shard.writeSpell(stack, spell)
+            stack.putLong(ItemMediaHolder.TAG_MAX_MEDIA, MediaConstants.QUENCHED_SHARD_UNIT)
             shard.setMedia(stack, MediaConstants.QUENCHED_SHARD_UNIT)
             caster.spawnAtLocation(stack)
         }

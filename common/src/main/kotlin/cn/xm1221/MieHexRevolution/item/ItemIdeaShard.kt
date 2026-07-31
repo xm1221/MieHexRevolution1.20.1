@@ -106,7 +106,7 @@ class ItemIdeaShard(properties: Properties): IotaHolderItem, ItemMediaHolder(pro
     }
 
     override fun isBarVisible(pStack: ItemStack?): Boolean {
-        return false
+        return true
     }
 
 
