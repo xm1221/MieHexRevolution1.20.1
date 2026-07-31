@@ -8,7 +8,7 @@ build-backend = "hatchling.build"
 # project metadata
 
 [project]
-name = "hexdoc-miehex_revolution"
+name = "hexdoc-miehex-revolution"
 description = "MieHex:Revolution addon for Hex Casting,as an addtion for miehex."
 readme = "doc/README.md"
 authors = [
