@@ -7,8 +7,11 @@ import at.petrak.hexcasting.api.casting.math.HexPattern
 import at.petrak.hexcasting.common.lib.HexRegistries
 import at.petrak.hexcasting.common.lib.hex.HexActions
 import cn.xm1221.MieHexRevolution.casting.actions.spells.OpEntityInteract
-import cn.xm1221.MieHexRevolution.casting.actions.spells.OpEntityMove
-import cn.xm1221.MieHexRevolution.casting.actions.spells.OpEntityTarget
+import cn.xm1221.MieHexRevolution.casting.actions.spells.psy.OpEntityMoveStep
+import cn.xm1221.MieHexRevolution.casting.actions.spells.psy.OpEntityMoveTo
+import cn.xm1221.MieHexRevolution.casting.actions.spells.psy.OpEntityLastHurtGet
+import cn.xm1221.MieHexRevolution.casting.actions.spells.psy.OpMobTargetGet
+import cn.xm1221.MieHexRevolution.casting.actions.spells.psy.OpMobTargetSet
 import cn.xm1221.MieHexRevolution.casting.actions.spells.OpUseBlock
 import cn.xm1221.MieHexRevolution.casting.actions.spells.OpUseItemOn
 import cn.xm1221.MieHexRevolution.casting.actions.spells.OpUseWithItemEntity
@@ -42,8 +45,12 @@ object Miehex_revolutionActions : Miehex_revolutionRegistrar<ActionRegistryEntry
     val IDEA_SET = make("idea/set", HexDir.EAST,"wqaqqqqqeawqwqwqwqwqw", OpIdeaBlockSet())
     val EVAL_IN = make("eval_in", HexDir.SOUTH_EAST,"wdwewawqwqw", OpEvalInList())
     val INDEXES = make("indexes", HexDir.EAST,"qqqqqdeee", OpIndexes())
-    val ENTITY_MOVE= make("entity/move",HexDir.EAST,"deeedawedeeee", OpEntityTarget())
-    val ENTITY_MOVE_STEP = make("entity/step",HexDir.SOUTH_WEST,"qqqqaqwqaawdd", OpEntityMove())
+
+    val ENTITY_MOVE= make("entity/move",HexDir.EAST,"deeedawedeeee", OpEntityMoveTo())
+    val ENTITY_MOVE_STEP = make("entity/step",HexDir.SOUTH_WEST,"qqqqaqwqaawdd", OpEntityMoveStep())
+    val ENTITY_LAST_HURT = make("entity/lasthurt",HexDir.EAST,"wadwdqdwd", OpEntityLastHurtGet())
+    val MOB_TARGET_GET = make("entity/target/get",HexDir.EAST,"qqqaqww", OpMobTargetGet())
+    val MOB_TARGET_SET = make("entity/target/set",HexDir.EAST,"addqaqwawqeawa", OpMobTargetSet())
     val ENTITY_IN = make("interact", HexDir.SOUTH_WEST,"dwqqwqwqwaweaqqqqedwqqwqwqwaqeeedqaedwqqwqwqwaweaqqqq",
         OpEntityInteract())
 

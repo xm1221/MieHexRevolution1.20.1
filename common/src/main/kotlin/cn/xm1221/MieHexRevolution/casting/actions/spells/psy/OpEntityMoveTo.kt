@@ -1,4 +1,4 @@
-package cn.xm1221.MieHexRevolution.casting.actions.spells
+package cn.xm1221.MieHexRevolution.casting.actions.spells.psy
 
 import at.petrak.hexcasting.api.casting.ParticleSpray
 import at.petrak.hexcasting.api.casting.RenderedSpell
@@ -7,17 +7,13 @@ import at.petrak.hexcasting.api.casting.eval.CastingEnvironment
 import at.petrak.hexcasting.api.casting.getLivingEntityButNotArmorStand
 import at.petrak.hexcasting.api.casting.getVec3
 import at.petrak.hexcasting.api.casting.iota.Iota
-import at.petrak.hexcasting.api.casting.mishaps.MishapBadEntity
-import at.petrak.hexcasting.api.casting.mishaps.MishapBadLocation
 import at.petrak.hexcasting.api.casting.mishaps.MishapEntityTooFarAway
 import at.petrak.hexcasting.api.casting.mishaps.MishapOthersName
 import at.petrak.hexcasting.api.misc.MediaConstants
-import net.minecraft.commands.arguments.EntityAnchorArgument
 import net.minecraft.server.level.ServerPlayer
 import net.minecraft.world.entity.Mob
-import kotlin.math.max
 
-class OpEntityTarget: SpellAction {
+class OpEntityMoveTo: SpellAction {
     override val argc: Int
         get() = 2
 

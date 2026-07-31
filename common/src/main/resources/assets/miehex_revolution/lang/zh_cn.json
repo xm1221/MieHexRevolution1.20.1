@@ -16,6 +16,9 @@
   "hexcasting.action.miehex_revolution:idea_shard/write": "铭刻理念碎片",
   "hexcasting.action.miehex_revolution:entity/move": "心理暗示",
   "hexcasting.action.miehex_revolution:entity/step": "精神操作",
+  "hexcasting.action.miehex_revolution:entity/lasthurt": "涅墨西斯之纯化",
+  "hexcasting.action.miehex_revolution:entity/target/get": "阿瑞斯之纯化",
+  "hexcasting.action.miehex_revolution:entity/target/set": "特异性躁狂",
   "hexcasting.mishap.bad_offhand_item.idea_shard": "理念碎片",
   "hexcasting.mishap.bad_offhand_item.quenched_shard": "淬灵晶碎片",
   "hexcasting.mishap.invalid_value.class.monitor": "可以接受灵魂投射的实体",
@@ -50,7 +53,11 @@
   "miehex_revolution.page.idea_shard.2": "理念碎片是一枚浸透了媒质的淬灵晶碎片，其中可以铭刻一个iota与一串图案。手持理念碎片右键，即可执行其中铭刻的法术，如果储存的Iota是向量或实体，无论距离多远，那对应的位置都视作在施法范围中。执行后碎片将被消耗。媒质消耗全部由碎片自身的储魔承担，也即30份紫水晶粉。",
   "miehex_revolution.page.idea_shard/write": "接受一个任意Iota与一个图案列表，消耗副手的一枚淬灵晶碎片，在施法者位置生成一枚铭刻了目标与法术的理念碎片。",
   "miehex_revolution.entry.entity_control": "心理学法术",
-  "miehex_revolution.entry.entity_control.text": "媒质是来自于思维的能量，也可以反作用于思维，影响人的精神，动摇人的意志，蛊惑人的心灵。给生来不朽的灵魂蒙上眼罩，在自然所赐的智慧里培养毒蛇……心理学曾经被用来探索思维深处的奥秘，也曾经用来祓除人心中的痛楚，$(br2)$(o)我独得天宠，我当知晓一切，也当掌握一切。",
-  "miehex_revolution.page.entity/move": "对生物下达“要前往某处“的心理暗示，让其向所给位置移动，消耗3份紫水晶粉",
-  "miehex_revolution.page.entity/step": "直接操作生物的精神，使其根据所给向量移动一步。z轴正向对应前方，x对应右方，y对应上方。消耗少量媒质"
+  "miehex_revolution.entry.entity_control.text": "媒质是来自于思维的能量，也可以反作用于思维，影响人的精神，动摇人的意志，蛊惑人的心灵。给生来不朽的灵魂蒙上眼罩，在自然所赐的智慧里培养毒蛇……心理学曾经被用来探索思维深处的奥秘，也曾经用来祓除人心中的痛楚$(br2)$(o)而我独得天宠，我当知晓一切，也当掌握一切。",
+  "miehex_revolution.page.entity/move": "对生物下达'要前往某处'的心理暗示，让其向所给位置移动，消耗3份紫水晶粉",
+  "miehex_revolution.page.entity/step": "直接操作生物的精神，使其根据所给向量移动一步。z轴正向对应前方，x对应右方，y对应上方。消耗少量媒质",
+  "miehex_revolution.page.entity/lasthurt": "接受一个生物实体，返回上一次对该生物造成伤害的实体。$(br)$(o)阿德剌斯忒亚不可避免",
+  "miehex_revolution.page.entity/target/get": "接受一个生物实体，返回其当前仇恨目标 $(br)$(o)知晓谁是敌人颇为重要",
+  "miehex_revolution.page.entity/target/set": "接受两个生物实体，将第一个生物的仇恨目标（对于被动生物则是躲避目标）设为第二个。一般消耗1份充能紫水晶，对于过分复杂的实体无效",
+  "miehex_revolution.entry.entity_control.text.2": "我摆弄法术，改造自然，也操弄心灵。永得天禄，独享至福。虽然这些只拥有不完全心智的生物也稍稍有着反抗之心——以我的力量去勒令其自杀竟需要花去我足足十枚充能紫水晶，但低等心智到头是低等心智，只要我为自然献上足够丰厚的祭品，我甚至能让白色的守卫摧毁他本应守护的一切……$(br2)$(o)我必是天下的王，独享自然绝美的奥秘"
 }

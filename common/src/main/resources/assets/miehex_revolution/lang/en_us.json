@@ -16,6 +16,9 @@
   "hexcasting.action.miehex_revolution:idea_shard/write": "Inscribe Idea Shard",
   "hexcasting.action.miehex_revolution:entity/move": "Suggestion",
   "hexcasting.action.miehex_revolution:entity/step": "Compulsion",
+  "hexcasting.action.miehex_revolution:entity/lasthurt": "Nemesis' Purification",
+  "hexcasting.action.miehex_revolution:entity/target/get": "Ares' Purification",
+  "hexcasting.action.miehex_revolution:entity/target/set": "Specific Mania",
   "hexcasting.mishap.bad_offhand_item.idea_shard": "Idea Shard",
   "hexcasting.mishap.bad_offhand_item.quenched_shard": "Quenched Shard",
   "hexcasting.mishap.invalid_value.class.monitor": "an entity capable of receiving soul projection",
@@ -52,5 +55,9 @@
   "miehex_revolution.entry.entity_control": "Entity Manipulation",
   "miehex_revolution.entry.entity_control.text": "Media is the energy born of thought, and thought may in turn be bent to shape the mind — to sway the spirit, to shake the will, to bewitch the heart. To blindfold the immortal soul, to breed serpents within the garden of natural wisdom... Psychology was once used to probe the depths of the mind, and once to banish the anguish within it. I alone am favored; I shall know all, and master all.",
   "miehex_revolution.page.entity/move": "I plant a suggestion in a creature's mind: \"go there.\" Accepts a non-player living entity and a position vector, compelling its AI to navigate toward the target. Costs 3 amethyst dust.",
-  "miehex_revolution.page.entity/step": "I seize direct control of a creature's spirit, forcing it to take one step along the given vector. The positive Z axis is forward, X is right, and Y is up. Accepts a non-player living entity and a vector. Costs a small amount of media."
+  "miehex_revolution.page.entity/step": "I seize direct control of a creature's spirit, forcing it to take one step along the given vector. The positive Z axis is forward, X is right, and Y is up. Accepts a non-player living entity and a vector. Costs a small amount of media.",
+  "miehex_revolution.page.entity/lasthurt": "Accepts a living entity and returns the entity that last dealt damage to it. $(br)$(o)Adrasteia is inescapable.",
+  "miehex_revolution.page.entity/target/get": "Accepts a living entity and returns its current hostility target. $(br)$(o)It is vital to know one's enemies.",
+  "miehex_revolution.page.entity/target/set": "Accepts two living entities and sets the first's hostility target (or fear target, for passive creatures) to the second. Normally costs 1 charged amethyst crystal; ineffective for excessively complex entities.",
+  "miehex_revolution.entry.entity_control.text.2": "I wield spells, reshape nature, and toy with the mind. Eternally blessed, uniquely favored. Though these half-formed minds do harbor a sliver of defiance — to compel one to self-destruction would cost me a full ten charged crystals — yet base minds are base still. If I but offer Nature a rich enough tribute, I may even turn the white guardian against all he was sworn to protect... $(br2)$(o)I shall be king of this world, sole heir to Nature's most exquisite secrets."
 }
