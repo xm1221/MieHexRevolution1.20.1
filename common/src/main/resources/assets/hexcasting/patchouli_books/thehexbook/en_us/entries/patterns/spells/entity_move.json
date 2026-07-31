@@ -3,8 +3,8 @@
   "category": "hexcasting:patterns/spells",
   "icon": "minecraft:lead",
   "sortnum": 5,
-  "advancement": "hexcasting:root",
-  "read_by_default": true,
+  "advancement": "hexcasting:enlightenment",
+  "read_by_default": false,
   "pages": [
     {
       "type": "patchouli:text",
