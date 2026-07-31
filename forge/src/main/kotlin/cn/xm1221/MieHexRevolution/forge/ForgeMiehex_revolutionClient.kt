@@ -8,7 +8,7 @@ import cn.xm1221.MieHexRevolution.block.idea.client.IdeaBlockEntityRenderer
 import cn.xm1221.MieHexRevolution.registry.Miehex_revolutionBlocks
 import net.minecraft.world.item.ItemStack
 import net.minecraftforge.client.ConfigScreenHandler.ConfigScreenFactory
-import net.minecraftforge.client.event.CreativeModeTabEvent
+import net.minecraftforge.event.BuildCreativeModeTabContentsEvent
 import net.minecraftforge.eventbus.api.SubscribeEvent
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent
 import thedarkcolour.kotlinforforge.forge.LOADING_CONTEXT
@@ -24,10 +24,10 @@ object ForgeMiehex_revolutionClient {
     }
 
     @SubscribeEvent
-    fun onBuildCreativeTab(event: CreativeModeTabEvent.BuildContents) {
+    fun onBuildCreativeTab(event: BuildCreativeModeTabContentsEvent) {
         if (event.tab == HexCreativeTabs.HEX) {
             val stack = ItemStack(Miehex_revolutionBlocks.IDEA_SHARD.get())
-            ItemMediaBattery.withMedia(stack, MediaConstants.QUENCHED_SHARD_UNIT)
+            ItemMediaBattery.withMedia(stack, MediaConstants.QUENCHED_SHARD_UNIT, MediaConstants.QUENCHED_SHARD_UNIT)
             event.accept(stack)
         }
     }
