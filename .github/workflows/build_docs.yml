@@ -22,7 +22,7 @@ permissions:
   contents: read
 
 env:
-  PYPI_PACKAGE: hexdoc-miehex
+  PYPI_PACKAGE: hexdoc-miehex-revolution
   # adding a branch name here will make hexdoc deploy prerelease versions of your web book on every push to that branch
   # for example: https://hexcasting.hexxy.media/v/latest/main/en_us/
   HEXDOC_BRANCHES: '["main"]'
