@@ -35,7 +35,7 @@ loom {
 
 pkJson5 {
     autoProcessJson5 = true
-    autoProcessJson5Flattening = true
+    autoProcessJson5Flattening = false
 }
 
 dependencies {
