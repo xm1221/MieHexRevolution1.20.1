@@ -19,6 +19,9 @@
   "hexcasting.action.miehex_revolution:entity/lasthurt": "涅墨西斯之纯化",
   "hexcasting.action.miehex_revolution:entity/target/get": "阿瑞斯之纯化",
   "hexcasting.action.miehex_revolution:entity/target/set": "特异性躁狂",
+  "hexcasting.action.miehex_revolution:entity/rot": "同步",
+  "hexcasting.action.miehex_revolution:circle/length": "行程之精思",
+  "hexcasting.action.miehex_revolution:circle/used": "足迹之精思",
   "hexcasting.mishap.bad_offhand_item.idea_shard": "理念碎片",
   "hexcasting.mishap.bad_offhand_item.quenched_shard": "淬灵晶碎片",
   "hexcasting.mishap.invalid_value.class.monitor": "可以接受灵魂投射的实体",
@@ -59,5 +62,9 @@
   "miehex_revolution.page.entity/lasthurt": "接受一个生物实体，返回上一次对该生物造成伤害的实体。$(br)$(o)阿德剌斯忒亚不可避免",
   "miehex_revolution.page.entity/target/get": "接受一个生物实体，返回其当前仇恨目标 $(br)$(o)知晓谁是敌人颇为重要",
   "miehex_revolution.page.entity/target/set": "接受两个生物实体，将第一个生物的仇恨目标（对于被动生物则是躲避目标）设为第二个。一般消耗1份充能紫水晶，对于过分复杂的实体无效",
-  "miehex_revolution.entry.entity_control.text.2": "我摆弄法术，改造自然，也操弄心灵。永得天禄，独享至福。虽然这些只拥有不完全心智的生物也稍稍有着反抗之心——以我的力量去勒令其自杀竟需要花去我足足十枚充能紫水晶，但低等心智到头是低等心智，只要我为自然献上足够丰厚的祭品，我甚至能让白色的守卫摧毁他本应守护的一切……$(br2)$(o)我必是天下的王，独享自然绝美的奥秘"
+  "miehex_revolution.entry.entity_control.text.2": "我摆弄法术，改造自然，也操弄心灵。永得天禄，独享至福。虽然这些只拥有不完全心智的生物也稍稍有着反抗之心——以我的力量去勒令其自杀竟需要花去我足足十枚充能紫水晶，但低等心智到头是低等心智，只要我为自然献上足够丰厚的祭品，我甚至能让白色的守卫摧毁他本应守护的一切……$(br2)$(o)我必是天下的王，独享自然绝美的奥秘",
+  "miehex_revolution.page.entity/rot": "将对方向和姿态的控制完全施加给另一个实体。接受一个生物实体，将其头部朝向、身体朝向和俯仰角设置为与施法者完全相同。",
+  "miehex_revolution.entry.circle_patterns": "MieHexR法术环图案",
+  "miehex_revolution.page.circle/length": "返回当前法术环的长度",
+  "miehex_revolution.page.circle/used": "返回当前法术环媒质波经过的方块数量"
 }

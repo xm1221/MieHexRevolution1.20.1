@@ -1,0 +1,26 @@
+{
+  "name": "miehex_revolution.entry.circle_patterns",
+  "category": "hexcasting:patterns/spells",
+  "icon": "hexcasting:focus",
+  "sortnum": 6,
+  "advancement": "hexcasting:enlightenment",
+  "read_by_default": true,
+  "pages": [
+    {
+      "type": "hexcasting:pattern",
+      "op_id": "miehex_revolution:circle/length",
+      "anchor": "miehex_revolution:circle/length",
+      "input": "",
+      "output": "num",
+      "text": "miehex_revolution.page.circle/length"
+    },
+    {
+      "type": "hexcasting:pattern",
+      "op_id": "miehex_revolution:circle/used",
+      "anchor": "miehex_revolution:circle/used",
+      "input": "",
+      "output": "num",
+      "text": "miehex_revolution.page.circle/used"
+    }
+  ]
+}

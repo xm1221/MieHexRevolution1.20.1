@@ -19,6 +19,9 @@
   "hexcasting.action.miehex_revolution:entity/lasthurt": "Nemesis' Purification",
   "hexcasting.action.miehex_revolution:entity/target/get": "Ares' Purification",
   "hexcasting.action.miehex_revolution:entity/target/set": "Specific Mania",
+  "hexcasting.action.miehex_revolution:entity/rot": "Synchronize",
+  "hexcasting.action.miehex_revolution:circle/length": "Reflection of Journey",
+  "hexcasting.action.miehex_revolution:circle/used": "Reflection of Footsteps",
   "hexcasting.mishap.bad_offhand_item.idea_shard": "Idea Shard",
   "hexcasting.mishap.bad_offhand_item.quenched_shard": "Quenched Shard",
   "hexcasting.mishap.invalid_value.class.monitor": "an entity capable of receiving soul projection",
@@ -59,5 +62,9 @@
   "miehex_revolution.page.entity/lasthurt": "Accepts a living entity and returns the entity that last dealt damage to it. $(br)$(o)Adrasteia is inescapable.",
   "miehex_revolution.page.entity/target/get": "Accepts a living entity and returns its current hostility target. $(br)$(o)It is vital to know one's enemies.",
   "miehex_revolution.page.entity/target/set": "Accepts two living entities and sets the first's hostility target (or fear target, for passive creatures) to the second. Normally costs 1 charged amethyst crystal; ineffective for excessively complex entities.",
-  "miehex_revolution.entry.entity_control.text.2": "I wield spells, reshape nature, and toy with the mind. Eternally blessed, uniquely favored. Though these half-formed minds do harbor a sliver of defiance — to compel one to self-destruction would cost me a full ten charged crystals — yet base minds are base still. If I but offer Nature a rich enough tribute, I may even turn the white guardian against all he was sworn to protect... $(br2)$(o)I shall be king of this world, sole heir to Nature's most exquisite secrets."
+  "miehex_revolution.entry.entity_control.text.2": "I wield spells, reshape nature, and toy with the mind. Eternally blessed, uniquely favored. Though these half-formed minds do harbor a sliver of defiance — to compel one to self-destruction would cost me a full ten charged crystals — yet base minds are base still. If I but offer Nature a rich enough tribute, I may even turn the white guardian against all he was sworn to protect... $(br2)$(o)I shall be king of this world, sole heir to Nature's most exquisite secrets.",
+  "miehex_revolution.page.entity/rot": "I impose my own bearing and orientation upon another. Accepts a living entity and sets its head yaw, body yaw, and pitch to match the caster's exactly.",
+  "miehex_revolution.entry.circle_patterns": "MieHexR Circle Patterns",
+  "miehex_revolution.page.circle/length": "Returns the length of the current spell circle.",
+  "miehex_revolution.page.circle/used": "Returns the number of blocks reached by the current spell circle's media wave."
 }

@@ -51,6 +51,14 @@
       "text": "miehex_revolution.page.entity/target/set"
     },
     {
+      "type": "hexcasting:pattern",
+      "op_id": "miehex_revolution:entity/rot",
+      "anchor": "miehex_revolution:entity/rot",
+      "input": "entity",
+      "output": "",
+      "text": "miehex_revolution.page.entity/rot"
+    },
+    {
       "type": "patchouli:text",
       "text": "miehex_revolution.entry.entity_control.text.2"
     }
