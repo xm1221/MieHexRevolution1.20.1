@@ -16,10 +16,13 @@ import cn.xm1221.MieHexRevolution.casting.actions.spells.OpUseBlock
 import cn.xm1221.MieHexRevolution.casting.actions.spells.OpUseItemOn
 import cn.xm1221.MieHexRevolution.casting.actions.spells.OpUseWithItemEntity
 import cn.xm1221.MieHexRevolution.casting.actions.spells.OpWorldLoader
+import cn.xm1221.MieHexRevolution.casting.actions.spells.circle.OpCircleLength
+import cn.xm1221.MieHexRevolution.casting.actions.spells.circle.OpCircleLengthUsed
 import cn.xm1221.MieHexRevolution.casting.actions.spells.idea.OpIdeaBlockSet
 import cn.xm1221.MieHexRevolution.casting.actions.spells.idea.OpIdeaShardWrite
 import cn.xm1221.MieHexRevolution.casting.actions.spells.monitor.OpMonitorGet
 import cn.xm1221.MieHexRevolution.casting.actions.spells.monitor.OpMonitorSet
+import cn.xm1221.MieHexRevolution.casting.actions.spells.psy.OpEntityRot
 import cn.xm1221.MieHexRevolution.casting.actions.useful.OpMax
 import cn.xm1221.MieHexRevolution.casting.actions.useful.OpMin
 import cn.xm1221.MieHexRevolution.casting.actions.useful.OpPages
@@ -51,10 +54,14 @@ object Miehex_revolutionActions : Miehex_revolutionRegistrar<ActionRegistryEntry
     val ENTITY_LAST_HURT = make("entity/lasthurt",HexDir.EAST,"wadwdqdwd", OpEntityLastHurtGet())
     val MOB_TARGET_GET = make("entity/target/get",HexDir.EAST,"qqqaqww", OpMobTargetGet())
     val MOB_TARGET_SET = make("entity/target/set",HexDir.EAST,"addqaqwawqeawa", OpMobTargetSet())
+    val ENTITY_ROT = make("entity/rot",HexDir.SOUTH_EAST,"qqqqaqwdwd", OpEntityRot())
     val ENTITY_IN = make("interact", HexDir.SOUTH_WEST,"dwqqwqwqwaweaqqqqedwqqwqwqwaqeeedqaedwqqwqwqwaweaqqqq",
         OpEntityInteract())
 
     val IDEA_WRITE = make("idea_shard/write", HexDir.EAST,"waqqqq", OpIdeaShardWrite())
+
+    val CIRCLE_LENGTH = make("circle/length",HexDir.SOUTH_WEST,"eaqdqaqdqae",OpCircleLength())
+    val CIRCLE_USED = make("circle/used",HexDir.SOUTH_EAST,"qdeqqaqqedq", OpCircleLengthUsed())
     private fun make(name: String, startDir: HexDir, signature: String, action: Action) =
         make(name, startDir, signature) { action }
 
