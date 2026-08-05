@@ -2,9 +2,11 @@ package cn.xm1221.MieHexRevolution.item
 
 import at.petrak.hexcasting.api.casting.SpellList
 import at.petrak.hexcasting.api.casting.eval.vm.CastingVM
+import at.petrak.hexcasting.api.casting.iota.EntityIota
 import at.petrak.hexcasting.api.casting.iota.Iota
 import at.petrak.hexcasting.api.casting.iota.IotaType
 import at.petrak.hexcasting.api.casting.iota.ListIota
+import at.petrak.hexcasting.api.casting.iota.NullIota
 import at.petrak.hexcasting.api.item.IotaHolderItem
 import at.petrak.hexcasting.api.utils.getTag
 import at.petrak.hexcasting.api.utils.putTag
@@ -22,6 +24,7 @@ import net.minecraft.world.entity.player.Player
 import net.minecraft.world.item.ItemStack
 import at.petrak.hexcasting.ktxt.UseOnContext
 import net.minecraft.network.chat.Component
+import net.minecraft.server.level.ServerPlayer
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.TooltipFlag
 import net.minecraft.world.item.context.UseOnContext
@@ -39,6 +42,7 @@ class ItemIdeaShard(properties: Properties): IotaHolderItem, ItemMediaHolder(pro
     override fun writeable(stack: ItemStack?): Boolean {
         return false
     }
+
 
     override fun canWrite(
         stack: ItemStack?,

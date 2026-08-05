@@ -26,6 +26,7 @@ import cn.xm1221.MieHexRevolution.casting.actions.spells.psy.OpEntityRot
 import cn.xm1221.MieHexRevolution.casting.actions.useful.OpMax
 import cn.xm1221.MieHexRevolution.casting.actions.useful.OpMin
 import cn.xm1221.MieHexRevolution.casting.actions.useful.OpPages
+import cn.xm1221.MieHexRevolution.casting.actions.useful.envs.OpFaker
 import cn.xm1221.MieHexRevolution.casting.actions.useful.list.OpEvalInList
 import cn.xm1221.MieHexRevolution.casting.actions.useful.list.OpIndexes
 
@@ -62,6 +63,8 @@ object Miehex_revolutionActions : Miehex_revolutionRegistrar<ActionRegistryEntry
 
     val CIRCLE_LENGTH = make("circle/length",HexDir.SOUTH_WEST,"eaqdqaqdqae",OpCircleLength())
     val CIRCLE_USED = make("circle/used",HexDir.SOUTH_EAST,"qdeqqaqqedq", OpCircleLengthUsed())
+
+    val CHANGE_ENV = make("changeenv",HexDir.EAST,"edwaq", OpFaker())
     private fun make(name: String, startDir: HexDir, signature: String, action: Action) =
         make(name, startDir, signature) { action }
 

@@ -5,10 +5,14 @@
   "minVersion": "0.8",
   "refmap": "miehex_revolution-common.refmap.json",
   "client": [
+    "MixinGuiSpellcasting"
   ],
   "mixins": [
     "MixinDatagenMain",
-    "ServerPlayerMixin"
+    "ServerPlayerMixin",
+    "MixinStaffCastEnv",
+    "MixinItemStaff",
+    "MixinPlayerSyncedData"
   ],
   "plugin": "cn.xm1221.MieHexRevolution.mixin.Miehex_revolutionMixinConfigPlugin",
   "injectors": {

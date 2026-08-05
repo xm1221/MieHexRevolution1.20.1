@@ -4,9 +4,11 @@ import at.petrak.hexcasting.api.HexAPI
 import at.petrak.hexcasting.api.casting.RenderedSpell
 import at.petrak.hexcasting.api.casting.castables.SpellAction
 import at.petrak.hexcasting.api.casting.eval.CastingEnvironment
+import at.petrak.hexcasting.api.casting.iota.EntityIota
 import at.petrak.hexcasting.api.casting.iota.Iota
 import at.petrak.hexcasting.api.casting.mishaps.MishapBadCaster
 import at.petrak.hexcasting.api.casting.mishaps.MishapBadOffhandItem
+import at.petrak.hexcasting.api.casting.mishaps.MishapOthersName
 import at.petrak.hexcasting.api.misc.MediaConstants
 import at.petrak.hexcasting.api.utils.putLong
 import at.petrak.hexcasting.common.items.magic.ItemMediaHolder
@@ -14,6 +16,7 @@ import at.petrak.hexcasting.common.lib.HexItems
 import cn.xm1221.MieHexRevolution.item.ItemIdeaShard
 import cn.xm1221.MieHexRevolution.registry.Miehex_revolutionBlocks
 import net.minecraft.server.level.ServerPlayer
+import net.minecraft.world.entity.player.Player
 import net.minecraft.world.item.ItemStack
 
 class OpIdeaShardWrite: SpellAction {
@@ -30,6 +33,9 @@ class OpIdeaShardWrite: SpellAction {
         val itemstack = caster.getItemInHand(env.otherHand)
         if (itemstack.item !== HexItems.QUENCHED_SHARD) {
             throw MishapBadOffhandItem.of(itemstack, "quenched_shard")
+        }
+        if(data is EntityIota && data.entity is ServerPlayer && data.entity != env.castingEntity){
+            throw MishapOthersName(data.entity as Player)
         }
         return SpellAction.Result(
             effect = Result(data, spell),
