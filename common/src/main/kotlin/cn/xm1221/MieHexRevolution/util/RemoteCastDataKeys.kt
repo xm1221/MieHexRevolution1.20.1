@@ -34,7 +34,7 @@ object RemoteCastDataKeys {
     /** 根据目标实体类型返回对应的执行色（玩家 → PLAYERS，生物 → FAKE） */
     @JvmStatic
     fun colorFor(target: Entity): Int = if (target is Player) {
-        ExecutionColorProvider.DEFAULT
+        ExecutionColorProvider.PLAYERS_COLOR
     } else {
         ExecutionColorProvider.FAKE_COLOR
     }
