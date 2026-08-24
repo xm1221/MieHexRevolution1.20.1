@@ -30,7 +30,9 @@ public abstract class MixinStaffCastEnv {
         at = @At(
             value = "INVOKE",
             target = "Lat/petrak/hexcasting/xplat/IXplatAbstractions;getStaffcastVM(Lnet/minecraft/server/level/ServerPlayer;Lnet/minecraft/world/InteractionHand;)Lat/petrak/hexcasting/api/casting/eval/vm/CastingVM;",
-            remap = false
+            // 必须 remap，让 mapping 服务把 target 里 MC 类的 descriptor（ServerPlayer 等）
+            // 转换到运行时名（fabric intermediary: class_3222），否则 INVOKE 点找不到
+            remap = true
         ),
         remap = false
     )

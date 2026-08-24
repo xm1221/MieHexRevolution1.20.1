@@ -22,14 +22,13 @@ import java.util.Set;
 public abstract class MixinGuiSpellcasting {
 
     @WrapOperation(
-        // render 是 override Screen.render：Mojmap 环境为 render，Connector/SRG（Fabric HexMod 转换）为 m_88315_
-        method = {"render", "m_88315_"},
+        // render 是 override Screen.render，走 refmap 映射（fabric: method_25394, forge: m_88315_）
+        method = "render",
         at = @At(
             value = "INVOKE",
             target = "Lat/petrak/hexcasting/client/render/RenderLib;drawPatternFromPoints(Lorg/joml/Matrix4f;Ljava/util/List;Ljava/util/Set;ZIIFFFD)V",
             remap = false
-        ),
-        remap = false
+        )
     )
     private void miehex_revolution$wrapExecutionColor(
         Matrix4f mat, List<Vec2> points, Set<Integer> dupIndices,

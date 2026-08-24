@@ -29,7 +29,9 @@ loom {
         // default: miehex_revolution-common-common-refmap.json
         // fixed:   miehex_revolution-common.refmap.json
         defaultRefmapName = "${base.archivesName.get()}.refmap.json"
-        useLegacyMixinAp = false
+        // legacy AP 由 loom 托管（自动加 AP 依赖 + 传混淆映射 + 生成 refmap）。
+        // Fabric 必须靠 refmap 把 mojmap 名映射到 intermediary，false（新版 AP）拿不到 loom 的映射参数，refmap 不生成。
+        useLegacyMixinAp = true
     }
 }
 
