@@ -6,6 +6,9 @@ import at.petrak.hexcasting.api.casting.math.HexDir
 import at.petrak.hexcasting.api.casting.math.HexPattern
 import at.petrak.hexcasting.common.lib.HexRegistries
 import at.petrak.hexcasting.common.lib.hex.HexActions
+import cn.xm1221.MieHexRevolution.casting.actions.imports.OpImportsBind
+import cn.xm1221.MieHexRevolution.casting.actions.imports.OpImportsBindDirect
+import cn.xm1221.MieHexRevolution.casting.actions.imports.OpImportsCreate
 import cn.xm1221.MieHexRevolution.casting.actions.spells.OpEntityInteract
 import cn.xm1221.MieHexRevolution.casting.actions.spells.psy.OpEntityMoveStep
 import cn.xm1221.MieHexRevolution.casting.actions.spells.psy.OpEntityMoveTo
@@ -65,6 +68,12 @@ object Miehex_revolutionActions : Miehex_revolutionRegistrar<ActionRegistryEntry
     val CIRCLE_USED = make("circle/used",HexDir.SOUTH_EAST,"qdeqqaqqedq", OpCircleLengthUsed())
 
     val CHANGE_ENV = make("changeenv",HexDir.EAST,"edwaq", OpFaker())
+
+    // 导入（imports）系统：图案笔顺留空，待补充（TODO 笔顺）
+    val IMPORTS_CREATE = make("imports/create", HexDir.WEST, "", OpImportsCreate())
+    val IMPORTS_BIND = make("imports/bind", HexDir.NORTH_EAST, "", OpImportsBind())
+    val IMPORTS_BIND_DIRECT = make("imports/bind_direct", HexDir.SOUTH_EAST, "", OpImportsBindDirect())
+
     private fun make(name: String, startDir: HexDir, signature: String, action: Action) =
         make(name, startDir, signature) { action }
 

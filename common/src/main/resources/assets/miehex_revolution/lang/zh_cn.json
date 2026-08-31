@@ -70,5 +70,9 @@
   "miehex_revolution.page.circle/used": "返回当前法术环媒质波经过的方块数量",
   "miehex_revolution.entry.changeenv": "冒名顶替",
   "miehex_revolution.entry.changeenv.text": "冒名顶替玩家施法时使用那个玩家的施法范围与施法手。潜行右键法杖即可解除。$(br2)———这是一个具有两面性的法术，我可以用它冒充别人，也可以用它来帮助别人施法。我用它暂时欺骗自然，甚至把自己犯下的罪推到那些低等心智身上，我也会用它帮助朋友，如果一位与我同等高贵的灵魂愿意将他的光芒暂分于我，准许我借他的眼，做他的手……$(br2)$(o)啊，信任如此，何以为报？",
-  "miehex_revolution.page.changeenv": "接受一个生物实体，冒用那实体的真名，此后在咒术网格绘制图案时，施法者视为那实体。若目标是玩家，则副手必须持有一件储存了对应玩家实体Iota的物品，以证明那玩家的许可。"
+  "miehex_revolution.page.changeenv": "接受一个生物实体，冒用那实体的真名，此后在咒术网格绘制图案时，施法者视为那实体。若目标是玩家，则副手必须持有一件储存了对应玩家实体Iota的物品，以证明那玩家的许可。",
+  "hexcasting.action.miehex_revolution:imports/create": "定义导入",
+  "hexcasting.action.miehex_revolution:imports/bind": "绑定导入",
+  "hexcasting.action.miehex_revolution:imports/bind_direct": "直写绑定导入",
+  "hexcasting.mishap.invalid_value.class.imports_iota": "导入集"
 }

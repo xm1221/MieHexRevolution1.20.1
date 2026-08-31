@@ -70,5 +70,9 @@
   "miehex_revolution.page.circle/used": "Returns the number of blocks reached by the current spell circle's media wave.",
   "miehex_revolution.entry.changeenv": "Usurpation",
   "miehex_revolution.entry.changeenv.text": "This is a two-faced spell: I may use it to impersonate another, or to aid another in casting. I use it to deceive Nature for a while, even to pin my own crimes upon those lesser minds; and I use it to help my friends — if a soul as noble as my own would lend me a sliver of its radiance, permitting me to borrow its eyes and be its hands... ah, trust such as this, how could I ever repay it?",
-  "miehex_revolution.page.changeenv": "Accepts a living entity and usurps its True Name: henceforth, while drawing patterns on the casting grid, the caster is considered to be that entity. If the target is a player, the offhand must hold an item storing that player's entity iota to prove their permission. While casting, the target player's ambit and casting hand are used. Shift-right-click a staff to relinquish."
+  "miehex_revolution.page.changeenv": "Accepts a living entity and usurps its True Name: henceforth, while drawing patterns on the casting grid, the caster is considered to be that entity. If the target is a player, the offhand must hold an item storing that player's entity iota to prove their permission. While casting, the target player's ambit and casting hand are used. Shift-right-click a staff to relinquish.",
+  "hexcasting.action.miehex_revolution:imports/create": "Define Imports",
+  "hexcasting.action.miehex_revolution:imports/bind": "Bind Import",
+  "hexcasting.action.miehex_revolution:imports/bind_direct": "Bind Import Directly",
+  "hexcasting.mishap.invalid_value.class.imports_iota": "Imports"
 }
