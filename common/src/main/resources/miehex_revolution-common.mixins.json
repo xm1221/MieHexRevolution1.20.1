@@ -9,10 +9,11 @@
   ],
   "mixins": [
     "MixinDatagenMain",
-    "ServerPlayerMixin",
-    "MixinStaffCastEnv",
     "MixinItemStaff",
-    "MixinPlayerSyncedData"
+    "MixinPlayerSyncedData",
+    "MixinStaffCastEnv",
+    "PatternIotaMixin",
+    "ServerPlayerMixin"
   ],
   "plugin": "cn.xm1221.MieHexRevolution.mixin.Miehex_revolutionMixinConfigPlugin",
   "injectors": {
