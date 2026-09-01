@@ -1,0 +1,74 @@
+{
+  "name": "miehex_revolution.entry.imports",
+  "category": "hexcasting:patterns",
+  "icon": "minecraft:written_book",
+  "sortnum": 5,
+  "advancement": "hexcasting:root",
+  "read_by_default": false,
+  "pages": [
+    "miehex_revolution.page.import.0",
+    "miehex_revolution.page.import.1",
+    {
+      "type": "hexcasting:pattern",
+      "op_id": "miehex_revolution:imports/create",
+      "anchor": "miehex_revolution:imports/create",
+      "input": "",
+      "output": "imports",
+      "text": "miehex_revolution.page.imports/create"
+    },
+    {
+      "type": "hexcasting:pattern",
+      "op_id": "miehex_revolution:imports/bind",
+      "anchor": "miehex_revolution:imports/bind",
+      "input": "imports,pattern,any",
+      "output": "imports",
+      "text": "miehex_revolution.page.imports/bind"
+    },
+    {
+      "type": "hexcasting:pattern",
+      "op_id": "miehex_revolution:imports/bind_direct",
+      "anchor": "miehex_revolution:imports/bind_direct",
+      "input": "imports,pattern",
+      "output": "",
+      "text": "miehex_revolution.page.imports/bind_direct"
+    },
+    {
+      "type": "hexcasting:pattern",
+      "op_id": "miehex_revolution:raw/pattern",
+      "anchor": "miehex_revolution:raw/pattern",
+      "text": "miehex_revolution.page.raw/pattern"
+    },
+    {
+      "type": "hexcasting:pattern",
+      "op_id": "miehex_revolution:imports/get",
+      "anchor": "miehex_revolution:imports/get",
+      "input": "",
+      "output": "imports",
+      "text": "miehex_revolution.page.imports/get"
+    },
+    {
+      "type": "hexcasting:pattern",
+      "op_id": "miehex_revolution:imports/to_list",
+      "anchor": "miehex_revolution:imports/to_list",
+      "input": "imports",
+      "output": "[ [pattern,any],... ]",
+      "text": "miehex_revolution.page.imports/to_list"
+    },
+    {
+      "type": "hexcasting:pattern",
+      "op_id": "miehex_revolution:imports/from_list",
+      "anchor": "miehex_revolution:imports/from_list",
+      "input": "[ [pattern,any],... ]",
+      "output": "imports",
+      "text": "miehex_revolution.page.imports/from_list"
+    },
+    {
+      "type": "hexcasting:pattern",
+      "op_id": "miehex_revolution:imports/merge",
+      "anchor": "miehex_revolution:imports/merge",
+      "input": "imports,imports",
+      "output": "imports",
+      "text": "miehex_revolution.page.imports/merge"
+    }
+  ]
+}

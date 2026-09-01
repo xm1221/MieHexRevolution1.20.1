@@ -1,6 +1,6 @@
 {
   "name": "hex_monitor.entry.monitor",
-  "category": "hexcasting:patterns",
+  "category": "hexcasting:patterns/spells",
   "icon": "minecraft:ender_eye",
   "sortnum": 5,
   "advancement": "hexcasting:root",
