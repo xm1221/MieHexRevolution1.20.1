@@ -18,6 +18,6 @@ class OpCircleLength: ConstMediaAction {
         if(env !is CircleCastEnv){
             throw MishapNoSpellCircle()
         }
-        return  env.circleState().knownPositions.size.asActionResult
+        return  env.circleState().reachedSlate.asActionResult
     }
 }

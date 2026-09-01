@@ -75,7 +75,6 @@ object Miehex_revolutionActions : Miehex_revolutionRegistrar<ActionRegistryEntry
 
     val CHANGE_ENV = make("changeenv",HexDir.EAST,"edwaq", OpFaker())
 
-    // 导入（imports）系统：图案笔顺留空，待补充（TODO 笔顺）
     val IMPORTS_CREATE = make("imports/create", HexDir.WEST, "qqaedwaqdee", OpImportsCreate())
     val IMPORTS_BIND = make("imports/bind", HexDir.NORTH_EAST, "aqdeeqqaed", OpImportsBind())
     val IMPORTS_BIND_DIRECT = make("imports/bind_direct", HexDir.SOUTH_EAST, "aqdeeqawqqeqqwqqeq", OpImportsBindDirect())
@@ -83,8 +82,8 @@ object Miehex_revolutionActions : Miehex_revolutionRegistrar<ActionRegistryEntry
     val IMPORTS_GET = make("imports/get",HexDir.NORTH_EAST,"daddwaqq", OpImportGet())
     val IMPORTS_MERGE = make("imports/merge", HexDir.NORTH_WEST, "aqawwaawwaqa", OpImportsMerge()) 
     val IMPORTS_FROM_A = make("imports/from_a",HexDir.EAST,"eeeweeeeedewqaq", OpImportsFromAkashic())
-    val IMPORTS_TO_LIST = make("imports/to_list", HexDir.NORTH_EAST, "", OpImportsToList()) // TODO 笔顺
-    val IMPORTS_FROM_LIST = make("imports/from_list", HexDir.SOUTH_WEST, "", OpImportsFromList()) // TODO 笔顺
+    val IMPORTS_TO_LIST = make("imports/to_list", HexDir.WEST, "qqqqwde", OpImportsToList())
+    val IMPORTS_FROM_LIST = make("imports/from_list", HexDir.EAST, "eeeewaq", OpImportsFromList())
     private fun make(name: String, startDir: HexDir, signature: String, action: Action) =
         make(name, startDir, signature) { action }
 
