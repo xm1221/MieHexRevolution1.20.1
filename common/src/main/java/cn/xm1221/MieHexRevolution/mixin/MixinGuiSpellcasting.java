@@ -32,7 +32,9 @@ public abstract class MixinGuiSpellcasting {
     private static final int IMPORT_COLOR = 0xEE62EE;
     private static final int IMPORT_FADE = 0xFFA7E0;
 
-    @Shadow
+    // GuiSpellcasting is a mod class: never remapped, so keep the literal field name
+    // (remap = false also silences the "unable to locate obfuscation mapping" warning).
+    @Shadow(remap = false)
     private List<ResolvedPattern> patterns;
 
     @WrapOperation(

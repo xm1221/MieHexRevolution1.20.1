@@ -43,7 +43,13 @@ fun PatternIota.executeWithImports(vm: CastingVM?, world: ServerLevel?, continua
         syncImportKeys(vm, emptyList())
         return null
     }
-    if (userdata.contains("run_raw") && userdata.getBoolean("run_raw")) return null
+    if (userdata.contains("run_raw") && userdata.getBoolean("run_raw")) {
+        // Raw mode: imports are bypassed and patterns run their native action, so there is
+        // nothing to mark -- clear the client's import-key set (per-stroke sync picks this
+        // up immediately, and the keys come back once raw is toggled off).
+        syncImportKeys(vm, emptyList())
+        return null
+    }
     val deserialized = IotaType.deserialize(userdata.getCompound("imports"), world)
     if (deserialized !is ImportsIota) return null
     syncImportKeys(vm, deserialized.imports.keys.map { importKeyString(it) })
