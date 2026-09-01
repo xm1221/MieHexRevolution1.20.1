@@ -75,5 +75,11 @@
   "hexcasting.action.miehex_revolution:imports/bind": "Bind Import",
   "hexcasting.action.miehex_revolution:imports/bind_direct": "Bind Import Directly",
   "hexcasting.action.miehex_revolution:imports/merge": "Merge Imports",
+  "hexcasting.action.miehex_revolution:raw/pattern": "Raw Execution",
+  "hexcasting.action.miehex_revolution:imports/get": "Get Imports",
+  "hexcasting.action.miehex_revolution:imports/from_a": "Import from Akashic",
+  "hexcasting.action.miehex_revolution:imports/to_list": "Imports to List",
+  "hexcasting.action.miehex_revolution:imports/from_list": "List to Imports",
+  "hexcasting.mishap.invalid_value.imports_pair": "an import pair",
   "hexcasting.mishap.invalid_value.class.imports_iota": "Imports"
 }

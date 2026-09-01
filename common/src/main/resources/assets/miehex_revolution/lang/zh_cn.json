@@ -75,5 +75,11 @@
   "hexcasting.action.miehex_revolution:imports/bind": "绑定导入",
   "hexcasting.action.miehex_revolution:imports/bind_direct": "直写绑定导入",
   "hexcasting.action.miehex_revolution:imports/merge": "合并导入",
+  "hexcasting.action.miehex_revolution:raw/pattern": "原始执行",
+  "hexcasting.action.miehex_revolution:imports/get": "取导入集",
+  "hexcasting.action.miehex_revolution:imports/from_a": "贤者导入",
+  "hexcasting.action.miehex_revolution:imports/to_list": "导入转列表",
+  "hexcasting.action.miehex_revolution:imports/from_list": "列表转导入",
+  "hexcasting.mishap.invalid_value.imports_pair": "导入键值对",
   "hexcasting.mishap.invalid_value.class.imports_iota": "导入集"
 }

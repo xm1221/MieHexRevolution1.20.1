@@ -16,6 +16,7 @@ import net.minecraft.nbt.CompoundTag
 import net.minecraft.nbt.ListTag
 import net.minecraft.nbt.Tag
 import net.minecraft.network.chat.Component
+import net.minecraft.network.chat.HoverEvent
 import net.minecraft.network.chat.Style
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.server.level.ServerLevel
@@ -105,9 +106,30 @@ import net.minecraft.server.level.ServerLevel
         }
 
         override fun display(tag: Tag?): Component? {
-            return Component.literal("IMPORTS")
-                .withStyle(Style.EMPTY.withFont(ResourceLocation.tryParse("minecraft:illageralt")))
-                .withStyle(ChatFormatting.LIGHT_PURPLE)
+            return try {
+                // Main text carries the entry count so two import sets can be told apart at a glance,
+                // while hovering shows up to MAX_DISPLAY_ENTRIES key/value pairs.
+                val body = Component.literal("")
+                val entries = (tag as? CompoundTag)?.getList("entries", Tag.TAG_COMPOUND.toInt()) ?: ListTag()
+                val count = entries.size
+                val shown = minOf(count, MAX_DISPLAY_ENTRIES)
+                for (i in 0 until shown) {
+                    if (i > 0) body.append("\n")
+                    val entry = entries.getCompound(i)
+                    body.append(IotaType.getDisplay(entry.getCompound("pattern")))
+                    body.append("  →  ")
+                    body.append(IotaType.getDisplay(entry.getCompound("value")))
+                }
+                if (count > shown) body.append("\n…(+${count - shown})")
+                val style = Style.EMPTY
+                    .withFont(ResourceLocation.tryParse("minecraft:illageralt"))
+                    .withColor(ChatFormatting.LIGHT_PURPLE)
+                    .withHoverEvent(HoverEvent(HoverEvent.Action.SHOW_TEXT, body))
+                Component.literal(if (count > 0) "IMPORTS×$count" else "IMPORTS").withStyle(style)
+            } catch (e: Exception) {
+                // Never let a display issue crash the GUI; fall back to the plain label.
+                Component.literal("IMPORTS").withStyle(ChatFormatting.LIGHT_PURPLE)
+            }
         }
 
         override fun color(): Int = 15631086
@@ -122,5 +144,8 @@ import net.minecraft.server.level.ServerLevel
          * serialization budget the rest of the ecosystem uses.
          */
         const val MAX_IMPORTS = 1024
+
+        /** How many key/value pairs are shown in the hover tooltip before truncating. */
+        const val MAX_DISPLAY_ENTRIES = 8
     }
 }
