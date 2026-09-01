@@ -25,7 +25,6 @@ import cn.xm1221.MieHexRevolution.casting.actions.spells.OpUseBlock
 import cn.xm1221.MieHexRevolution.casting.actions.spells.OpUseItemOn
 import cn.xm1221.MieHexRevolution.casting.actions.spells.OpUseWithItemEntity
 import cn.xm1221.MieHexRevolution.casting.actions.spells.OpWorldLoader
-import cn.xm1221.MieHexRevolution.casting.actions.spells.circle.OpCircleLength
 import cn.xm1221.MieHexRevolution.casting.actions.spells.circle.OpCircleLengthUsed
 import cn.xm1221.MieHexRevolution.casting.actions.spells.idea.OpIdeaBlockSet
 import cn.xm1221.MieHexRevolution.casting.actions.spells.idea.OpIdeaShardWrite
@@ -70,7 +69,6 @@ object Miehex_revolutionActions : Miehex_revolutionRegistrar<ActionRegistryEntry
 
     val IDEA_WRITE = make("idea_shard/write", HexDir.EAST,"waqqqq", OpIdeaShardWrite())
 
-    val CIRCLE_LENGTH = make("circle/length",HexDir.SOUTH_WEST,"eaqdqaqdqae",OpCircleLength())
     val CIRCLE_USED = make("circle/used",HexDir.SOUTH_EAST,"qdeqqaqqedq", OpCircleLengthUsed())
 
     val CHANGE_ENV = make("changeenv",HexDir.EAST,"edwaq", OpFaker())
