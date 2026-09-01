@@ -30,9 +30,13 @@ import net.minecraft.server.level.ServerLevel
  * Keys are [HexPattern] (a data class with structural equality) rather than [PatternIota], because iotas
  * use reference equality and would never match after an NBT round-trip.
  */
-class ImportsIota(val imports: Map<HexPattern, Iota>) : Iota(Type, imports) {
+ class ImportsIota(val imports: Map<HexPattern, Iota>) : Iota(Type, imports) {
 
     override fun isTruthy(): Boolean = true
+
+    override  fun executable(): Boolean {
+        return true
+    }
 
     override fun toleratesOther(that: Iota?): Boolean =
         that is ImportsIota && this.imports == that.imports
@@ -101,12 +105,14 @@ class ImportsIota(val imports: Map<HexPattern, Iota>) : Iota(Type, imports) {
         }
 
         override fun display(tag: Tag?): Component? {
-            return Component.literal("[IMPORTS]")
+            return Component.literal("IMPORTS")
                 .withStyle(Style.EMPTY.withFont(ResourceLocation.tryParse("minecraft:illageralt")))
                 .withStyle(ChatFormatting.LIGHT_PURPLE)
         }
 
         override fun color(): Int = 15631086
+
+
     }
 
     companion object {

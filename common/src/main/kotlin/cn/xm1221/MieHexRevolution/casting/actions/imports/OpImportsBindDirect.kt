@@ -49,7 +49,7 @@ class OpImportsBindDirect : Action {
         userdata.putCompound("imports", IotaType.serialize(ImportsIota(merged)))
 
         return OperationResult(
-            newImage = image.copy(userData = userdata),
+            newImage = image.copy(userData = userdata, stack = stack),
             sideEffects = listOf(),
             newContinuation = continuation,
             sound = HexEvalSounds.NORMAL_EXECUTE,

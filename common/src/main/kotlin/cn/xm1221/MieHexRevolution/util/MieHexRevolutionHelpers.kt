@@ -12,11 +12,15 @@ import at.petrak.hexcasting.api.casting.eval.vm.SpellContinuation
 import at.petrak.hexcasting.api.casting.iota.IotaType
 import at.petrak.hexcasting.api.casting.iota.ListIota
 import at.petrak.hexcasting.api.casting.iota.PatternIota
+import at.petrak.hexcasting.api.casting.math.HexPattern
 import at.petrak.hexcasting.api.casting.mishaps.Mishap
 import at.petrak.hexcasting.api.casting.mishaps.MishapEvalTooMuch
 import at.petrak.hexcasting.common.lib.hex.HexEvalSounds
 import cn.xm1221.MieHexRevolution.api.casting.iota.ImportsIota
+import cn.xm1221.MieHexRevolution.networking.Miehex_revolutionNetworking
+import cn.xm1221.MieHexRevolution.networking.msg.MsgSyncImportKeysS2C
 import net.minecraft.server.level.ServerLevel
+import net.minecraft.server.level.ServerPlayer
 
 /**
  * If the current cast has an [ImportsIota] bound in its user data and [this] pattern is one of its
@@ -35,9 +39,14 @@ fun PatternIota.executeWithImports(vm: CastingVM?, world: ServerLevel?, continua
     val userdata = img.userData
     // Fast path: this cast never defined any imports. `CompoundTag.getCompound` returns an empty tag
     // (not null) for a missing key, so we must check containment before deserializing.
-    if (!userdata.contains("imports")) return null
+    if (!userdata.contains("imports")) {
+        syncImportKeys(vm, emptyList())
+        return null
+    }
+    if (userdata.contains("run_raw") && userdata.getBoolean("run_raw")) return null
     val deserialized = IotaType.deserialize(userdata.getCompound("imports"), world)
     if (deserialized !is ImportsIota) return null
+    syncImportKeys(vm, deserialized.imports.keys.map { importKeyString(it) })
     val funs = deserialized.imports[this.pattern] ?: return null
 
     val frameEvaluate: ContinuationFrame
@@ -48,11 +57,13 @@ fun PatternIota.executeWithImports(vm: CastingVM?, world: ServerLevel?, continua
             frameEvaluate = FrameEvaluate(funs.list, true)
             newimg = img
         }
+
         !funs.executable() -> {
             // plain datum: push it onto the stack (empty sub-eval keeps the resolution shape)
             frameEvaluate = FrameEvaluate(ListIota(listOf()).list, true)
             newimg = img.copy(stack = img.stack.plus(funs))
         }
+
         else -> {
             // single executable iota (e.g. another pattern): evaluate it
             frameEvaluate = FrameEvaluate(ListIota(listOf(funs)).list, true)
@@ -87,4 +98,17 @@ fun PatternIota.executeWithImports(vm: CastingVM?, world: ServerLevel?, continua
         resolutionType = ResolvedPatternType.EVALUATED,
         sound = HexEvalSounds.NORMAL_EXECUTE
     )
+}
+
+/**
+ * Stable string key for one import binding key (start dir + angle signature), used both for
+ * the S2C sync and, with the same encoding, by `MixinGuiSpellcasting` on the client.
+ */
+fun importKeyString(pattern: HexPattern): String =
+    "${pattern.startDir.ordinal}:${pattern.anglesSignature()}"
+
+/** Tell the casting player which import keys are currently active (empty = none). */
+private fun syncImportKeys(vm: CastingVM, keys: List<String>) {
+    val player = vm.env.castingEntity as? ServerPlayer ?: return
+    Miehex_revolutionNetworking.CHANNEL.sendToPlayer(player, MsgSyncImportKeysS2C(keys))
 }
