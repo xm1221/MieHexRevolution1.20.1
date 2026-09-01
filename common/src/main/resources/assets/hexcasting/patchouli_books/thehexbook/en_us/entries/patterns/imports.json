@@ -13,22 +13,22 @@
       "op_id": "miehex_revolution:imports/create",
       "anchor": "miehex_revolution:imports/create",
       "input": "",
-      "output": "imports",
+      "output": "sigils",
       "text": "miehex_revolution.page.imports/create"
     },
     {
       "type": "hexcasting:pattern",
       "op_id": "miehex_revolution:imports/bind",
       "anchor": "miehex_revolution:imports/bind",
-      "input": "imports,pattern,any",
-      "output": "imports",
+      "input": "sigils,pattern,any",
+      "output": "sigils",
       "text": "miehex_revolution.page.imports/bind"
     },
     {
       "type": "hexcasting:pattern",
       "op_id": "miehex_revolution:imports/bind_direct",
       "anchor": "miehex_revolution:imports/bind_direct",
-      "input": "imports,pattern",
+      "input": "pattern,any",
       "output": "",
       "text": "miehex_revolution.page.imports/bind_direct"
     },
@@ -43,14 +43,14 @@
       "op_id": "miehex_revolution:imports/get",
       "anchor": "miehex_revolution:imports/get",
       "input": "",
-      "output": "imports",
+      "output": "sigils",
       "text": "miehex_revolution.page.imports/get"
     },
     {
       "type": "hexcasting:pattern",
       "op_id": "miehex_revolution:imports/to_list",
       "anchor": "miehex_revolution:imports/to_list",
-      "input": "imports",
+      "input": "sigils",
       "output": "[ [pattern,any],... ]",
       "text": "miehex_revolution.page.imports/to_list"
     },
@@ -59,15 +59,15 @@
       "op_id": "miehex_revolution:imports/from_list",
       "anchor": "miehex_revolution:imports/from_list",
       "input": "[ [pattern,any],... ]",
-      "output": "imports",
+      "output": "sigils",
       "text": "miehex_revolution.page.imports/from_list"
     },
     {
       "type": "hexcasting:pattern",
       "op_id": "miehex_revolution:imports/merge",
       "anchor": "miehex_revolution:imports/merge",
-      "input": "imports,imports",
-      "output": "imports",
+      "input": "sigils,sigils",
+      "output": "sigils",
       "text": "miehex_revolution.page.imports/merge"
     }
   ]

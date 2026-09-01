@@ -1,7 +1,7 @@
 {
   "name": "miehex_revolution.entry.a_import",
   "category": "hexcasting:patterns",
-  "icon": "hexcating:spellbook",
+  "icon": "hexcasting:spellbook",
   "sortnum": 6,
   "advancement": "hexcasting:enlightenment",
   "read_by_default": false,
@@ -12,7 +12,7 @@
       "op_id": "miehex_revolution:imports/from_a",
       "anchor": "miehex_revolution:imports/from_a",
       "input": "vector",
-      "output": "imports",
+      "output": "sigils",
       "text": "miehex_revolution.page.imports/from_a"
     }
   ]
