@@ -70,9 +70,9 @@ object Miehex_revolutionActions : Miehex_revolutionRegistrar<ActionRegistryEntry
     val CHANGE_ENV = make("changeenv",HexDir.EAST,"edwaq", OpFaker())
 
     // 导入（imports）系统：图案笔顺留空，待补充（TODO 笔顺）
-    val IMPORTS_CREATE = make("imports/create", HexDir.WEST, "", OpImportsCreate())
-    val IMPORTS_BIND = make("imports/bind", HexDir.NORTH_EAST, "", OpImportsBind())
-    val IMPORTS_BIND_DIRECT = make("imports/bind_direct", HexDir.SOUTH_EAST, "", OpImportsBindDirect())
+    val IMPORTS_CREATE = make("imports/create", HexDir.WEST, "qqaedwaqdee", OpImportsCreate())
+    val IMPORTS_BIND = make("imports/bind", HexDir.NORTH_EAST, "aqdeeqqaed", OpImportsBind())
+    val IMPORTS_BIND_DIRECT = make("imports/bind_direct", HexDir.SOUTH_EAST, "aqdeeqawqqeqqwqqeq", OpImportsBindDirect())
 
     private fun make(name: String, startDir: HexDir, signature: String, action: Action) =
         make(name, startDir, signature) { action }

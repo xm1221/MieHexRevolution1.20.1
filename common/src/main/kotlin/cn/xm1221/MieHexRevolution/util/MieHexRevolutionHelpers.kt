@@ -55,7 +55,11 @@ fun PatternIota.executeWithImports(vm: CastingVM?, world: ServerLevel?, continua
     return CastResult(
         cast = this,
         continuation = newcont,
-        newData = newimg,
+        // Consume one op per fired import, exactly like a normal operation does. Hex Casting
+        // itself stops any cast once `opsConsumed` exceeds the env's op limit (MishapEvalTooMuch),
+        // so a bound function that (transitively) calls its own key fails cleanly instead of
+        // growing the continuation forever and exhausting the heap.
+        newData = newimg.withUsedOp(),
         sideEffects = listOf(),
         resolutionType = ResolvedPatternType.EVALUATED,
         sound = HexEvalSounds.NORMAL_EXECUTE
