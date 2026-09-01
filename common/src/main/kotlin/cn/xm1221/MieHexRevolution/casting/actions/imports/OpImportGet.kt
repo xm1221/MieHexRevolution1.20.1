@@ -19,8 +19,8 @@ class OpImportGet: Action {
         val userdata = image.userData
         val stack = image.stack.toMutableList()
         var importsIota = ImportsIota(mapOf())
-        val tag = userdata.getCompound("imports")
-        if(tag != null) {
+        if(userdata.contains("imports")) {
+            val tag = userdata.getCompound("imports")
             val iota = IotaType.deserialize(tag,env.world)
             if(iota is ImportsIota) importsIota = iota
         }
