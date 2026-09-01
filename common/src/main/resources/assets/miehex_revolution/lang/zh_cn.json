@@ -93,6 +93,7 @@
   "miehex_revolution.page.imports/merge": "合并两个刻印集，后者会覆盖前者",
   "miehex_revolution.entry.a_import": "阿卡夏与刻印集",
   "miehex_revolution.page.a_import": "我发现阿卡夏图书馆正是以图案为索引储存Iota的卓伟之作，这和刻印集Iota的结构极为相似，不知道是先有了这种Iota，还是先有了阿卡夏图书馆。",
-  "miehex_revolution.page.imports/from_a": "接受一个阿卡夏记录的坐标，以刻印集的形式返回其所储存的所有图案到特定Iota的对应关系。无需施法范围。"
+  "miehex_revolution.page.imports/from_a": "接受一个阿卡夏记录的坐标，以刻印集的形式返回其所储存的所有图案到特定Iota的对应关系。无需施法范围。",
+  "hexdoc.miehex_revolution.title": "咩之咒法：变革"
 
 }

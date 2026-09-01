@@ -93,7 +93,8 @@
   "miehex_revolution.page.imports/merge": "Merges two sigil sets; the latter overrides the former.",
   "miehex_revolution.entry.a_import": "The Akashic and the Sigils",
   "miehex_revolution.page.a_import": "I have discovered that the Akashic Library is a Great Work that stores its iotas indexed by pattern — a structure remarkably like that of the Sigil Iota. I wonder which came first: this iota, or the library.",
-  "miehex_revolution.page.imports/from_a": "Accepts the coordinates of an Akashic Record, and returns all of its stored pattern-to-iota correspondences in the form of a sigil set. No casting range is required."
+  "miehex_revolution.page.imports/from_a": "Accepts the coordinates of an Akashic Record, and returns all of its stored pattern-to-iota correspondences in the form of a sigil set. No casting range is required.",
+  "hexdoc.miehex_revolution.title": "Mie's Hexcraft: Revolution"
 
 
 }
