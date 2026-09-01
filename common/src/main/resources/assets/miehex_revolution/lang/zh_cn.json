@@ -74,5 +74,6 @@
   "hexcasting.action.miehex_revolution:imports/create": "定义导入",
   "hexcasting.action.miehex_revolution:imports/bind": "绑定导入",
   "hexcasting.action.miehex_revolution:imports/bind_direct": "直写绑定导入",
+  "hexcasting.action.miehex_revolution:imports/merge": "合并导入",
   "hexcasting.mishap.invalid_value.class.imports_iota": "导入集"
 }

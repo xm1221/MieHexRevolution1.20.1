@@ -10,6 +10,8 @@ import cn.xm1221.MieHexRevolution.casting.actions.imports.OpImportGet
 import cn.xm1221.MieHexRevolution.casting.actions.imports.OpImportsBind
 import cn.xm1221.MieHexRevolution.casting.actions.imports.OpImportsBindDirect
 import cn.xm1221.MieHexRevolution.casting.actions.imports.OpImportsCreate
+import cn.xm1221.MieHexRevolution.casting.actions.imports.OpImportsFromAkashic
+import cn.xm1221.MieHexRevolution.casting.actions.imports.OpImportsMerge
 import cn.xm1221.MieHexRevolution.casting.actions.imports.OpRawPattern
 import cn.xm1221.MieHexRevolution.casting.actions.spells.OpEntityInteract
 import cn.xm1221.MieHexRevolution.casting.actions.spells.psy.OpEntityMoveStep
@@ -77,6 +79,8 @@ object Miehex_revolutionActions : Miehex_revolutionRegistrar<ActionRegistryEntry
     val IMPORTS_BIND_DIRECT = make("imports/bind_direct", HexDir.SOUTH_EAST, "aqdeeqawqqeqqwqqeq", OpImportsBindDirect())
     val RAW_PATTERN = make("raw/pattern", HexDir.WEST, "wqqqwaqe", OpRawPattern())
     val IMPORTS_GET = make("imports/get",HexDir.NORTH_EAST,"daddwaqq", OpImportGet())
+    val IMPORTS_MERGE = make("imports/merge", HexDir.NORTH_WEST, "", OpImportsMerge()) // TODO 笔顺
+    val IMPORTS_FROM_A = make("imports/from_a",HexDir.EAST,"eeeweeeeedewqaq", OpImportsFromAkashic())
     private fun make(name: String, startDir: HexDir, signature: String, action: Action) =
         make(name, startDir, signature) { action }
 

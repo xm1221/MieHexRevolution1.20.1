@@ -74,5 +74,6 @@
   "hexcasting.action.miehex_revolution:imports/create": "Define Imports",
   "hexcasting.action.miehex_revolution:imports/bind": "Bind Import",
   "hexcasting.action.miehex_revolution:imports/bind_direct": "Bind Import Directly",
+  "hexcasting.action.miehex_revolution:imports/merge": "Merge Imports",
   "hexcasting.mishap.invalid_value.class.imports_iota": "Imports"
 }
