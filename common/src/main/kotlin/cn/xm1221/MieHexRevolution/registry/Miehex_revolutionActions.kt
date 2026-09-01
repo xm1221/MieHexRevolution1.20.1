@@ -6,6 +6,7 @@ import at.petrak.hexcasting.api.casting.math.HexDir
 import at.petrak.hexcasting.api.casting.math.HexPattern
 import at.petrak.hexcasting.common.lib.HexRegistries
 import at.petrak.hexcasting.common.lib.hex.HexActions
+import cn.xm1221.MieHexRevolution.casting.actions.imports.OpImportGet
 import cn.xm1221.MieHexRevolution.casting.actions.imports.OpImportsBind
 import cn.xm1221.MieHexRevolution.casting.actions.imports.OpImportsBindDirect
 import cn.xm1221.MieHexRevolution.casting.actions.imports.OpImportsCreate
@@ -75,6 +76,7 @@ object Miehex_revolutionActions : Miehex_revolutionRegistrar<ActionRegistryEntry
     val IMPORTS_BIND = make("imports/bind", HexDir.NORTH_EAST, "aqdeeqqaed", OpImportsBind())
     val IMPORTS_BIND_DIRECT = make("imports/bind_direct", HexDir.SOUTH_EAST, "aqdeeqawqqeqqwqqeq", OpImportsBindDirect())
     val RAW_PATTERN = make("raw/pattern", HexDir.WEST, "wqqqwaqe", OpRawPattern())
+    val IMPORTS_GET = make("imports/get",HexDir.NORTH_EAST,"daddwaqq", OpImportGet())
     private fun make(name: String, startDir: HexDir, signature: String, action: Action) =
         make(name, startDir, signature) { action }
 

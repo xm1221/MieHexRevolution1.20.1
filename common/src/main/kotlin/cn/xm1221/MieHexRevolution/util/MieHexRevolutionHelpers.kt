@@ -9,16 +9,22 @@ import at.petrak.hexcasting.api.casting.eval.vm.ContinuationFrame
 import at.petrak.hexcasting.api.casting.eval.vm.FrameEvaluate
 import at.petrak.hexcasting.api.casting.eval.vm.FrameFinishEval
 import at.petrak.hexcasting.api.casting.eval.vm.SpellContinuation
+import at.petrak.hexcasting.api.casting.iota.Iota
 import at.petrak.hexcasting.api.casting.iota.IotaType
 import at.petrak.hexcasting.api.casting.iota.ListIota
 import at.petrak.hexcasting.api.casting.iota.PatternIota
 import at.petrak.hexcasting.api.casting.math.HexPattern
 import at.petrak.hexcasting.api.casting.mishaps.Mishap
 import at.petrak.hexcasting.api.casting.mishaps.MishapEvalTooMuch
+import at.petrak.hexcasting.common.blocks.akashic.AkashicFloodfiller
+import at.petrak.hexcasting.common.blocks.akashic.BlockAkashicRecord
+import at.petrak.hexcasting.common.blocks.akashic.BlockEntityAkashicBookshelf
 import at.petrak.hexcasting.common.lib.hex.HexEvalSounds
 import cn.xm1221.MieHexRevolution.api.casting.iota.ImportsIota
 import cn.xm1221.MieHexRevolution.networking.Miehex_revolutionNetworking
 import cn.xm1221.MieHexRevolution.networking.msg.MsgSyncImportKeysS2C
+import net.minecraft.core.BlockPos
+import net.minecraft.core.Direction
 import net.minecraft.server.level.ServerLevel
 import net.minecraft.server.level.ServerPlayer
 
@@ -117,4 +123,48 @@ fun importKeyString(pattern: HexPattern): String =
 private fun syncImportKeys(vm: CastingVM, keys: List<String>) {
     val player = vm.env.castingEntity as? ServerPlayer ?: return
     Miehex_revolutionNetworking.CHANNEL.sendToPlayer(player, MsgSyncImportKeysS2C(keys))
+}
+
+/** Flood-fill search radius used by BlockAkashicRecord itself (mirrors its calls to AkashicFloodfiller). */
+private const val AKASHIC_SEARCH_RANGE = 128
+
+/**
+ * All patterns currently stored in this Akashic Record's connected bookshelves.
+ * Requires [pos] to be the record's own block position; walks the flood-fill region
+ * (blocks implementing [AkashicFloodfiller]) and collects every occupied shelf.
+ */
+fun BlockAkashicRecord.getAllpatterns(world: ServerLevel, pos: BlockPos): List<PatternIota> =
+    getMaps(world, pos).keys.map { PatternIota(it) }
+
+/**
+ * Every pattern -> iota mapping stored in this Akashic Record's connected bookshelves,
+ * as a plain [Map] ready to be handed to e.g. [ImportsIota]. Empty shelves are skipped;
+ * the search radius matches the record block's own flood-fill (128 blocks).
+ */
+fun BlockAkashicRecord.getMaps(world: ServerLevel, pos: BlockPos): Map<HexPattern, Iota> {
+    val result = HashMap<HexPattern, Iota>()
+    val seen = HashSet<BlockPos>()
+    val todo = ArrayDeque<BlockPos>()
+    todo.add(pos)
+    seen.add(pos)
+    while (todo.isNotEmpty()) {
+        val here = todo.removeFirst()
+        for (dir in Direction.values()) {
+            val neighbor = here.relative(dir)
+            if (neighbor.distSqr(pos) > (AKASHIC_SEARCH_RANGE * AKASHIC_SEARCH_RANGE).toDouble()) continue
+            if (!seen.add(neighbor)) continue
+            val tile = world.getBlockEntity(neighbor)
+            if (tile is BlockEntityAkashicBookshelf) {
+                val pattern = tile.pattern
+                val tag = tile.iotaTag
+                if (pattern != null && tag != null) {
+                    result[pattern] = IotaType.deserialize(tag, world)
+                }
+            }
+            if (world.getBlockState(neighbor).block is AkashicFloodfiller) {
+                todo.add(neighbor)
+            }
+        }
+    }
+    return result
 }
