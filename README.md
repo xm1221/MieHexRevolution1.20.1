@@ -66,3 +66,50 @@ Inscribe an iota and a pattern list into a Quenched Shard. Right-click to cast a
 灵魂投射支持 Hexal 咒灵的软联动（Hexal 未安装时不生效）。
 
 Soul Projection has soft compat with Hexal's wisps — enabled when Hexal is present.
+
+### Sigils：咒印导入语法 | Sigils: Imports Syntax
+
+安装 HexParse 时，ImportsIota 会在 HexParse 代码中以 `Sigils` 语法读写，可直接在 HexParse 编辑器中粘贴使用（未安装 HexParse 时此功能自动失效）。
+
+When HexParse is installed, ImportsIota is spelled as `Sigils` syntax inside HexParse code — paste it straight into the HexParse editor. Without HexParse this feature is simply disabled.
+
+**基本语法 | Basic syntax**
+
+`Sigils:图案→值、图案→值`（空集合写作 `Sigils:`）：
+
+```
+Sigils:_NE_aqaa→5、hexal:foo→true
+```
+
+- 前缀 `Sigils` + 半角或全角冒号 `:` `：`
+- 条目以 `、`（U+3001）分隔，每条在第一个 `→`（U+2192）处切开
+- 值可为任意 HexParse 能解析的单 token iota，也可嵌套 `Sigils:` 或列表
+
+**图案键 | Pattern keys**
+
+图案键按**带起始方向的笔顺签名**导出，例如 `_NE_aqaa`：`_` + 起始方向码（`NE`/`E`/`SE`/`SW`/`W`/`NW`）+ `_` + 角度签名。这保证往返（导出再导入）时精确还原当初绑定的图案，不受世界注册表或图案名歧义影响。
+
+Pattern keys are exported as stroke-order signatures **with the start direction**, e.g. `_NE_aqaa` — `_` + direction code (`NE`/`E`/`SE`/`SW`/`W`/`NW`) + `_` + angle signature. Round-trips reproduce the exact bound pattern, independent of world registries or name ambiguity.
+
+**列表值 | List values**
+
+值可为列表，使用全角花括号与全角逗号：
+
+```
+Sigils:pat→｛get_caster，entity_pos/eye，get_caster，get_entity_look，raycast｝
+```
+
+- 元素以 `，`（U+FF0C）分隔，支持空列表 `｛｝` 与嵌套
+- 不能使用半角 `[ ]`（HexParse 会把半角括号切成独立 token，破坏单 token 语法）
+
+List values use full-width braces and commas — empty `｛｝` and nesting are supported. Half-width `[ ]` cannot be used (HexParse splits them into separate tokens).
+
+**嵌套 | Nesting**
+
+值可以是另一个 `Sigils:`，递归展开，深度上限 16：
+
+```
+Sigils:a→Sigils:b→1
+```
+
+Values may nest another `Sigils:`, recursively (depth limit 16).

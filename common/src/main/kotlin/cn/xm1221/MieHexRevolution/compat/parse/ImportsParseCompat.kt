@@ -1,5 +1,6 @@
 package cn.xm1221.MieHexRevolution.compat.parse
 
+import at.petrak.hexcasting.api.casting.math.HexDir
 import at.petrak.hexcasting.api.casting.math.HexPattern
 import at.petrak.hexcasting.common.lib.hex.HexIotaTypes
 import cn.xm1221.MieHexRevolution.Miehex_revolution
@@ -19,27 +20,27 @@ import net.minecraft.server.level.ServerPlayer
 import java.lang.reflect.Method
 
 /**
- * HexParse (io.yukkuric.hexparse) integration that spells [ImportsIota] as "Sigils" inside
- * HexParse code, e.g. `Sigils:hexal:foo→5、minecraft:bar→true` (empty set is `Sigils:`).
+ * HexParse（io.yukkuric.hexparse）联动：把 [ImportsIota] 写成 "Sigils" 语法，
+ * 例如 `Sigils:hexal:foo→5、minecraft:bar→true`（空集合写 `Sigils:`）。
  *
- * HexParse is a *soft* dependency: this file compiles against it (`modApi` in common), but at
- * runtime every touch of hexparse classes happens inside [init] behind
- * `Platform.isModLoaded("hexparse")` + try/catch, so with hexparse absent nothing here is ever
- * loaded (no NoClassDefFoundError). The two parser singletons are only referenced from that
- * guarded branch.
+ * HexParse 是**软依赖**：本文件在编译期依赖它（common 里 modApi），但运行期所有对
+ * hexparse 类的触碰都发生在 [init] 内、且被 `Platform.isModLoaded("hexparse")` + try/catch
+ * 包住，所以没装 hexparse 时这里的一切都不会被加载（不会 NoClassDefFoundError）。
+ * 两个 parser 单例只在那个受保护的分支里被引用。
  *
- * Syntax (all separators are legal inside a single CodeCutter token, and can never appear in a
- * pattern name or any built-in single-token iota):
- * - prefix `Sigils` + boundary `:` or `：` (half/full-width, both accepted; the half-width colon
- *   never collides because pattern long names like `hexal:foo` keep their own `:` and we only
- *   strip the *leading* colon)
- * - entries separated by `、` (U+3001)
- * - each entry `pattern→value` split on the first `→` (U+2192)
- * - patterns support long names (`modid:path`, always registered by PatternMapper) and
- *   conflict-free short names; values are any single-token iota HexParse understands
+ * 语法（所有分隔符都在单个 CodeCutter token 内合法，且不会出现在任何图案名或
+ * 内置单 token iota 里）：
+ * - 前缀 `Sigils` + 边界 `:` 或 `：`（半角/全角都接受；半角冒号不会和
+ *   `hexal:foo` 这类图案长名冲突，因为我们只剥**开头**的冒号）
+ * - 条目用 `、`（U+3001）分隔
+ * - 每条 `图案→值`，在第一个 `→`（U+2192）处切开
+ * - 图案键：优先笔顺签名（见 [SigilsBackParser.strokeKey] 与
+ *   [SigilsForthParser.parsePatternToken]），也兼容 `modid:path` 长名 / 无冲突短名
+ * - 值：任意 HexParse 能解析的单 token iota；列表值写 `｛a，b，c｝`
+ *   （全角花括号 + 全角逗号，见 [SigilsForthParser.parseValueToken]）
  *
- * Nested Sigils as a value works recursively (e.g. `Sigils:a→Sigils:b→1`), bounded by
- * [MAX_NESTING] to keep adversarial input from overflowing the stack.
+ * 嵌套 Sigils 作为值可以递归（例如 `Sigils:a→Sigils:b→1`），由 [MAX_NESTING] 限深，
+ * 防止恶意输入打爆栈。
  */
 object ImportsParseCompat {
 
@@ -56,13 +57,34 @@ object ImportsParseCompat {
     private const val SEP_LIST_ITEM = '，'
     private const val MAX_NESTING = 16
 
-    /** Depth guard for recursive values (nested Sigils). */
+    /**
+     * 笔顺签名的方向码 → [HexDir]。
+     *
+     * 大写码特意避开小写 `[wedsaq]`：HexParse 自带的 TO_RAW_PATTERN 只认
+     * `^_[wedsaq]*$`（且固定 EAST 起始），我们的键形如 `_NE_aqaa`，中间有 `_`、
+     * 方向码是大写，绝不会被它抢先匹配。
+     */
+    private val HEX_DIR_BY_CODE = mapOf(
+        "NE" to HexDir.NORTH_EAST,
+        "E" to HexDir.EAST,
+        "SE" to HexDir.SOUTH_EAST,
+        "SW" to HexDir.SOUTH_WEST,
+        "W" to HexDir.WEST,
+        "NW" to HexDir.NORTH_WEST,
+    )
+
+    private val HEX_DIR_CODE_OF = HEX_DIR_BY_CODE.entries.associate { (code, dir) -> dir to code }
+
+    /** 我们自己的带起始方向笔顺签名：`_` + 方向码 + `_` + 角度签名。 */
+    private val RAW_PATTERN = Regex("^_(NE|E|SE|SW|W|NW)_([wedsaq]*)$")
+
+    /** 递归值（嵌套 Sigils / 列表）的深度守卫。 */
     private val depth = ThreadLocal.withInitial { 0 }
 
     /**
-     * Call from [Miehex_revolution.init]. Registers the two parsers only when hexparse is
-     * actually loaded; registration order vs ParserMain.init() does not matter because our
-     * match is exclusive (`Sigils`-prefixed tokens are never touched by any built-in parser).
+     * 从 [Miehex_revolution.init] 调用。仅在 hexparse 确实加载时注册两个 parser；
+     * 与 ParserMain.init() 的注册顺序无关——我们的 match 是排他的（`Sigils` 前缀
+     * 的 token 不会被任何内置 parser 碰）。
      */
     @JvmStatic
     fun init() {
@@ -70,20 +92,20 @@ object ImportsParseCompat {
         try {
             HexParseAPI.AddForthParser(SigilsForthParser)
             HexParseAPI.AddBackParser(SigilsBackParser)
-            Miehex_revolution.LOGGER.info("Registered Sigils (ImportsIota) hexparse parsers")
+            Miehex_revolution.LOGGER.info("已注册 Sigils（ImportsIota）的 hexparse 解析器")
         } catch (t: Throwable) {
-            Miehex_revolution.LOGGER.warn("hexparse present but Sigils parser registration failed", t)
+            Miehex_revolution.LOGGER.warn("hexparse 已加载但 Sigils 解析器注册失败", t)
         }
     }
 
-    /** String → NBT: `Sigils:pat→val、pat→val` becomes the serialized ImportsIota tag. */
+    /** 字符串 → NBT：`Sigils:图案→值、图案→值` 变成序列化后的 ImportsIota tag。 */
     object SigilsForthParser : IStr2Nbt {
         override fun match(node: String): Boolean =
             node == PREFIX || node.startsWith("$PREFIX:") || node.startsWith("$PREFIX：")
 
         override fun parse(node: String): CompoundTag {
             var body = node.removePrefix(PREFIX)
-            // strip the boundary colon (half- or full-width)
+            // 剥掉边界冒号（半角或全角）
             if (body.startsWith(":") || body.startsWith("：")) body = body.substring(1)
 
             val entries = ListTag()
@@ -91,29 +113,28 @@ object ImportsParseCompat {
                 val parts = body.split(SEP_ENTRY)
                 if (parts.size > ImportsIota.MAX_IMPORTS) {
                     throw IllegalArgumentException(
-                        "too many Sigils entries: ${parts.size} > ${ImportsIota.MAX_IMPORTS}"
+                        "Sigils 条目过多：${parts.size} > ${ImportsIota.MAX_IMPORTS}"
                     )
                 }
                 val nest = depth.get()
-                if (nest >= MAX_NESTING) throw IllegalArgumentException("Sigils nested too deeply")
+                if (nest >= MAX_NESTING) throw IllegalArgumentException("Sigils 嵌套过深")
                 depth.set(nest + 1)
                 try {
                     for (part in parts) {
                         val arrow = part.indexOf(SEP_KV)
                         if (arrow <= 0) {
                             throw IllegalArgumentException(
-                                "malformed Sigils entry, expected pattern→value: $part"
+                                "Sigils 条目格式错误，应为 图案→值：$part"
                             )
                         }
                         val patStr = part.substring(0, arrow)
                         val valStr = part.substring(arrow + 1)
                         if (patStr.isEmpty() || valStr.isEmpty()) {
-                            throw IllegalArgumentException("empty pattern/value in Sigils entry: $part")
+                            throw IllegalArgumentException("Sigils 条目中图案/值为空：$part")
                         }
-                        val patTag = ParserMain.ParseSingleNode(patStr)
-                            ?: throw IllegalArgumentException("unknown pattern: $patStr")
+                        val patTag = parsePatternToken(patStr)
                         if (patTag.getString(HexIotaTypes.KEY_TYPE) != IotaFactory.TYPE_PATTERN) {
-                            throw IllegalArgumentException("not a pattern: $patStr")
+                            throw IllegalArgumentException("不是图案：$patStr")
                         }
                         val valTag = parseValueToken(valStr)
                         val entry = CompoundTag()
@@ -132,19 +153,39 @@ object ImportsParseCompat {
         }
 
         /**
-         * Value side of one entry. A plain single token goes straight through
-         * [ParserMain.ParseSingleNode]; a `｛a，b，c｝` (full-width braces + full-width comma)
-         * block is a list value, recursively parsed into a ListIota. Full-width chars are inside
-         * CodeCutter's token class (`[\w./\-:#\u0100-\uffff]+`), so the whole `｛...｝` block stays
-         * one token and never collides with HexParse's own half-width `[ ]` nesting.
+         * 图案键 → PatternIota。
+         *
+         * 优先解析我们自己的带起始方向笔顺签名（`_NE_aqaa`，见 [RAW_PATTERN]）：
+         * 方向码 → [HexDir]，角度串原样交给 [IotaFactory.makePattern]（它就是 HexParse
+         * 官方从角度串构造 PatternIota 的入口，`start_dir` 与角度字节表完全按
+         * hexcasting 的 NBT 格式写），所以 round-trip 后起始方向分毫不差。
+         *
+         * 不匹配笔顺签名的，回退 [ParserMain.ParseSingleNode] 走 HexParse 原生的
+         * `modid:path` 长名 / 短名（以及兼容用户手写的裸 `_aqaa`，那是 TO_RAW_PATTERN
+         * 的领地，固定 EAST 起始，是 HexParse 自己的约定）。
+         */
+        private fun parsePatternToken(s: String): CompoundTag {
+            RAW_PATTERN.matchEntire(s)?.let { m ->
+                val dir = HEX_DIR_BY_CODE.getValue(m.groupValues[1])
+                return IotaFactory.makePattern(m.groupValues[2], dir)
+            }
+            return ParserMain.ParseSingleNode(s)
+                ?: throw IllegalArgumentException("未知图案：$s")
+        }
+
+        /**
+         * 单条目的值。普通单 token 直接走 [ParserMain.ParseSingleNode]；
+         * `｛a，b，c｝`（全角花括号 + 全角逗号）是列表值，递归解析成 ListIota。
+         * 全角字符都在 CodeCutter 的 token 字符类（`[\w./\-:#\u0100-\uffff]+`）里，
+         * 整个 `｛...｝` 保持为一个 token，不会和 HexParse 自己的半角 `[ ]` 嵌套冲突。
          */
         private fun parseValueToken(s: String): CompoundTag {
             if (s.startsWith(SEP_LIST_OPEN.toString())) {
                 if (!s.endsWith(SEP_LIST_CLOSE.toString())) {
-                    throw IllegalArgumentException("unclosed list value: $s")
+                    throw IllegalArgumentException("列表值缺少右花括号：$s")
                 }
                 val nest = depth.get()
-                if (nest >= MAX_NESTING) throw IllegalArgumentException("Sigils list nested too deeply")
+                if (nest >= MAX_NESTING) throw IllegalArgumentException("Sigils 列表嵌套过深")
                 depth.set(nest + 1)
                 try {
                     val inner = s.substring(1, s.length - 1)
@@ -160,10 +201,10 @@ object ImportsParseCompat {
                 }
             }
             return ParserMain.ParseSingleNode(s)
-                ?: throw IllegalArgumentException("unknown value: $s")
+                ?: throw IllegalArgumentException("未知值：$s")
         }
 
-        /** Split on depth-0 `，` so nested `｛...｝` blocks stay intact. */
+        /** 按深度 0 的 `，` 切分，让嵌套的 `｛...｝` 块保持完整。 */
         private fun splitListTopLevel(s: String): List<String> {
             val res = mutableListOf<String>()
             var d = 0
@@ -176,7 +217,7 @@ object ImportsParseCompat {
                     }
                     ch == SEP_LIST_CLOSE -> {
                         d--
-                        if (d < 0) throw IllegalArgumentException("unbalanced list value: $s")
+                        if (d < 0) throw IllegalArgumentException("列表值括号不配对：$s")
                         cur.append(ch)
                     }
                     ch == SEP_LIST_ITEM && d == 0 -> {
@@ -186,24 +227,24 @@ object ImportsParseCompat {
                     else -> cur.append(ch)
                 }
             }
-            if (d != 0) throw IllegalArgumentException("unbalanced list value: $s")
+            if (d != 0) throw IllegalArgumentException("列表值括号不配对：$s")
             res.add(cur.toString())
             return res
         }
     }
 
     /**
-     * NBT → String: serialized ImportsIota tag becomes `Sigils:pat→val、pat→val`.
+     * NBT → 字符串：序列化后的 ImportsIota tag 变成 `Sigils:图案→值、图案→值`。
      *
-     * The pattern KEY is always exported in its stroke-direction form (`_` + angles signature),
-     * never as a registered action name: a key round-trip must reproduce the exact [HexPattern]
-     * that was bound, and names are ambiguous / per-world, while the raw `_aqaa/...` token is
-     * parsed back by HexParse's own TO_RAW_PATTERN on import (see `SigilsForthParser.parse`).
+     * 图案**键**永远以笔顺签名导出（`_` + 起始方向码 + `_` + 角度签名，见
+     * [strokeKey]），绝不导出注册动作名：键的 round-trip 必须还原出当初绑定的那个
+     * 精确 [HexPattern]，而名字是按世界/注册表来的、有歧义；笔顺签名则由我们自己
+     * 的 [SigilsForthParser.parsePatternToken] 解析回来，带起始方向。
      *
-     * Both sides are rendered WITHOUT the `MetaHolder` header that the public
-     * [ParserMain.ParseIotaNbt] entry point prepends (`// Author: ...` / `// Requires: ...`):
-     * calling it here would inject the header *inside* our `Sigils:` token and break the
-     * round-trip (the pasted code would glue `Sigils://` into one CodeCutter token).
+     * 两侧都不带公共入口 [ParserMain.ParseIotaNbt] 会附加的 MetaHolder 头
+     * （`// Author: ...` / `// Requires: ...`）：在解析时调用它会把头**注进**我们的
+     * `Sigils:` token 里，破坏 round-trip（粘回去时 CodeCutter 会把 `Sigils://` 粘成
+     * 一个 token）。
      */
     object SigilsBackParser : INbt2Str, IPlayerBinder {
         private var player: ServerPlayer? = null
@@ -230,25 +271,28 @@ object ImportsParseCompat {
         }
 
         /**
-         * The key side of one entry: `"_" + anglesSignature()`, HexParse's own raw-pattern syntax
-         * (TO_RAW_PATTERN parses exactly `^_[wedsaq]*$` back into a PatternIota). Reading the
-         * pattern straight from NBT also avoids the public ParseIotaNbt meta header entirely.
+         * 单条目的键：`_` + 起始方向码（大写）+ `_` + 角度签名，例如 `_NE_aqaa`。
+         *
+         * 直接读 NBT 里的 [HexPattern]：起始方向取 `startDir`，角度用
+         * `anglesSignature()`（与 `IotaFactory.ANGLE_MAP` 的 w/e/d/s/a/q 顺序一致）。
+         * 这样 round-trip 连起始方向都精确还原——之前复用 TO_RAW_PATTERN（固定 EAST）
+         * 时，非 EAST 起始的键会被旋转，导致 imports 的精确匹配失效。
          */
         private fun strokeKey(patTag: CompoundTag): String {
             val pattern = HexPattern.fromNBT(patTag.getCompound(HexIotaTypes.KEY_DATA))
-            return "_" + pattern.anglesSignature()
+            val dirCode = HEX_DIR_CODE_OF[pattern.startDir] ?: "E"
+            return "_" + dirCode + "_" + pattern.anglesSignature()
         }
 
         /**
-         * Iota → code for the value side, replicating `ParserMain.ParseIotaNbt(...,
-         * READ_DEFAULT)` but WITHOUT the MetaHolder header injection (the public entry point
-         * prepends `// Author: ...` on every call, which would corrupt our `Sigils:` token).
-         * Falls back to the public call if the reflection target is unavailable (same output,
-         * only the cosmetic header differs).
+         * 值侧 iota → 代码，复刻 `ParserMain.ParseIotaNbt(..., READ_DEFAULT)`，
+         * 但**不带** MetaHolder 头（公共入口每次调用都会前置 `// Author: ...`，
+         * 会污染我们的 `Sigils:` token）。反射目标不可用时回退公共入口
+         * （输出一致，只差装饰性的头）。
          *
-         * A list value is rendered as `｛a，b，c｝` (full-width braces/comma, matching the forward
-         * syntax): HexParse's own list renderer uses half-width `[ ]` brackets, which CodeCutter
-         * would split into separate tokens and break the round-trip inside our single token.
+         * 列表值渲染成 `｛a，b，c｝`（全角花括号/全角逗号，与 forward 语法一致）：
+         * HexParse 自己的列表渲染用半角 `[ ]`，会被 CodeCutter 切成独立 token，
+         * 在我们这个单 token 里破坏 round-trip。
          */
         private fun parseIotaNoMeta(tag: CompoundTag, p: ServerPlayer?): String {
             if (tag.getString(HexIotaTypes.KEY_TYPE) == IotaFactory.TYPE_LIST) {
@@ -263,16 +307,16 @@ object ImportsParseCompat {
                 return sb.toString()
             }
             val raw = NBT2STR_INTERNAL?.let { m ->
-                // isRoot=false keeps the outer read's meta header off our token; only list
-                // rendering differs (handled above), single iotas ignore isRoot.
+                // isRoot=false 让外层读取的 meta 头不进我们的 token；只有列表渲染
+                // 有差别（上面已自行处理），单个 iota 与 isRoot 无关。
                 runCatching { m.invoke(null, tag, p, 0, false) as? String }.getOrNull()
             }
             if (raw != null) return StringProcessors.READ_DEFAULT.apply(raw)
-            // Fallback: public entry point — same output, but carries the MetaHolder header.
+            // 回退：公共入口——输出一致，只是带 MetaHolder 头。
             return ParserMain.ParseIotaNbt(tag, p, StringProcessors.READ_DEFAULT)
         }
 
-        /** `ParserMain._parseIotaNbt` (private): sub-iota → string with no meta header. */
+        /** `ParserMain._parseIotaNbt`（私有）：子 iota → 字符串，不带 meta 头。 */
         private val NBT2STR_INTERNAL: Method? = runCatching {
             ParserMain::class.java.getDeclaredMethod(
                 "_parseIotaNbt",
