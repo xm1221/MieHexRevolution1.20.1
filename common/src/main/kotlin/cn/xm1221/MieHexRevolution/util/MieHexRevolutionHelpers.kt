@@ -1,6 +1,7 @@
 package cn.xm1221.MieHexRevolution.util
 
 import at.petrak.hexcasting.api.casting.eval.CastResult
+import at.petrak.hexcasting.api.casting.eval.CastingEnvironment
 import at.petrak.hexcasting.api.casting.eval.ResolvedPatternType
 import at.petrak.hexcasting.api.casting.eval.sideeffects.OperatorSideEffect
 import at.petrak.hexcasting.api.casting.eval.vm.CastingImage
@@ -16,6 +17,7 @@ import at.petrak.hexcasting.api.casting.iota.PatternIota
 import at.petrak.hexcasting.api.casting.math.HexPattern
 import at.petrak.hexcasting.api.casting.mishaps.Mishap
 import at.petrak.hexcasting.api.casting.mishaps.MishapEvalTooMuch
+import at.petrak.hexcasting.api.casting.mishaps.MishapOthersName
 import at.petrak.hexcasting.common.blocks.akashic.AkashicFloodfiller
 import at.petrak.hexcasting.common.blocks.akashic.BlockAkashicRecord
 import at.petrak.hexcasting.common.blocks.akashic.BlockEntityAkashicBookshelf
@@ -168,3 +170,16 @@ fun BlockAkashicRecord.getMaps(world: ServerLevel, pos: BlockPos): Map<HexPatter
     }
     return result
 }
+
+fun TrueNameProtection(env: CastingEnvironment, args:List<Iota>,){
+    val caster = env.castingEntity
+    if(caster is ServerPlayer){
+        val others= MishapOthersName.getTrueNameFromArgs(args,caster)
+        if(others != null)throw MishapOthersName(others)
+    }
+    else{
+        val others= MishapOthersName.getTrueNameFromArgs(args,null)
+        if(others != null)throw MishapOthersName(others)
+    }
+}
+

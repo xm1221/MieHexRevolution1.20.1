@@ -57,17 +57,18 @@ import net.minecraft.server.level.ServerLevel
 
     override fun getType(): IotaType<ImportsIota> = Type
 
-    /**
-     * One "iota-sized" unit per binding; the bound values are reported through [subIotas].
-     */
-    override fun size(): Int = imports.size
+    override fun size(): Int {
+        var size = 0
+        for (i in imports.values) {
+            size += i.size()
+        }
+        size += size+1
+        return size
+    }
 
-    /**
-     * The imports nest one level deeper than their deepest bound value.
-     */
     override fun depth(): Int = 1 + (imports.values.maxOfOrNull { it.depth() } ?: 0)
 
-    override fun subIotas(): Iterable<Iota>? = imports.values
+    override fun subIotas(): Iterable<Iota> = imports.values
 
     override fun execute(vm: CastingVM?, world: ServerLevel?, continuation: SpellContinuation?): CastResult {
         if (vm == null || world == null || continuation == null) return super.execute(vm, world, continuation)
@@ -125,7 +126,11 @@ import net.minecraft.server.level.ServerLevel
                     .withFont(ResourceLocation.tryParse("minecraft:illageralt"))
                     .withColor(ChatFormatting.LIGHT_PURPLE)
                     .withHoverEvent(HoverEvent(HoverEvent.Action.SHOW_TEXT, body))
-                Component.literal(if (count > 0) "IMPORTS×$count" else "IMPORTS").withStyle(style)
+                val res = Component.literal( "IMPORTS").withStyle(style)
+                if(count>0){
+                    res.append(Component.literal("x $count")).withStyle(ChatFormatting.LIGHT_PURPLE)
+                }
+                else res
             } catch (e: Exception) {
                 // Never let a display issue crash the GUI; fall back to the plain label.
                 Component.literal("IMPORTS").withStyle(ChatFormatting.LIGHT_PURPLE)

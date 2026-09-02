@@ -45,6 +45,8 @@ inline = "1.20.1-1.2.2"
 
 caelus = "3.1.0+1.20"
 
+hexParse = "1.20.1-1.11.2"
+
 # other dependencies
 
 asm = "9.5"
@@ -96,6 +98,10 @@ mixinExtras-forge  = { module="io.github.llamalad7:mixinextras-forge", version.r
 clothConfig-common = { module="me.shedaniel.cloth:cloth-config", version.ref="clothConfig" }
 clothConfig-fabric = { module="me.shedaniel.cloth:cloth-config-fabric", version.ref="clothConfig" }
 clothConfig-forge  = { module="me.shedaniel.cloth:cloth-config-forge", version.ref="clothConfig" }
+
+hexparse-common = {module="io.yukkuric.hexparse:hexParse-common",version.ref="hexParse"}
+hexparse-fabric = {module="io.yukkuric.hexparse:hexParse-fabric",version.ref="hexParse"}
+hexparse-forge = {module="io.yukkuric.hexparse:hexParse-forge",version.ref="hexParse"}
 
 caelus = { module="top.theillusivec4.caelus:caelus-forge", version.ref="caelus" }
 

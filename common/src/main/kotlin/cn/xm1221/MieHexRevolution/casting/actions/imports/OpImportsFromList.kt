@@ -8,6 +8,7 @@ import at.petrak.hexcasting.api.casting.iota.PatternIota
 import at.petrak.hexcasting.api.casting.math.HexPattern
 import at.petrak.hexcasting.api.casting.mishaps.MishapInvalidIota
 import cn.xm1221.MieHexRevolution.api.casting.iota.ImportsIota
+import cn.xm1221.MieHexRevolution.util.TrueNameProtection
 
 /**
  * Builds an import set from a list of `[pattern, value]` pairs, the inverse of
@@ -19,6 +20,7 @@ class OpImportsFromList : ConstMediaAction {
         get() = 1
 
     override fun execute(args: List<Iota>, env: CastingEnvironment): List<Iota> {
+        TrueNameProtection(env, args)
         val list = args[0]
         if (list !is ListIota) throw MishapInvalidIota.ofType(list, 0, "list")
         val map = HashMap<HexPattern, Iota>()

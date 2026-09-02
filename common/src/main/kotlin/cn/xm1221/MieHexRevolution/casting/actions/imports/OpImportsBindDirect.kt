@@ -11,9 +11,12 @@ import at.petrak.hexcasting.api.casting.iota.PatternIota
 import at.petrak.hexcasting.api.casting.math.HexPattern
 import at.petrak.hexcasting.api.casting.mishaps.MishapInvalidIota
 import at.petrak.hexcasting.api.casting.mishaps.MishapNotEnoughArgs
+import at.petrak.hexcasting.api.casting.mishaps.MishapOthersName
 import at.petrak.hexcasting.api.utils.putCompound
 import at.petrak.hexcasting.common.lib.hex.HexEvalSounds
 import cn.xm1221.MieHexRevolution.api.casting.iota.ImportsIota
+import cn.xm1221.MieHexRevolution.util.TrueNameProtection
+import net.minecraft.server.level.ServerPlayer
 
 /**
  * Writes one binding directly into this cast's user-data imports: accepts (pattern, value) and
@@ -36,7 +39,7 @@ class OpImportsBindDirect : Action {
         if (argc > stack.size) throw MishapNotEnoughArgs(argc, stack.size)
         val args = stack.takeLast(argc)
         repeat(argc) { stack.removeLast() }
-
+        TrueNameProtection(env, args)
         val name = args[0]
         val value = args[1]
         if (name !is PatternIota) throw MishapInvalidIota.ofType(name, 1, "pattern")
