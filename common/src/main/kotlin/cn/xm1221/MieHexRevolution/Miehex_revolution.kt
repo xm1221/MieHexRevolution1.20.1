@@ -6,6 +6,7 @@ import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.resources.ResourceLocation
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
+import cn.xm1221.MieHexRevolution.compat.parse.ImportsParseCompat
 import cn.xm1221.MieHexRevolution.config.Miehex_revolutionServerConfig
 import cn.xm1221.MieHexRevolution.networking.Miehex_revolutionNetworking
 import cn.xm1221.MieHexRevolution.registry.MieHexRevolutionIotas
@@ -57,6 +58,7 @@ object Miehex_revolution {
         Miehex_revolutionBlocks.init()
         Miehex_revolutionBlockEntities.init()
         Miehex_revolutionNetworking.init()
+        ImportsParseCompat.init()
     }
 
 

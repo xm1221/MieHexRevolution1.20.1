@@ -75,6 +75,9 @@ dependencies {
     modLocalRuntime(libs.caelus)
     modLocalRuntime(libs.inline.forge) { isTransitive = false }
 
+    // hexparse is a soft dependency: dev-runtime only, not declared as a hard requirement
+    modLocalRuntime(libs.hexparse.forge)
+
     modApi(libs.clothConfig.forge)
 
     libs.mixinExtras.common.also {

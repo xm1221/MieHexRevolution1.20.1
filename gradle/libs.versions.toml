@@ -18,7 +18,7 @@ architectury = "9.2.14"
 architectury-plugin = { require="[3.4, 3.5[" }
 architectury-loom = { require="[1.9, 1.10[" }
 
-fabric-loader = "0.14.25"
+fabric-loader = "0.16.9"
 fabric-api = "0.87.0+1.20.1"
 
 forge = "1.20.1-47.2.0"
@@ -99,9 +99,9 @@ clothConfig-common = { module="me.shedaniel.cloth:cloth-config", version.ref="cl
 clothConfig-fabric = { module="me.shedaniel.cloth:cloth-config-fabric", version.ref="clothConfig" }
 clothConfig-forge  = { module="me.shedaniel.cloth:cloth-config-forge", version.ref="clothConfig" }
 
-hexparse-common = {module="io.yukkuric.hexparse:hexParse-common",version.ref="hexParse"}
-hexparse-fabric = {module="io.yukkuric.hexparse:hexParse-fabric",version.ref="hexParse"}
-hexparse-forge = {module="io.yukkuric.hexparse:hexParse-forge",version.ref="hexParse"}
+#hexparse-common = {module="io.yukkuric.hexparse:hexParse-common",version.ref="hexParse"}
+hexparse-fabric = {module="libs:hexParse-fabric",version.ref="hexParse"}
+hexparse-forge = {module="libs:hexParse-forge",version.ref="hexParse"}
 
 caelus = { module="top.theillusivec4.caelus:caelus-forge", version.ref="caelus" }
 

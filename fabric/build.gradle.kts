@@ -70,6 +70,8 @@ dependencies {
     modLocalRuntime(libs.serializationHooks)
     modLocalRuntime(libs.trinkets)
     modLocalRuntime(libs.inline.fabric) { isTransitive = false }
+    // hexparse is a soft dependency: dev-runtime only, not declared as a hard requirement
+    modLocalRuntime(libs.hexparse.fabric)
 
     libs.mixinExtras.fabric.also {
         localRuntime(it)

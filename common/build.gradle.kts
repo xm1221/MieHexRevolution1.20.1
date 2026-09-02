@@ -20,7 +20,7 @@ dependencies {
 
     modApi(libs.clothConfig.common)
 
-    modApi(libs.hexparse.common)
+    modApi(libs.hexparse.fabric)
 
     libs.mixinExtras.common.also {
         implementation(it)
