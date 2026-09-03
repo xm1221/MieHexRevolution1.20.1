@@ -12,14 +12,19 @@ import at.petrak.hexcasting.api.casting.math.HexPattern
 import at.petrak.hexcasting.api.utils.putCompound
 import at.petrak.hexcasting.common.lib.hex.HexEvalSounds
 import net.minecraft.ChatFormatting
+import net.minecraft.client.gui.Font
 import net.minecraft.nbt.CompoundTag
 import net.minecraft.nbt.ListTag
 import net.minecraft.nbt.Tag
 import net.minecraft.network.chat.Component
 import net.minecraft.network.chat.HoverEvent
 import net.minecraft.network.chat.Style
+import net.minecraft.network.chat.TextColor
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.server.level.ServerLevel
+import net.minecraft.util.Mth
+import kotlin.time.Clock
+import kotlin.time.ExperimentalTime
 
 /**
  * A set of "imports": a mapping of pattern -> iota, used to bind spell patterns to values.
@@ -124,11 +129,12 @@ import net.minecraft.server.level.ServerLevel
                 if (count > shown) body.append("\n…(+${count - shown})")
                 val style = Style.EMPTY
                     .withFont(ResourceLocation.tryParse("minecraft:illageralt"))
-                    .withColor(ChatFormatting.LIGHT_PURPLE)
+                    .withColor(TextColor.fromRgb(color()))
                     .withHoverEvent(HoverEvent(HoverEvent.Action.SHOW_TEXT, body))
-                val res = Component.literal( "IMPORTS").withStyle(style)
+                val res = Component.literal( "SGILIS").withStyle(style)
                 if(count>0){
-                    res.append(Component.literal("x $count")).withStyle(ChatFormatting.LIGHT_PURPLE)
+                    val com = Component.literal(" x$count").withStyle(Style.EMPTY.withFont(ResourceLocation.tryParse("minecraft:default")))
+                    res.append(com)
                 }
                 else res
             } catch (e: Exception) {
@@ -137,7 +143,10 @@ import net.minecraft.server.level.ServerLevel
             }
         }
 
-        override fun color(): Int = 15631086
+
+        override fun color(): Int {
+            return 15631086
+        }
 
 
     }

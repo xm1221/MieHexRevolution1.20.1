@@ -29,6 +29,9 @@ import net.minecraft.core.BlockPos
 import net.minecraft.core.Direction
 import net.minecraft.server.level.ServerLevel
 import net.minecraft.server.level.ServerPlayer
+import net.minecraft.util.Mth
+import kotlin.time.Clock
+import kotlin.time.ExperimentalTime
 
 /**
  * If the current cast has an [ImportsIota] bound in its user data and [this] pattern is one of its
@@ -119,7 +122,7 @@ fun PatternIota.executeWithImports(vm: CastingVM?, world: ServerLevel?, continua
  * the S2C sync and, with the same encoding, by `MixinGuiSpellcasting` on the client.
  */
 fun importKeyString(pattern: HexPattern): String =
-    "${pattern.startDir.ordinal}:${pattern.anglesSignature()}"
+    "${pattern.startDir.name}:${pattern.anglesSignature()}"
 
 /** Tell the casting player which import keys are currently active (empty = none). */
 private fun syncImportKeys(vm: CastingVM, keys: List<String>) {
@@ -181,5 +184,20 @@ fun TrueNameProtection(env: CastingEnvironment, args:List<Iota>,){
         val others= MishapOthersName.getTrueNameFromArgs(args,null)
         if(others != null)throw MishapOthersName(others)
     }
+}
+
+fun Iota.isTureName(caster: ServerPlayer?):Boolean {
+    return MishapOthersName.getTrueNameFromDatum(this,caster)!= null
+}
+
+@OptIn(ExperimentalTime::class)
+fun raninbowWithSystem():Int{
+    val now = Clock.System.now().toEpochMilliseconds()
+
+    // 使用正弦波，周期约为 8 秒（4000ms * 2 = 8000ms）
+    // 结果在 -1 到 1 之间，*0.5 + 0.5 映射到 0~1
+    val hue = (kotlin.math.sin(now / 4000.0) * 0.5 + 0.5).toFloat()
+
+    return Mth.hsvToRgb(hue, 1f, 1f)
 }
 

@@ -5,6 +5,7 @@ import at.petrak.hexcasting.api.casting.eval.CastingEnvironment
 import at.petrak.hexcasting.api.casting.eval.OperationResult
 import at.petrak.hexcasting.api.casting.eval.vm.CastingImage
 import at.petrak.hexcasting.api.casting.eval.vm.SpellContinuation
+import at.petrak.hexcasting.api.casting.iota.GarbageIota
 import at.petrak.hexcasting.api.casting.iota.Iota
 import at.petrak.hexcasting.api.casting.iota.IotaType
 import at.petrak.hexcasting.api.casting.iota.PatternIota
@@ -15,6 +16,7 @@ import at.petrak.hexcasting.api.casting.mishaps.MishapOthersName
 import at.petrak.hexcasting.api.utils.putCompound
 import at.petrak.hexcasting.common.lib.hex.HexEvalSounds
 import cn.xm1221.MieHexRevolution.api.casting.iota.ImportsIota
+import cn.xm1221.MieHexRevolution.api.casting.mishap.MishapTooLargeImport
 import cn.xm1221.MieHexRevolution.util.TrueNameProtection
 import net.minecraft.server.level.ServerPlayer
 
@@ -49,6 +51,10 @@ class OpImportsBindDirect : Action {
         val existing = (IotaType.deserialize(userdata.getCompound("imports"), env.world) as? ImportsIota)?.imports
         val merged = HashMap<HexPattern, Iota>(existing ?: emptyMap())
         merged[name.pattern] = value
+        val res = ImportsIota(merged)
+        if(IotaType.isTooLargeToSerialize(listOf(res))){
+            throw MishapTooLargeImport()
+        }
         userdata.putCompound("imports", IotaType.serialize(ImportsIota(merged)))
 
         return OperationResult(

@@ -80,6 +80,7 @@
   "hexcasting.action.miehex_revolution:imports/from_list": "诺摩斯之纯化",
   "hexcasting.mishap.invalid_value.imports_pair": "合适的列表",
   "hexcasting.mishap.invalid_value.class.imports_iota": "刻印集",
+  "hexcasting.mishap.too_large_import": "正在使用一个过大的刻印集！",
   "miehex_revolution.entry.imports": "刻印集Iota",
   "miehex_revolution.page.import.0": "在不同的咒术中，经常需要调用相同的操作或导入相同的Iota，这导致我在编纂咒术的过程中，每次都要重复的绘制一大串图案，或者在一大堆的核心或者结念绳找来找去，用列表操作把那些东西插入进去，我实在是受够这些麻烦事了。$(br2)好在天实佑德，我在古老的法术书中发现了一种特别的Iota——刻印集Iota，从结构上来说，它是一个由特定图案到特定Iota的一一对应的关系所组成的集合，",
   "miehex_revolution.page.import.1": "它可以被赫尔墨斯之策略直接执行，当它被执行后，将进入一种被称之为“刻印集适用中”的状态。处于这种状态而运行了被记录在刻印集中的图案（区分旋转)时，将会执行其所对应的那一个Iota（如果它可执行），或者将那个Iota入栈（如果它不能执行），在没有任何刻印集被执行过的情况下，可以认为正适用一个空的刻印集。操作刻印集和操作刻印状态的图案我记录在后。",
