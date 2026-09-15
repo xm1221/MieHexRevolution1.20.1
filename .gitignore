@@ -25,6 +25,11 @@ _checkout/
 __gradle_version__.py
 .hexdoc*/
 
+# Cloudflare Pages 部署（总项目 hexbook）
+deploy/
+.wrangler-tools/
+.npm-cache/
+
 # Python
 
 # Byte-compiled / optimized / DLL files
