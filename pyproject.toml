@@ -19,8 +19,8 @@ requires-python = ">=3.12"
 dynamic = ["version", "dependencies", "optional-dependencies"]
 
 [project.urls]
-Homepage = "https://xm1221.github.io/MieHex:Revolution"
-Source = "https://github.com/xm1221/MieHex:Revolution"
+Homepage = "https://github.com/xm1221/MieHexRevolution1.20.1"
+Source = "https://github.com/xm1221/MieHexRevolution1.20.1"
 
 # project version
 
