@@ -43,9 +43,6 @@ object Miehex_revolutionActions : Miehex_revolutionRegistrar<ActionRegistryEntry
     HexRegistries.ACTION,
     { HexActions.REGISTRY },
 ) {
-    //val CONGRATULATE = make("congratulate", HexDir.WEST, "eed", OpCongratulate)
-
-    //val GREAT_CONGRATULATE = make("congratulate/great", HexDir.EAST, "qwwqqqwwqwded", OpCongratulate)
     val MAX_VALUE = make("const/max", HexDir.SOUTH_EAST,"eeee", OpMax())
     val MIN_VALUE = make("const/min", HexDir.SOUTH_WEST,"qqqq", OpMin())
     val PAGE = make("page", HexDir.WEST,"qqadad", OpPages())
