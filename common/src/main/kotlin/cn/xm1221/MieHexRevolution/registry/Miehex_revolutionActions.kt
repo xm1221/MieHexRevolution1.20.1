@@ -35,6 +35,7 @@ import cn.xm1221.MieHexRevolution.casting.actions.useful.OpMax
 import cn.xm1221.MieHexRevolution.casting.actions.useful.OpMin
 import cn.xm1221.MieHexRevolution.casting.actions.useful.OpPages
 import cn.xm1221.MieHexRevolution.casting.actions.useful.envs.OpFaker
+import cn.xm1221.MieHexRevolution.casting.actions.useful.hexextra.OpLLKLoop
 import cn.xm1221.MieHexRevolution.casting.actions.useful.list.OpEvalInList
 import cn.xm1221.MieHexRevolution.casting.actions.useful.list.OpIndexes
 
@@ -82,6 +83,8 @@ object Miehex_revolutionActions : Miehex_revolutionRegistrar<ActionRegistryEntry
     val IMPORTS_FROM_A = make("imports/from_a",HexDir.EAST,"eeeweeeeedewqaq", OpImportsFromAkashic())
     val IMPORTS_TO_LIST = make("imports/to_list", HexDir.WEST, "qqqqwde", OpImportsToList())
     val IMPORTS_FROM_LIST = make("imports/from_list", HexDir.EAST, "eeeewaq", OpImportsFromList())
+
+    val LLKLOOP = make("llk_loop",HexDir.NORTH_WEST,"qaweedwaqqwde", OpLLKLoop())
     private fun make(name: String, startDir: HexDir, signature: String, action: Action) =
         make(name, startDir, signature) { action }
 

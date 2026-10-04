@@ -1,0 +1,19 @@
+{
+  "name": "miehex_revolution.entry.hexextra",
+  "category": "hexcasting:patterns",
+  "icon": "minecraft:redstone",
+  "sortnum": 2,
+  "advancement": "hexcasting:root",
+  "read_by_default": true,
+  "pages": [
+
+    {
+      "type": "hexcasting:pattern",
+      "op_id": "miehex_revolution:llk_loop",
+      "anchor": "miehex_revolution:llk_loop",
+      "input": "num,[pattern]",
+      "output": "many",
+      "text": "miehex_revolution.page.llk_loop"
+    }
+  ]
+}

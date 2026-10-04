@@ -22,6 +22,7 @@
   "hexcasting.action.miehex_revolution:entity/rot": "Synchronize",
   "hexcasting.action.miehex_revolution:circle/used": "Reflection of Footsteps",
   "hexcasting.action.miehex_revolution:changeenv": "Usurpation",
+  "hexcasting.action.miehex_revolution:llk_loop": "Foer's Gambit",
   "hexcasting.mishap.bad_offhand_item.idea_shard": "Idea Shard",
   "hexcasting.mishap.bad_offhand_item.quenched_shard": "Quenched Shard",
   "hexcasting.mishap.invalid_value.class.monitor": "an entity capable of receiving soul projection",
@@ -96,5 +97,7 @@
   "miehex_revolution.page.a_import": "I have discovered that the Akashic Library is a Great Work that stores its iotas indexed by pattern — a structure remarkably like that of the Sigil Iota. I wonder which came first: this iota, or the library.",
   "miehex_revolution.page.imports/from_a": "Accepts the coordinates of an Akashic Record, and returns all of its stored pattern-to-iota correspondences in the form of a sigil set. No casting range is required.",
   "hexdoc.miehex_revolution.title": "MieHex:Revolution",
-  "hexdoc.miehex_revolution.description": "MieHex:Revolution guide"
+  "hexdoc.miehex_revolution.description": "MieHex:Revolution guide",
+  "miehex_revolution.entry.hexextra": "hexextra patterns",
+  "miehex_revolution.page.llk_loop": "Accepts a positive integer and a list and executes the given list the number of times specified by the given positive integer."
 }
