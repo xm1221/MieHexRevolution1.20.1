@@ -40,7 +40,10 @@ jobs:
 
       # generated/* 被 gitignore。干净检出后直接 hatch/build 不会带上图案表，
       # 必须先让 hexdoc 导出资源，再打 wheel。
+      # 本仓库没有 GitHub Pages，不设地址的话 hexdoc 会请求 /pages 并 404。
       - name: Export resources and build wheel
+        env:
+          GITHUB_PAGES_URL: https://hexbook.xm1221.cn/miehex-revolution
         run: |
           sudo apt-get update
           sudo apt-get install -y xvfb
