@@ -28,13 +28,38 @@ jobs:
 
       - uses: actions/setup-python@v6
         with:
-          python-version: '3.12'
+          python-version-file: .python-version
 
-      - name: Build wheel
+      - uses: astral-sh/setup-uv@v6
+        with:
+          activate-environment: true
+          enable-cache: true
+
+      - name: Sync dependencies
+        run: uv sync --frozen --no-dev
+
+      # generated/* 被 gitignore。干净检出后直接 hatch/build 不会带上图案表，
+      # 必须先让 hexdoc 导出资源，再打 wheel。
+      - name: Export resources and build wheel
         run: |
-          python -m pip install --upgrade build
-          # wheel-only：hatch-gradle-version 的 sdist→wheel 重建有已知冲突
-          python -m build --wheel
+          sudo apt-get update
+          sudo apt-get install -y xvfb
+          xvfb-run --auto-servernum uv run hexdoc ci build --no-release
+
+      - name: Require pattern table in the wheel
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import glob, sys, zipfile
+          wheels = glob.glob("dist/*.whl")
+          if len(wheels) != 1:
+              sys.exit(f"expected one wheel, found {wheels}")
+          with zipfile.ZipFile(wheels[0]) as z:
+              hits = [n for n in z.namelist() if n.endswith(".patterns.hexdoc.json")]
+          if not hits:
+              sys.exit(f"{wheels[0]} has no patterns.hexdoc.json")
+          print("pattern table:", ", ".join(hits))
+          PY
 
       - name: Check if version already published on PyPI
         id: check
