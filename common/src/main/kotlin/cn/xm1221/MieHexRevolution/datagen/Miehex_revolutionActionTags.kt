@@ -17,12 +17,12 @@ class Miehex_revolutionActionTags(
 ) : TagsProvider<ActionRegistryEntry>(output, HexRegistries.ACTION, provider) {
     override fun addTags(provider: HolderLookup.Provider) {
         // per-world great spells
-        /*for (entry in arrayOf(
-            //Miehex_revolutionActions.GREAT_CONGRATULATE,
+        for (entry in arrayOf(
+            Miehex_revolutionActions.ENTITY_IN,
         )) {
             tag(HexTags.Actions.CAN_START_ENLIGHTEN).add(entry.key)
             tag(HexTags.Actions.PER_WORLD_PATTERN).add(entry.key)
             tag(HexTags.Actions.REQUIRES_ENLIGHTENMENT).add(entry.key)
-        }*/
+        }
     }
 }
