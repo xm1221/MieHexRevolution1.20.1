@@ -1,0 +1,34 @@
+{
+  "name": "miehex_revolution.entry.use_block",
+  "category": "hexcasting:patterns/spells",
+  "icon": "minecraft:oak_sapling",
+  "sortnum": 7,
+  "advancement": "hexcasting:root",
+  "read_by_default": true,
+  "pages": [
+    {
+      "type": "hexcasting:pattern",
+      "op_id": "miehex_revolution:use",
+      "anchor": "miehex_revolution:use",
+      "input": "vector",
+      "output": "",
+      "text": "miehex_revolution.page.use"
+    },
+    {
+      "type": "hexcasting:pattern",
+      "op_id": "miehex_revolution:use_on",
+      "anchor": "miehex_revolution:use_on",
+      "input": "vector",
+      "output": "",
+      "text": "miehex_revolution.page.use_on"
+    },
+    {
+      "type": "hexcasting:pattern",
+      "op_id": "miehex_revolution:use_on/with",
+      "anchor": "miehex_revolution:use_on/with",
+      "input": "vector,itementity",
+      "output": "",
+      "text": "miehex_revolution.page.use_on/with"
+    }
+  ]
+}
