@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 1,
+  "id": "miehex_revolution",
+  "version": "${version}",
+  "name": "MieHex:Revolution",
+  "description": "MieHex:Revolution addon for Hex Casting.",
+  "authors": [
+    "xm1221"
+  ],
+  "contact": {
+    "homepage": "https://github.com/xm1221/MieHexRevolution1.20.1",
+    "sources": "https://github.com/xm1221/MieHexRevolution1.20.1"
+  },
+  "license": "MIT",
+  "icon": "assets/miehex_revolution/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      {
+        "adapter": "kotlin",
+        "value": "cn.xm1221.MieHexRevolution.fabric.FabricMiehex_revolution"
+      }
+    ],
+    "client": [
+      {
+        "adapter": "kotlin",
+        "value": "cn.xm1221.MieHexRevolution.fabric.FabricMiehex_revolutionClient"
+      }
+    ],
+    "server": [
+      {
+        "adapter": "kotlin",
+        "value": "cn.xm1221.MieHexRevolution.fabric.FabricMiehex_revolutionServer"
+      }
+    ]
+  },
+  "mixins": [
+    "miehex_revolution-common.mixins.json"
+  ],
+  "depends": {
+    "minecraft": "~1.21.1",
+    "java": ">=21",
+    "fabricloader": ">=0.16.3",
+    "fabric-api": ">=0.103.0+1.21.1",
+    "fabric-language-kotlin": ">=1.13.7+kotlin.2.2.21",
+    "architectury": ">=13.0.8",
+    "hexcasting": ">=0.12.0-devel-pre-64",
+    "cloth-config": ">=15.0.140"
+  }
+}

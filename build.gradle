@@ -45,29 +45,49 @@ subprojects {
     loom {
         silentMojangMappingsLicense()
     }
-    var nameForRef = project.name.equals("common") ? "fabric" : project.name
     dependencies {
         minecraft "net.minecraft:minecraft:$rootProject.minecraft_version"
         mappings loom.officialMojangMappings()
         compileOnly(annotationProcessor("io.github.llamalad7:mixinextras-common:0.5.0"))
 
-       // modImplementation("at.petra-k.hexcasting:hexcasting-${nameForRef}-${project.minecraft_version}:${project.hexcastingVersion}") { transitive = false }
-       // modImplementation("at.petra-k.paucal:paucal-${nameForRef}-${project.minecraft_version}:${project.paucalVersion}") { transitive = false }
-       // Patchouli is not referenced from source; the books are plain data files.
-       // The pre-1.21 Maven artifact cannot be resolved (remapped jars), so use the
-       // locally provided jar instead of a remote coordinate.
-        // Platform-filtered local jars: the *-common-* artifacts are intermediary-mapped and
-        // must not be visible to the NeoForge compile (its jar ships named classes for the
-        // same types, and a duplicate intermediary class wins resolution otherwise).
-        def libJars = fileTree(dir: "${rootProject.projectDir}/common/libs", include: '*.jar')
-        if (project.name == 'neoforge') {
-            libJars = libJars.matching { exclude 'hexcasting-common-*.jar', 'paucal-*-common*.jar' }
-        }
-        // Plain `implementation`: these local jars are already in Mojang (named) mappings, and
-        // `modImplementation` would run Loom's remapper, which mis-detects their namespace
-        // and emits intermediary (class_XXXX) references that no longer match the dev MC.
-        implementation libJars
+        // Local jars from common/libs.
+        //
+        // The BlameJared CI jars are *not* uniformly mapped:
+        //   - hexcasting-neoforge / paucal-neoforge / patchouli / inline are named (Mojang)
+        //     mappings, so they go in as plain `implementation` (no Loom remap).
+        //   - hexcasting-fabric / paucal-fabric / cloth-config-fabric are intermediary-mapped
+        //     Fabric mods and must go through `modImplementation` so Loom remaps them to the
+        //     dev (named) mappings. Adding them as plain `implementation` leaves `class_XXXX`
+        //     references that the Kotlin compiler cannot resolve against the named MC jar.
+        // The `*-common-*` Hex/PAUCAL artifacts are intermediary-mapped duplicates of the
+        // platform jars and are never used (they shadow named classes).
+        def libsDir = file("${rootProject.projectDir}/common/libs")
 
+        if (project.name == 'neoforge') {
+            implementation fileTree(dir: libsDir, include: [
+                    'hexcasting-neoforge-*.jar',
+                    'paucal-*-neoforge.jar',
+                    'cloth-config-*-neoforge.jar',
+                    'patchouli.jar',
+                    'inline-neoforge-*.jar',
+            ])
+        } else if (project.name == 'fabric') {
+            // Patchouli is not referenced from source (the book is plain data), so it is not
+            // on the Fabric classpath at all.
+            modImplementation fileTree(dir: libsDir, include: [
+                    'hexcasting-fabric-*.jar',
+                    'paucal-*-fabric.jar',
+                    'cloth-config-*-fabric.jar',
+            ])
+        } else {
+            // `common` compiles platform-neutrally: the Fabric variants are intermediary
+            // jars, so Loom remaps them here as well (`modImplementation`).
+            modImplementation fileTree(dir: libsDir, include: [
+                    'hexcasting-fabric-*.jar',
+                    'paucal-*-fabric.jar',
+                    'cloth-config-*-fabric.jar',
+            ])
+        }
     }
 
     java {

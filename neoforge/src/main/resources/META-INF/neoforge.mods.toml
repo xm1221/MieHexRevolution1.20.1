@@ -43,3 +43,10 @@ type = "required"
 versionRange = "[0,)"
 ordering = "AFTER"
 side = "BOTH"
+
+[[dependencies.miehex_revolution]]
+modId = "cloth_config"
+type = "required"
+versionRange = "[15,)"
+ordering = "AFTER"
+side = "BOTH"
