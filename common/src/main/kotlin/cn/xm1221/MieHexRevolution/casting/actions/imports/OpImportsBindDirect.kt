@@ -13,7 +13,7 @@ import at.petrak.hexcasting.api.casting.math.HexPattern
 import at.petrak.hexcasting.api.casting.mishaps.MishapInvalidIota
 import at.petrak.hexcasting.api.casting.mishaps.MishapNotEnoughArgs
 import at.petrak.hexcasting.api.casting.mishaps.MishapOthersName
-import at.petrak.hexcasting.api.utils.putCompound
+import at.petrak.hexcasting.api.utils.TreeList
 import at.petrak.hexcasting.common.lib.hex.HexEvalSounds
 import cn.xm1221.MieHexRevolution.api.casting.iota.ImportsIota
 import cn.xm1221.MieHexRevolution.api.casting.mishap.MishapTooLargeImport
@@ -46,22 +46,19 @@ class OpImportsBindDirect : Action {
         val value = args[1]
         if (name !is PatternIota) throw MishapInvalidIota.ofType(name, 1, "pattern")
 
-        // The upstream VM hands each action its own copy of userData, but copy again to be explicit.
-        val userdata = image.userData.copy()
-        val existing = (IotaType.deserialize(userdata.getCompound("imports"), env.world) as? ImportsIota)?.imports
+        val existing = image.getComponent(ImportsIota.COMPONENT)?.imports
         val merged = HashMap<HexPattern, Iota>(existing ?: emptyMap())
         merged[name.pattern] = value
         val res = ImportsIota(merged)
         if(IotaType.isTooLargeToSerialize(listOf(res))){
             throw MishapTooLargeImport()
         }
-        userdata.putCompound("imports", IotaType.serialize(ImportsIota(merged)))
 
         return OperationResult(
-            newImage = image.copy(userData = userdata, stack = stack),
+            newImage = image.copy(stack = TreeList.from(stack)).withComponent(ImportsIota.COMPONENT, res),
             sideEffects = listOf(),
             newContinuation = continuation,
-            sound = HexEvalSounds.NORMAL_EXECUTE,
+            sound = HexEvalSounds.NORMAL_EXECUTE.get(),
         )
     }
 }

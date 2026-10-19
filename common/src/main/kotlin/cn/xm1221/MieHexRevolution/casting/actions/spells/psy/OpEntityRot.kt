@@ -17,7 +17,7 @@ class OpEntityRot: SpellAction {
         args: List<Iota>,
         env: CastingEnvironment
     ): SpellAction.Result {
-        val target = args.getEntity(0,argc)
+        val target = args.getEntity(env.world, 0, argc)
         val caster = env.castingEntity ?: throw MishapBadCaster()
         return SpellAction.Result(
             effect = object : RenderedSpell{

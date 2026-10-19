@@ -60,7 +60,7 @@ class IdeaBlockEntity(
     override fun loadAdditional(tag: CompoundTag, registries: HolderLookup.Provider) {
         super.loadAdditional(tag, registries)
         if (tag.contains("Material")) {
-            material = NbtUtils.readBlockState(registries, tag.getCompound("Material"))
+            material = NbtUtils.readBlockState(registries.lookupOrThrow(net.minecraft.core.registries.Registries.BLOCK), tag.getCompound("Material"))
         }
     }
 

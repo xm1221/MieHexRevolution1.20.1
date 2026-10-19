@@ -15,6 +15,7 @@ import at.petrak.hexcasting.api.casting.iota.IotaType
 import at.petrak.hexcasting.api.casting.iota.ListIota
 import at.petrak.hexcasting.api.casting.iota.PatternIota
 import at.petrak.hexcasting.api.casting.math.HexPattern
+import at.petrak.hexcasting.api.utils.TreeList
 import at.petrak.hexcasting.api.casting.mishaps.Mishap
 import at.petrak.hexcasting.api.casting.mishaps.MishapEvalTooMuch
 import at.petrak.hexcasting.api.casting.mishaps.MishapOthersName
@@ -29,6 +30,7 @@ import net.minecraft.core.BlockPos
 import net.minecraft.core.Direction
 import net.minecraft.server.level.ServerLevel
 import net.minecraft.server.level.ServerPlayer
+import net.minecraft.world.entity.player.Player
 import net.minecraft.util.Mth
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
@@ -47,24 +49,21 @@ import kotlin.time.ExperimentalTime
 fun PatternIota.executeWithImports(vm: CastingVM?, world: ServerLevel?, continuation: SpellContinuation?): CastResult? {
     if (vm == null || world == null || continuation == null) return null
     val img = vm.image
-    val userdata = img.userData
-    // Fast path: this cast never defined any imports. `CompoundTag.getCompound` returns an empty tag
-    // (not null) for a missing key, so we must check containment before deserializing.
-    if (!userdata.contains("imports")) {
+    // Fast path: this cast never defined any imports.
+    val bound = img.getComponent(ImportsIota.COMPONENT)
+    if (bound == null) {
         syncImportKeys(vm, emptyList())
         return null
     }
-    if (userdata.contains("run_raw") && userdata.getBoolean("run_raw")) {
+    if (img.getComponent(ImportsIota.RAW_COMPONENT) == true) {
         // Raw mode: imports are bypassed and patterns run their native action, so there is
         // nothing to mark -- clear the client's import-key set (per-stroke sync picks this
         // up immediately, and the keys come back once raw is toggled off).
         syncImportKeys(vm, emptyList())
         return null
     }
-    val deserialized = IotaType.deserialize(userdata.getCompound("imports"), world)
-    if (deserialized !is ImportsIota) return null
-    syncImportKeys(vm, deserialized.imports.keys.map { importKeyString(it) })
-    val funs = deserialized.imports[this.pattern] ?: return null
+    syncImportKeys(vm, bound.imports.keys.map { importKeyString(it) })
+    val funs = bound.imports[this.pattern] ?: return null
 
     val frameEvaluate: ContinuationFrame
     val newimg: CastingImage
@@ -77,13 +76,13 @@ fun PatternIota.executeWithImports(vm: CastingVM?, world: ServerLevel?, continua
 
         !funs.executable() -> {
             // plain datum: push it onto the stack (empty sub-eval keeps the resolution shape)
-            frameEvaluate = FrameEvaluate(ListIota(listOf()).list, true)
-            newimg = img.copy(stack = img.stack.plus(funs))
+            frameEvaluate = FrameEvaluate(TreeList.empty(), true)
+            newimg = img.copy(stack = img.stack.appended(funs))
         }
 
         else -> {
             // single executable iota (e.g. another pattern): evaluate it
-            frameEvaluate = FrameEvaluate(ListIota(listOf(funs)).list, true)
+            frameEvaluate = FrameEvaluate(TreeList.from(listOf(funs)), true)
             newimg = img
         }
     }
@@ -91,7 +90,7 @@ fun PatternIota.executeWithImports(vm: CastingVM?, world: ServerLevel?, continua
     newcont = newcont.pushFrame(frameEvaluate)
     // Consume one op per fired import (same accounting as a normal ConstMediaAction), then enforce
     // the env op limit ourselves -- see the KDoc above for why hexmod's own check cannot reach here.
-    val newimg2 = newimg.copy(opsConsumed = newimg.opsConsumed + 1)
+    val newimg2 = newimg.withUsedOp()
     if (newimg2.opsConsumed > vm.env.maxOpCount()) {
         return CastResult(
             cast = this,
@@ -104,7 +103,7 @@ fun PatternIota.executeWithImports(vm: CastingVM?, world: ServerLevel?, continua
                 )
             ),
             resolutionType = ResolvedPatternType.ERRORED,
-            sound = HexEvalSounds.MISHAP,
+            sound = HexEvalSounds.MISHAP.get(),
         )
     }
     return CastResult(
@@ -113,7 +112,7 @@ fun PatternIota.executeWithImports(vm: CastingVM?, world: ServerLevel?, continua
         newData = newimg2,
         sideEffects = listOf(),
         resolutionType = ResolvedPatternType.EVALUATED,
-        sound = HexEvalSounds.NORMAL_EXECUTE
+        sound = HexEvalSounds.NORMAL_EXECUTE.get()
     )
 }
 
@@ -122,7 +121,7 @@ fun PatternIota.executeWithImports(vm: CastingVM?, world: ServerLevel?, continua
  * the S2C sync and, with the same encoding, by `MixinGuiSpellcasting` on the client.
  */
 fun importKeyString(pattern: HexPattern): String =
-    "${pattern.startDir.name}:${pattern.anglesSignature()}"
+    "${pattern.orientation.name}:${pattern.signature.toAnglesString()}"
 
 /** Tell the casting player which import keys are currently active (empty = none). */
 private fun syncImportKeys(vm: CastingVM, keys: List<String>) {
@@ -161,9 +160,9 @@ fun BlockAkashicRecord.getMaps(world: ServerLevel, pos: BlockPos): Map<HexPatter
             val tile = world.getBlockEntity(neighbor)
             if (tile is BlockEntityAkashicBookshelf) {
                 val pattern = tile.pattern
-                val tag = tile.iotaTag
-                if (pattern != null && tag != null) {
-                    result[pattern] = IotaType.deserialize(tag, world)
+                val iota = tile.iota
+                if (pattern != null && iota != null) {
+                    result[pattern] = iota
                 }
             }
             if (world.getBlockState(neighbor).block is AkashicFloodfiller) {
@@ -175,19 +174,13 @@ fun BlockAkashicRecord.getMaps(world: ServerLevel, pos: BlockPos): Map<HexPatter
 }
 
 fun TrueNameProtection(env: CastingEnvironment, args:List<Iota>,){
-    val caster = env.castingEntity
-    if(caster is ServerPlayer){
-        val others= MishapOthersName.getTrueNameFromArgs(args,caster)
-        if(others != null)throw MishapOthersName(others)
-    }
-    else{
-        val others= MishapOthersName.getTrueNameFromArgs(args,null)
-        if(others != null)throw MishapOthersName(others)
-    }
+    val caster = env.castingEntity as? Player ?: return
+    val others = MishapOthersName.getTrueNameMishapFromArgs(env.world, args, caster)
+    if(others != null) throw others
 }
 
-fun Iota.isTureName(caster: ServerPlayer?):Boolean {
-    return MishapOthersName.getTrueNameFromDatum(this,caster)!= null
+fun Iota.isTureName(caster: Player?):Boolean {
+    return caster != null && MishapOthersName.getTrueNameMishapFromDatum(caster.level() as? ServerLevel ?: return false, this, caster) != null
 }
 
 @OptIn(ExperimentalTime::class)

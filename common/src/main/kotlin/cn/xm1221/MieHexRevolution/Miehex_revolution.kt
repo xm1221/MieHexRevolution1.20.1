@@ -28,9 +28,9 @@ object Miehex_revolution {
 
     // hexal entity type IDs for cross-mod soft compat
     private val HEXAL_WISP_TYPES = setOf(
-        ResourceLocation("hexal", "wisp/ticking"),
-        ResourceLocation("hexal", "wisp/projectile"),
-        ResourceLocation("hexal", "wisp/wandering"),
+        ResourceLocation.fromNamespaceAndPath("hexal", "wisp/ticking"),
+        ResourceLocation.fromNamespaceAndPath("hexal", "wisp/projectile"),
+        ResourceLocation.fromNamespaceAndPath("hexal", "wisp/wandering"),
     )
 
     fun isMonitorEntity(type: EntityType<*>): Boolean {
@@ -46,7 +46,7 @@ object Miehex_revolution {
     val LOGGER: Logger = LogManager.getLogger(MODID)
 
     @JvmStatic
-    fun id(path: String) = ResourceLocation(MODID, path)
+    fun id(path: String) = ResourceLocation.fromNamespaceAndPath(MODID, path)
 
     fun init() {
         Miehex_revolutionServerConfig.init()

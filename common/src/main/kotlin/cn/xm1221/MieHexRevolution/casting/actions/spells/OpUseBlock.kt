@@ -35,9 +35,7 @@ class OpUseBlock : SpellAction{
         return SpellAction.Result(
             effect = object: RenderedSpell{
                 override fun cast(env: CastingEnvironment) {
-                    blockstate.block.use(blockstate,env.world,vec, caster,env.otherHand, BlockHitResult(VEC,
-                        Direction.NORTH,vec,false)
-                          )
+                    blockstate.useWithoutItem(env.world, caster, BlockHitResult(VEC, Direction.NORTH, vec, false))
                 }
             },
             cost = 0,

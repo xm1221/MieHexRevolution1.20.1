@@ -27,7 +27,7 @@ class OpMonitorSet : SpellAction {
            args: List<Iota>,
            env: CastingEnvironment
        ): SpellAction.Result {
-           val monitor = args.getEntity(0, argc)
+           val monitor = args.getEntity(env.world, 0, argc)
            if (env.castingEntity !is ServerPlayer) {
                throw MishapBadCaster()
            }

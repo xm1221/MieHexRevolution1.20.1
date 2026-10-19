@@ -16,7 +16,7 @@ class OpMobTargetGet: ConstMediaAction {
         args: List<Iota>,
         env: CastingEnvironment
     ): List<Iota> {
-        val entity = args.getLivingEntityButNotArmorStand(0,argc)
+        val entity = args.getLivingEntityButNotArmorStand(env.world, 0, argc)
         if(!env.isEntityInRange(entity)){
             throw MishapEntityTooFarAway(entity)
         }

@@ -6,20 +6,20 @@ import at.petrak.hexcasting.api.casting.eval.OperationResult
 import at.petrak.hexcasting.api.casting.eval.vm.CastingImage
 import at.petrak.hexcasting.api.casting.eval.vm.SpellContinuation
 import at.petrak.hexcasting.common.lib.hex.HexEvalSounds
+import cn.xm1221.MieHexRevolution.api.casting.iota.ImportsIota
 
+/**
+ * Toggles "raw mode": while active, import bindings are bypassed and patterns run their native
+ * action. The flag lives in a transient [CastingImage] component (see [ImportsIota.RAW_COMPONENT]).
+ */
 class OpRawPattern: Action {
     override fun operate(
         env: CastingEnvironment,
         image: CastingImage,
         continuation: SpellContinuation
     ): OperationResult {
-        val userdata = image.userData
-        if(userdata.contains("run_raw") && userdata.getBoolean("run_raw")) {
-            userdata.putBoolean("run_raw", false)
-        }
-        else{
-            userdata.putBoolean("run_raw",true)
-        }
-        return OperationResult(image.copy(userData = userdata).withUsedOp(),listOf(),continuation, HexEvalSounds.NORMAL_EXECUTE)
+        val current = image.getComponent(ImportsIota.RAW_COMPONENT) == true
+        val newImage = image.withComponent(ImportsIota.RAW_COMPONENT, !current).withUsedOp()
+        return OperationResult(newImage, listOf(), continuation, HexEvalSounds.NORMAL_EXECUTE.get())
     }
 }

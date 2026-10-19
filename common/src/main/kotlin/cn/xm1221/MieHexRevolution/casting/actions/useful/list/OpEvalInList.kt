@@ -1,17 +1,16 @@
 package cn.xm1221.MieHexRevolution.casting.actions.useful.list
 
 import at.petrak.hexcasting.api.casting.castables.Action
-import at.petrak.hexcasting.api.casting.castables.ConstMediaAction
 import at.petrak.hexcasting.api.casting.eval.CastingEnvironment
 import at.petrak.hexcasting.api.casting.eval.OperationResult
 import at.petrak.hexcasting.api.casting.eval.vm.CastingImage
-import at.petrak.hexcasting.api.casting.eval.vm.ContinuationFrame
 import at.petrak.hexcasting.api.casting.eval.vm.FrameEvaluate
 import at.petrak.hexcasting.api.casting.eval.vm.FrameFinishEval
 import at.petrak.hexcasting.api.casting.eval.vm.SpellContinuation
 import at.petrak.hexcasting.api.casting.getList
 import at.petrak.hexcasting.api.casting.iota.Iota
 import at.petrak.hexcasting.api.casting.mishaps.MishapNotEnoughArgs
+import at.petrak.hexcasting.api.utils.TreeList
 import at.petrak.hexcasting.common.lib.hex.HexEvalSounds
 import cn.xm1221.MieHexRevolution.casting.frame.PushFrame
 
@@ -33,16 +32,15 @@ class OpEvalInList: Action{
         repeat(this.argc) { stack.removeLast() }
         val list = args.getList(0, argc)
         val code = args.getList(1, argc)
-        val cstack  = list.toList()
-        val frameEvaluate = FrameEvaluate(code,true)
-        val ostack=   stack
-        val pushFrame = PushFrame(ostack)
-        val newcont=   continuation.pushFrame(pushFrame).pushFrame(FrameFinishEval).pushFrame(frameEvaluate)
+        val cstack = TreeList.from(list)
+        val frameEvaluate = FrameEvaluate(code, true)
+        val pushFrame = PushFrame(stack.toList())
+        val newcont = continuation.pushFrame(pushFrame).pushFrame(FrameFinishEval).pushFrame(frameEvaluate)
         return OperationResult(
             image.copy(stack = cstack),
             sideEffects = listOf(),
             newContinuation = newcont,
-            sound = HexEvalSounds.HERMES,
+            sound = HexEvalSounds.HERMES.get(),
         )
     }
 }

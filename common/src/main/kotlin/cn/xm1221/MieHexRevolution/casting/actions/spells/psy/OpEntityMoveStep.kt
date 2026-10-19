@@ -20,7 +20,7 @@ class OpEntityMoveStep: SpellAction {
         env: CastingEnvironment
     ): SpellAction.Result {
 
-        val target = args.getLivingEntityButNotArmorStand(0,argc)
+        val target = args.getLivingEntityButNotArmorStand(env.world, 0, argc)
         val vec = args.getVec3(1,argc)
         if(!env.isEntityInRange(target)){
             throw MishapEntityTooFarAway(target)

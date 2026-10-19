@@ -26,7 +26,7 @@ class OpImportsFromList : ConstMediaAction {
         val map = HashMap<HexPattern, Iota>()
         for (element in list.list) {
             if (element !is ListIota) throw MishapInvalidIota.of(element, 0, "imports_pair")
-            if (element.list.size() != 2) throw MishapInvalidIota.of(element, 0, "imports_pair")
+            if (element.list.size != 2) throw MishapInvalidIota.of(element, 0, "imports_pair")
             val pair = element.list.take(2).toList()
             val key = pair[0]
             if (key !is PatternIota) throw MishapInvalidIota.ofType(key, 0, "pattern")

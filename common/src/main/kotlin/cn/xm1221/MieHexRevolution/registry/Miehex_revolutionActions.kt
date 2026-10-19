@@ -42,6 +42,6 @@ object Miehex_revolutionActions : Miehex_revolutionRegistrar<ActionRegistryEntry
         make(name, startDir, signature) { action }
 
     private fun make(name: String, startDir: HexDir, signature: String, getAction: () -> Action) = register(name) {
-        ActionRegistryEntry(HexPattern.fromAngles(signature, startDir), getAction())
+        ActionRegistryEntry(HexPattern.fromAngleString(signature, startDir), getAction())
     }
 }

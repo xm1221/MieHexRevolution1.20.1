@@ -33,11 +33,11 @@ abstract class IdeaBlock(properties: Properties) : Block(properties), EntityBloc
 
     // === Interaction (1.20.1: use, not useItemOn) ===
 
-    override fun use(
+    override fun useWithoutItem(
         state: BlockState, level: Level, pos: BlockPos,
-        player: Player, hand: InteractionHand, hit: BlockHitResult,
+        player: Player, hit: BlockHitResult,
     ): InteractionResult {
-        val stack = player.getItemInHand(hand)
+        val stack = player.getItemInHand(InteractionHand.MAIN_HAND)
 
         // Shift + empty hand = reset material
         if (player.isShiftKeyDown && stack.isEmpty) {
@@ -128,7 +128,7 @@ abstract class IdeaBlock(properties: Properties) : Block(properties), EntityBloc
     }
 
    override fun getCloneItemStack(
-        blockState: BlockState, target: HitResult, level: LevelReader, pos: BlockPos, player: Player?
+        level: LevelReader, pos: BlockPos, blockState: BlockState
     ): ItemStack {
         return ItemStack(this)
     }

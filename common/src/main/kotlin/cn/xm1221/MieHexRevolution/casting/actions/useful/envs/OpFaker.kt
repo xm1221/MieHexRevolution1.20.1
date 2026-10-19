@@ -20,7 +20,7 @@ class OpFaker: ConstMediaAction {
         args: List<Iota>,
         env: CastingEnvironment
     ): List<Iota> {
-        val entity = args.getLivingEntityButNotArmorStand(0,argc)
+        val entity = args.getLivingEntityButNotArmorStand(env.world, 0, argc)
         val caster = env.castingEntity
         if(caster !is ServerPlayer ) {
             throw MishapBadCaster()
@@ -32,8 +32,8 @@ class OpFaker: ConstMediaAction {
             val stack = caster.getItemInHand(env.otherHand)
             val item = stack.item
             if(item is IotaHolderItem){
-                val iota=item.readIota(stack,env.world)
-                if(!(iota is EntityIota && iota.entity == entity)){
+                val iota=item.readIota(stack)
+                if(!(iota is EntityIota && iota.entityId == entity.uuid)){
                     throw MishapOthersName(entity)
                 }
                 PlayerRemoteCastData.set(caster,entity)

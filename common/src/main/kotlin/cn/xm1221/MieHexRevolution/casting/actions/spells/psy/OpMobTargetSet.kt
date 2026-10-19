@@ -26,8 +26,8 @@ class OpMobTargetSet: SpellAction {
         args: List<Iota>,
         env: CastingEnvironment
     ): SpellAction.Result {
-        val target = args.getLivingEntityButNotArmorStand(0,argc)
-        val target1 =args.getLivingEntityButNotArmorStand(1,argc)
+        val target = args.getLivingEntityButNotArmorStand(env.world, 0, argc)
+        val target1 =args.getLivingEntityButNotArmorStand(env.world, 1, argc)
         if(!env.isEntityInRange(target)){
             throw MishapEntityTooFarAway(target)
         }

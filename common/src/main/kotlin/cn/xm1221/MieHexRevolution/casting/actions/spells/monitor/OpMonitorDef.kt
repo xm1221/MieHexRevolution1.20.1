@@ -18,7 +18,7 @@ class OpMonitorDef : ConstMediaAction {
            args: List<Iota>,
            env: CastingEnvironment
        ): List<Iota> {
-           val target = args.getEntity(0, argc)
+           val target = args.getEntity(env.world, 0, argc)
            if (Miehex_revolution.isMonitorEntity(target.type)) {
                val res = listOf<Iota>()
                if (env.world.players().size > 1023) {

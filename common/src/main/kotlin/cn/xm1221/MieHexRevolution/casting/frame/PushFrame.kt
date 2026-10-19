@@ -8,25 +8,30 @@ import at.petrak.hexcasting.api.casting.eval.vm.SpellContinuation
 import at.petrak.hexcasting.api.casting.iota.Iota
 import at.petrak.hexcasting.api.casting.iota.IotaType
 import at.petrak.hexcasting.api.casting.iota.ListIota
+import at.petrak.hexcasting.api.utils.TreeList
 import at.petrak.hexcasting.common.lib.hex.HexEvalSounds
-import net.minecraft.nbt.CompoundTag
+import com.mojang.serialization.MapCodec
+import com.mojang.serialization.codecs.RecordCodecBuilder
+import net.minecraft.network.RegistryFriendlyByteBuf
+import net.minecraft.network.codec.StreamCodec
 import net.minecraft.server.level.ServerLevel
 
-class PushFrame(val iotas: List<Iota>): ContinuationFrame {
+/**
+ * Pushes [iotas] onto the top of the casting stack when evaluated.
+ */
+class PushFrame(val iotas: List<Iota>) : ContinuationFrame {
     override val type: ContinuationFrame.Type<*>
         get() = TYPE
 
-    override fun breakDownwards(stack: List<Iota>): Pair<Boolean, List<Iota>> {
-        return false to stack
-    }
+    override fun breakDownwards(stack: TreeList<Iota>): Pair<Boolean, TreeList<Iota>> =
+        false to stack
 
     override fun evaluate(
         continuation: SpellContinuation,
         level: ServerLevel,
         harness: CastingVM
     ): CastResult {
-        val stack = harness.image.stack.toMutableList()
-        val newStack = iotas.toMutableList().plus(stack)
+        val newStack = TreeList.from(iotas).appendedAll(harness.image.stack)
         val newimage = harness.image.copy(stack = newStack)
         return CastResult(
             cast = ListIota(iotas),
@@ -34,26 +39,28 @@ class PushFrame(val iotas: List<Iota>): ContinuationFrame {
             newData = newimage,
             sideEffects = listOf(),
             resolutionType = ResolvedPatternType.EVALUATED,
-            sound = HexEvalSounds.HERMES
+            sound = HexEvalSounds.HERMES.get()
         )
     }
 
-    override fun serializeToNBT(): CompoundTag {
-        return IotaType.serialize(ListIota(iotas))
-    }
-
-    override fun size(): Int {
-        return 1
-    }
+    override fun size(): Int = 1
 
     companion object {
+        private val LIST_CODEC = ListIota.TYPE.codec()
+
         @JvmField
         val TYPE: ContinuationFrame.Type<PushFrame> = object : ContinuationFrame.Type<PushFrame> {
-            override fun deserializeFromNBT(tag: CompoundTag, world: ServerLevel): PushFrame {
-               val iota = IotaType.deserialize(tag,world) as ListIota
-                return PushFrame(iota.list.toList())
-            }
+            override fun codec(): MapCodec<PushFrame> =
+                LIST_CODEC.xmap(
+                    { listIota -> PushFrame(listIota.list.toList()) },
+                    { frame -> ListIota(frame.iotas) }
+                )
 
+            override fun streamCodec(): StreamCodec<RegistryFriendlyByteBuf, PushFrame> =
+                ListIota.TYPE.streamCodec().map(
+                    { listIota -> PushFrame(listIota.list.toList()) },
+                    { frame -> ListIota(frame.iotas) }
+                )
         }
     }
 }

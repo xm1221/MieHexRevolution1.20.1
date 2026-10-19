@@ -15,7 +15,7 @@ class OpEntityLastHurtGet: ConstMediaAction {
         args: List<Iota>,
         env: CastingEnvironment
     ): List<Iota> {
-        val target = args.getLivingEntityButNotArmorStand(0,argc)
+        val target = args.getLivingEntityButNotArmorStand(env.world, 0, argc)
         if(!env.isEntityInRange(target)){
             throw MishapEntityTooFarAway(target)
         }

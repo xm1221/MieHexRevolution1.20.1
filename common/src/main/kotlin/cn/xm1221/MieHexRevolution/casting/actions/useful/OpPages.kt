@@ -23,7 +23,7 @@ class OpPages: ConstMediaAction {
             var item = book.item
             if(item is ItemSpellbook){
                 for( i in 0 until idx){
-                    ItemSpellbook.rotatePageIdx(book,true)
+                    ItemSpellbook.rotatePageIdx(book, true, env.world)
                 }
                 return listOf()
             }
@@ -31,7 +31,7 @@ class OpPages: ConstMediaAction {
             item = book.item
             if(item is ItemSpellbook){
                 for( i in 0 until idx){
-                    ItemSpellbook.rotatePageIdx(book,true)
+                    ItemSpellbook.rotatePageIdx(book, true, env.world)
                 }
                 return listOf()
             }

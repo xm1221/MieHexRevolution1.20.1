@@ -9,10 +9,7 @@ import at.petrak.hexcasting.api.casting.iota.EntityIota
 import at.petrak.hexcasting.api.casting.iota.Iota
 import at.petrak.hexcasting.api.casting.iota.Vec3Iota
 import at.petrak.hexcasting.api.pigment.FrozenPigment
-import at.petrak.hexcasting.api.utils.getInt
-import at.petrak.hexcasting.api.utils.getLong
-import at.petrak.hexcasting.api.utils.putLong
-import at.petrak.hexcasting.api.utils.hasInt
+import at.petrak.hexcasting.common.lib.HexDataComponents
 import net.minecraft.commands.arguments.coordinates.Vec2Argument.vec2
 import net.minecraft.core.BlockPos
 import net.minecraft.server.level.ServerLevel
@@ -22,7 +19,7 @@ import net.minecraft.world.entity.LivingEntity
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.phys.Vec3
 
-class IdeaCastingEnv( caster: LivingEntity?, world: ServerLevel,val item: ItemStack,val data: Iota,hand: InteractionHand): PlayerBasedCastEnv(
+class IdeaCastingEnv( caster: LivingEntity?, private val world: ServerLevel, val item: ItemStack, val data: Iota, hand: InteractionHand): PlayerBasedCastEnv(
     caster as ServerPlayer?,hand) {
     val TAG_MEDIA: String = "hexcasting:media"
     val TAG_MAX_MEDIA: String = "hexcasting:start_media"
@@ -47,10 +44,10 @@ class IdeaCastingEnv( caster: LivingEntity?, world: ServerLevel,val item: ItemSt
 
     override fun extractMediaEnvironment(cost: Long, simulate: Boolean): Long {
         if (caster is ServerPlayer && caster.isCreative) return 0
-        val available = item.getLong(TAG_MEDIA)
+        val available = item.get(HexDataComponents.MEDIA.get()) ?: 0L
         val extracted = minOf(cost, available)
         if (!simulate && extracted > 0) {
-            item.putLong(TAG_MEDIA, available - extracted)
+            item.set(HexDataComponents.MEDIA.get(), available - extracted)
         }
         return cost - extracted
     }
@@ -63,7 +60,7 @@ class IdeaCastingEnv( caster: LivingEntity?, world: ServerLevel,val item: ItemSt
         if(data is Vec3Iota && isInSameBlock(data.vec3,vec)){
             return true
         }
-        else if(data is EntityIota &&(isInSameBlock(data.entity.eyePosition,vec)|| isInSameBlock(data.entity.eyePosition,vec)) ) {
+        else if(data is EntityIota && isInSameBlock(data.getEntity(world).eyePosition,vec) ) {
             return true
         }
         return super.isVecInRangeEnvironment(vec)

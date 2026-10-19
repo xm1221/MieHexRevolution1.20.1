@@ -21,7 +21,7 @@ class OpEntityInteract: SpellAction {
         args: List<Iota>,
         env: CastingEnvironment
     ): SpellAction.Result {
-        val target = args.getEntity(0,argc)
+        val target = args.getEntity(env.world, 0, argc)
         val ops = args.getBool(1,argc)
         val caster =env.castingEntity
         if(caster !is Player ) {

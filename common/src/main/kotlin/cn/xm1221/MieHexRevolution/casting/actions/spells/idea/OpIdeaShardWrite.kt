@@ -10,13 +10,11 @@ import at.petrak.hexcasting.api.casting.mishaps.MishapBadCaster
 import at.petrak.hexcasting.api.casting.mishaps.MishapBadOffhandItem
 import at.petrak.hexcasting.api.casting.mishaps.MishapOthersName
 import at.petrak.hexcasting.api.misc.MediaConstants
-import at.petrak.hexcasting.api.utils.putLong
-import at.petrak.hexcasting.common.items.magic.ItemMediaHolder
+import at.petrak.hexcasting.common.lib.HexDataComponents
 import at.petrak.hexcasting.common.lib.HexItems
 import cn.xm1221.MieHexRevolution.item.ItemIdeaShard
 import cn.xm1221.MieHexRevolution.registry.Miehex_revolutionBlocks
 import net.minecraft.server.level.ServerPlayer
-import net.minecraft.world.entity.player.Player
 import net.minecraft.world.item.ItemStack
 
 class OpIdeaShardWrite: SpellAction {
@@ -34,8 +32,11 @@ class OpIdeaShardWrite: SpellAction {
         if (itemstack.item !== HexItems.QUENCHED_SHARD) {
             throw MishapBadOffhandItem.of(itemstack, "quenched_shard")
         }
-        if(data is EntityIota && data.entity is ServerPlayer && data.entity != env.castingEntity){
-            throw MishapOthersName(data.entity as Player)
+        if(data is EntityIota){
+            val bound = data.getEntity(env.world)
+            if(bound is ServerPlayer && bound != env.castingEntity){
+                throw MishapOthersName(bound)
+            }
         }
         return SpellAction.Result(
             effect = Result(data, spell),
@@ -54,7 +55,7 @@ class OpIdeaShardWrite: SpellAction {
             val stack = ItemStack(shard)
             shard.writeDatum(stack, data)
             shard.writeSpell(stack, spell)
-            stack.putLong(ItemMediaHolder.TAG_MAX_MEDIA, MediaConstants.QUENCHED_SHARD_UNIT)
+            stack.set(HexDataComponents.MEDIA_MAX.get(), MediaConstants.QUENCHED_SHARD_UNIT)
             shard.setMedia(stack, MediaConstants.QUENCHED_SHARD_UNIT)
             caster.spawnAtLocation(stack)
         }

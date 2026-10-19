@@ -24,7 +24,7 @@ class OpUseWithItemEntity() : SpellAction {
         env: CastingEnvironment
     ): SpellAction.Result {
         val vec = args.getBlockPos(0,argc)
-        val itemstack =args.getItemEntity(1,argc).item
+        val itemstack =args.getItemEntity(env.world, 1, argc).item
         val VEC = Vec3(vec.x.toDouble(), vec.y.toDouble(), vec.z.toDouble())
         val caster = env.castingEntity
         //val blockstate = env.world.getBlockState(vec)
