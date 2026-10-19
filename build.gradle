@@ -56,7 +56,17 @@ subprojects {
        // Patchouli is not referenced from source; the books are plain data files.
        // The pre-1.21 Maven artifact cannot be resolved (remapped jars), so use the
        // locally provided jar instead of a remote coordinate.
-        modImplementation fileTree(dir: "${rootProject.projectDir}/common/libs", include: '*.jar')
+        // Platform-filtered local jars: the *-common-* artifacts are intermediary-mapped and
+        // must not be visible to the NeoForge compile (its jar ships named classes for the
+        // same types, and a duplicate intermediary class wins resolution otherwise).
+        def libJars = fileTree(dir: "${rootProject.projectDir}/common/libs", include: '*.jar')
+        if (project.name == 'neoforge') {
+            libJars = libJars.matching { exclude 'hexcasting-common-*.jar', 'paucal-*-common*.jar' }
+        }
+        // Plain `implementation`: these local jars are already in Mojang (named) mappings, and
+        // `modImplementation` would run Loom's remapper, which mis-detects their namespace
+        // and emits intermediary (class_XXXX) references that no longer match the dev MC.
+        implementation libJars
 
     }
 

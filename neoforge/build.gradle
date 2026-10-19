@@ -56,3 +56,9 @@ remapJar {
     inputFile.set shadowJar.archiveFile
 }
 
+
+tasks.register('printCp') {
+    doLast {
+        configurations.compileClasspath.resolve().each { println it }
+    }
+}
