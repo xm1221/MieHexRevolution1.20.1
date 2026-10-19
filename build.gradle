@@ -63,7 +63,7 @@ subprojects {
        // modImplementation("at.petra-k.paucal:paucal-${nameForRef}-${project.minecraft_version}:${project.paucalVersion}") { transitive = false }
         modImplementation("vazkii.patchouli:Patchouli:${project.patchouliVersion}-${nameForRef.toUpperCase()}")
 
-        implementation fileTree(dir: "libs", include: '*.jar')
+        implementation fileTree(dir: "${rootProject.projectDir}/common/libs", include: '*.jar')
 
     }
 
