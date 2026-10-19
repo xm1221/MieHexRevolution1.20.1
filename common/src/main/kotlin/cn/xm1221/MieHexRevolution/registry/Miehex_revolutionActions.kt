@@ -6,16 +6,37 @@ import at.petrak.hexcasting.api.casting.math.HexDir
 import at.petrak.hexcasting.api.casting.math.HexPattern
 import at.petrak.hexcasting.common.lib.HexRegistries
 import at.petrak.hexcasting.common.lib.hex.HexActions
+import cn.xm1221.MieHexRevolution.casting.actions.imports.OpImportGet
+import cn.xm1221.MieHexRevolution.casting.actions.imports.OpImportsBind
+import cn.xm1221.MieHexRevolution.casting.actions.imports.OpImportsBindDirect
+import cn.xm1221.MieHexRevolution.casting.actions.imports.OpImportsCreate
+import cn.xm1221.MieHexRevolution.casting.actions.imports.OpImportsFromAkashic
+import cn.xm1221.MieHexRevolution.casting.actions.imports.OpImportsFromList
+import cn.xm1221.MieHexRevolution.casting.actions.imports.OpImportsMerge
+import cn.xm1221.MieHexRevolution.casting.actions.imports.OpImportsToList
+import cn.xm1221.MieHexRevolution.casting.actions.imports.OpRawPattern
+import cn.xm1221.MieHexRevolution.casting.actions.spells.OpEntityInteract
 import cn.xm1221.MieHexRevolution.casting.actions.spells.OpUseBlock
 import cn.xm1221.MieHexRevolution.casting.actions.spells.OpUseItemOn
 import cn.xm1221.MieHexRevolution.casting.actions.spells.OpUseWithItemEntity
 import cn.xm1221.MieHexRevolution.casting.actions.spells.OpWorldLoader
+import cn.xm1221.MieHexRevolution.casting.actions.spells.circle.OpCircleLengthUsed
 import cn.xm1221.MieHexRevolution.casting.actions.spells.idea.OpIdeaBlockSet
+import cn.xm1221.MieHexRevolution.casting.actions.spells.idea.OpIdeaShardWrite
+import cn.xm1221.MieHexRevolution.casting.actions.spells.monitor.OpMonitorDef
 import cn.xm1221.MieHexRevolution.casting.actions.spells.monitor.OpMonitorGet
 import cn.xm1221.MieHexRevolution.casting.actions.spells.monitor.OpMonitorSet
+import cn.xm1221.MieHexRevolution.casting.actions.spells.psy.OpEntityLastHurtGet
+import cn.xm1221.MieHexRevolution.casting.actions.spells.psy.OpEntityMoveStep
+import cn.xm1221.MieHexRevolution.casting.actions.spells.psy.OpEntityMoveTo
+import cn.xm1221.MieHexRevolution.casting.actions.spells.psy.OpEntityRot
+import cn.xm1221.MieHexRevolution.casting.actions.spells.psy.OpMobTargetGet
+import cn.xm1221.MieHexRevolution.casting.actions.spells.psy.OpMobTargetSet
 import cn.xm1221.MieHexRevolution.casting.actions.useful.OpMax
 import cn.xm1221.MieHexRevolution.casting.actions.useful.OpMin
 import cn.xm1221.MieHexRevolution.casting.actions.useful.OpPages
+import cn.xm1221.MieHexRevolution.casting.actions.useful.envs.OpFaker
+import cn.xm1221.MieHexRevolution.casting.actions.useful.hexextra.OpLLKLoop
 import cn.xm1221.MieHexRevolution.casting.actions.useful.list.OpEvalInList
 import cn.xm1221.MieHexRevolution.casting.actions.useful.list.OpIndexes
 
@@ -38,6 +59,39 @@ object Miehex_revolutionActions : Miehex_revolutionRegistrar<ActionRegistryEntry
     val IDEA_SET = make("idea/set", HexDir.EAST,"wqaqqqqqeawqwqwqwqwqw", OpIdeaBlockSet())
     val EVAL_IN = make("eval_in", HexDir.SOUTH_EAST,"wdwewawqwqw", OpEvalInList())
     val INDEXES = make("indexes", HexDir.EAST,"qqqqqdeee", OpIndexes())
+
+    val ENTITY_MOVE = make("entity/move", HexDir.EAST,"deeedawedeeee", OpEntityMoveTo())
+    val ENTITY_MOVE_STEP = make("entity/step", HexDir.SOUTH_WEST,"qqqqaqwqaawdd", OpEntityMoveStep())
+    val ENTITY_LAST_HURT = make("entity/lasthurt", HexDir.EAST,"wadwdqdwd", OpEntityLastHurtGet())
+    val MOB_TARGET_GET = make("entity/target/get", HexDir.EAST,"qqqaqww", OpMobTargetGet())
+    val MOB_TARGET_SET = make("entity/target/set", HexDir.EAST,"addqaqwawqeawa", OpMobTargetSet())
+    val ENTITY_ROT = make("entity/rot", HexDir.SOUTH_EAST,"qqqqaqwdwd", OpEntityRot())
+    val ENTITY_IN = make(
+        "interact", HexDir.SOUTH_WEST,
+        "dwqqwqwqwaweaqqqqedwqqwqwqwaqeeedqaedwqqwqwqwaweaqqqq",
+        OpEntityInteract()
+    )
+
+    val IDEA_WRITE = make("idea_shard/write", HexDir.EAST,"waqqqq", OpIdeaShardWrite())
+
+    val CIRCLE_USED = make("circle/used", HexDir.SOUTH_EAST,"qdeqqaqqedq", OpCircleLengthUsed())
+
+    val CHANGE_ENV = make("changeenv", HexDir.EAST,"edwaq", OpFaker())
+
+    // Imports: pattern -> iota bindings, stored per-cast in CastingImage components
+    // (ImportsIota.COMPONENT / RAW_COMPONENT). See ImportsIota's KDoc for the Hex 0.12 rationale.
+    val IMPORTS_CREATE = make("imports/create", HexDir.WEST, "qqaedwaqdee", OpImportsCreate())
+    val IMPORTS_BIND = make("imports/bind", HexDir.NORTH_EAST, "aqdeeqqaed", OpImportsBind())
+    val IMPORTS_BIND_DIRECT =
+        make("imports/bind_direct", HexDir.SOUTH_EAST, "aqdeeqawqqeqqwqqeq", OpImportsBindDirect())
+    val RAW_PATTERN = make("raw/pattern", HexDir.WEST, "wqqqwaqe", OpRawPattern())
+    val IMPORTS_GET = make("imports/get", HexDir.NORTH_EAST, "daddwaqq", OpImportGet())
+    val IMPORTS_MERGE = make("imports/merge", HexDir.NORTH_WEST, "aqawwaawwaqa", OpImportsMerge())
+    val IMPORTS_FROM_A = make("imports/from_a", HexDir.EAST, "eeeweeeeedewqaq", OpImportsFromAkashic())
+    val IMPORTS_TO_LIST = make("imports/to_list", HexDir.WEST, "qqqqwde", OpImportsToList())
+    val IMPORTS_FROM_LIST = make("imports/from_list", HexDir.EAST, "eeeewaq", OpImportsFromList())
+
+    val LLKLOOP = make("llk_loop", HexDir.NORTH_WEST, "qaweedwaqqwde", OpLLKLoop())
     private fun make(name: String, startDir: HexDir, signature: String, action: Action) =
         make(name, startDir, signature) { action }
 

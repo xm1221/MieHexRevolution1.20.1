@@ -38,7 +38,12 @@ import java.util.function.Supplier
  * use reference equality and would never match after a codec round-trip.
  *
  * Hex 0.12 removed arbitrary `CastingImage.userData`; per-cast state lives in registered
- * [ImageComponentType]s. The imports therefore live in the component [COMPONENT].
+ * [ImageComponentType]s. **The [COMPONENT]/[RAW_COMPONENT] image components below are the
+ * intended, permanent replacement for the old userData design — not a temporary shim.** Both
+ * are registered in `MieHexRevolutionImageComponents`, and every read/write in the addon goes
+ * through them ([cn.xm1221.MieHexRevolution.util.executeWithImports], the import ops and
+ * `OpRawPattern`). Client-side tinting is separate: it is synced per stroke into
+ * [cn.xm1221.MieHexRevolution.util.ClientImportKeys] and never reads the image.
  */
 class ImportsIota(val imports: Map<HexPattern, Iota>) : Iota(Supplier { Type }) {
 

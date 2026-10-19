@@ -36,13 +36,23 @@ import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
 
 /**
- * If the current cast has an [ImportsIota] bound in its user data and [this] pattern is one of its
- * keys, evaluate to the bound value instead of the pattern's usual action. Returns `null` to signal
- * that the normal pattern execution should proceed.
+ * If the current cast has an [ImportsIota] bound in its [at.petrak.hexcasting.api.casting.eval.vm.CastingImage]
+ * components and [this] pattern is one of its keys, evaluate to the bound value instead of the
+ * pattern's usual action. Returns `null` to signal that the normal pattern execution should proceed.
+ *
+ * **This is the Hex 0.12 replacement for the old `PatternIota.userData` design, not a stub.**
+ * Hex 0.12 deleted `CastingImage.userData`; per-cast state now has to be stored in a registered
+ * [at.petrak.hexcasting.api.casting.eval.vm.ImageComponentType]. The import set is read/written
+ * through [ImportsIota.COMPONENT], and the raw-mode toggle through [ImportsIota.RAW_COMPONENT]
+ * (both registered in `MieHexRevolutionImageComponents`). There is deliberately no second
+ * storage mechanism.
+ *
+ * The client-side import tint does *not* use these components either: it is synchronized per
+ * stroke over the network into [ClientImportKeys] and applied by `MixinGuiSpellcasting`.
  *
  * Firing an import consumes one op, and we apply the same op limit a normal cast has
  * ([at.petrak.hexcasting.api.casting.eval.CastingEnvironment.maxOpCount], MishapEvalTooMuch).
- * In 0.11.3 that check only runs inside `PatternIota.lookupAndOperate` for the normal action path,
+ * In 0.11.3 that check only ran inside `PatternIota.lookupAndOperate` for the normal action path,
  * which this import path never reaches -- so without the check here, a bound function that
  * (transitively) calls its own key would grow the continuation forever and exhaust the heap.
  */
