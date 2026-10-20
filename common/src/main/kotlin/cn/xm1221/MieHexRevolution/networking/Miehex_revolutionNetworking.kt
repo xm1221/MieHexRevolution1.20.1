@@ -1,15 +1,15 @@
 package cn.xm1221.MieHexRevolution.networking
 
-import dev.architectury.networking.NetworkChannel
-import cn.xm1221.MieHexRevolution.Miehex_revolution
-import cn.xm1221.MieHexRevolution.networking.msg.Miehex_revolutionMessageCompanion
+import cn.xm1221.MieHexRevolution.networking.msg.MsgSyncConfigS2C
+import cn.xm1221.MieHexRevolution.networking.msg.MsgSyncImportKeysS2C
+import java.util.concurrent.atomic.AtomicBoolean
 
 object Miehex_revolutionNetworking {
-    val CHANNEL: NetworkChannel = NetworkChannel.create(Miehex_revolution.id("networking_channel"))
+    private val initialized = AtomicBoolean(false)
 
     fun init() {
-        for (subclass in Miehex_revolutionMessageCompanion::class.sealedSubclasses) {
-            subclass.objectInstance?.register(CHANNEL)
-        }
+        if (!initialized.compareAndSet(false, true)) return
+        MsgSyncConfigS2C.register()
+        MsgSyncImportKeysS2C.register()
     }
 }

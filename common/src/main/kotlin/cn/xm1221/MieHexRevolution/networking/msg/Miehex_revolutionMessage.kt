@@ -1,36 +1,31 @@
 package cn.xm1221.MieHexRevolution.networking.msg
 
-import dev.architectury.networking.NetworkChannel
-import dev.architectury.networking.NetworkManager.PacketContext
 import cn.xm1221.MieHexRevolution.Miehex_revolution
-import cn.xm1221.MieHexRevolution.networking.Miehex_revolutionNetworking
 import cn.xm1221.MieHexRevolution.networking.handler.applyOnClient
 import cn.xm1221.MieHexRevolution.networking.handler.applyOnServer
+import dev.architectury.networking.NetworkManager
+import dev.architectury.networking.NetworkManager.PacketContext
+import io.netty.buffer.Unpooled
 import net.fabricmc.api.EnvType
 import net.minecraft.network.FriendlyByteBuf
+import net.minecraft.network.RegistryFriendlyByteBuf
+import net.minecraft.resources.ResourceLocation
 import net.minecraft.server.level.ServerPlayer
 import java.util.function.Supplier
 
 sealed interface Miehex_revolutionMessage
 
-sealed interface Miehex_revolutionMessageC2S : Miehex_revolutionMessage {
-    fun sendToServer() {
-        Miehex_revolutionNetworking.CHANNEL.sendToServer(this)
-    }
-}
+sealed interface Miehex_revolutionMessageC2S : Miehex_revolutionMessage
 
 sealed interface Miehex_revolutionMessageS2C : Miehex_revolutionMessage {
-    fun sendToPlayer(player: ServerPlayer) {
-        Miehex_revolutionNetworking.CHANNEL.sendToPlayer(player, this)
-    }
-
+    fun sendToPlayer(player: ServerPlayer)
     fun sendToPlayers(players: Iterable<ServerPlayer>) {
-        Miehex_revolutionNetworking.CHANNEL.sendToPlayers(players, this)
+        for (p in players) sendToPlayer(p)
     }
 }
 
 sealed interface Miehex_revolutionMessageCompanion<T : Miehex_revolutionMessage> {
-    val type: Class<T>
+    val id: ResourceLocation
 
     fun decode(buf: FriendlyByteBuf): T
 
@@ -56,7 +51,16 @@ sealed interface Miehex_revolutionMessageCompanion<T : Miehex_revolutionMessage>
         }
     }
 
-    fun register(channel: NetworkChannel) {
-        channel.register(type, { msg, buf -> msg.encode(buf) }, ::decode, ::apply)
+    /** S2C-only. Never also register as C2S (NeoForge rejects same id both ways). */
+    fun registerS2C() {
+        NetworkManager.registerReceiver(NetworkManager.s2c(), id) { buf, ctx ->
+            apply(decode(buf), Supplier { ctx })
+        }
+    }
+
+    fun sendS2C(player: ServerPlayer, msg: T) {
+        val buf = RegistryFriendlyByteBuf(Unpooled.buffer(), player.registryAccess())
+        msg.encode(buf)
+        NetworkManager.sendToPlayer(player, id, buf)
     }
 }

@@ -24,7 +24,6 @@ import at.petrak.hexcasting.common.blocks.akashic.BlockAkashicRecord
 import at.petrak.hexcasting.common.blocks.akashic.BlockEntityAkashicBookshelf
 import at.petrak.hexcasting.common.lib.hex.HexEvalSounds
 import cn.xm1221.MieHexRevolution.api.casting.iota.ImportsIota
-import cn.xm1221.MieHexRevolution.networking.Miehex_revolutionNetworking
 import cn.xm1221.MieHexRevolution.networking.msg.MsgSyncImportKeysS2C
 import net.minecraft.core.BlockPos
 import net.minecraft.core.Direction
@@ -136,7 +135,7 @@ fun importKeyString(pattern: HexPattern): String =
 /** Tell the casting player which import keys are currently active (empty = none). */
 private fun syncImportKeys(vm: CastingVM, keys: List<String>) {
     val player = vm.env.castingEntity as? ServerPlayer ?: return
-    Miehex_revolutionNetworking.CHANNEL.sendToPlayer(player, MsgSyncImportKeysS2C(keys))
+    MsgSyncImportKeysS2C(keys).sendToPlayer(player)
 }
 
 /** Flood-fill search radius used by BlockAkashicRecord itself (mirrors its calls to AkashicFloodfiller). */
