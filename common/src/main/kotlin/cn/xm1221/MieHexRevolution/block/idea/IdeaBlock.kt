@@ -5,6 +5,7 @@ import net.minecraft.core.Direction
 import net.minecraft.sounds.SoundSource
 import net.minecraft.world.InteractionHand
 import net.minecraft.world.InteractionResult
+import net.minecraft.world.ItemInteractionResult
 import net.minecraft.world.entity.Entity
 import net.minecraft.world.entity.LivingEntity
 import net.minecraft.world.entity.player.Player
@@ -31,16 +32,44 @@ abstract class IdeaBlock(properties: Properties) : Block(properties), EntityBloc
 
     override fun <T : BlockEntity> getTicker(level: Level, state: BlockState, type: BlockEntityType<T>): BlockEntityTicker<T>? = null
 
-    // === Interaction (1.20.1: use, not useItemOn) ===
+    // === Interaction ===
+    //
+    // 1.21 routes "use with an item in hand" through useItemOn; useWithoutItem only runs for
+    // an empty hand. Material application must therefore live in useItemOn, otherwise holding
+    // a BlockItem never reaches it.
+
+    override fun useItemOn(
+        stack: ItemStack, state: BlockState, level: Level, pos: BlockPos,
+        player: Player, hand: InteractionHand, hit: BlockHitResult,
+    ): ItemInteractionResult {
+        val material = getAcceptedBlockState(level, pos, stack, hit.direction)
+            ?: return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION
+
+        val be = level.getBlockEntity(pos) as? IdeaBlockEntity
+            ?: return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION
+
+        if (be.material.`is`(material.block)) {
+            if (!be.cycleMaterial())
+                return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION
+            level.playSound(null, pos, material.soundType.placeSound, SoundSource.BLOCKS, 0.75f, 0.95f)
+            return ItemInteractionResult.sidedSuccess(level.isClientSide)
+        }
+        if (be.hasCustomMaterial)
+            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION
+        if (level.isClientSide)
+            return ItemInteractionResult.sidedSuccess(true)
+
+        be.setMaterial(material)
+        level.playSound(null, pos, material.soundType.placeSound, SoundSource.BLOCKS, 1f, 0.75f)
+        return ItemInteractionResult.sidedSuccess(false)
+    }
 
     override fun useWithoutItem(
         state: BlockState, level: Level, pos: BlockPos,
         player: Player, hit: BlockHitResult,
     ): InteractionResult {
-        val stack = player.getItemInHand(InteractionHand.MAIN_HAND)
-
         // Shift + empty hand = reset material
-        if (player.isShiftKeyDown && stack.isEmpty) {
+        if (player.isShiftKeyDown && player.getItemInHand(InteractionHand.MAIN_HAND).isEmpty) {
             val be = level.getBlockEntity(pos) as? IdeaBlockEntity
             if (be != null && be.hasCustomMaterial && !level.isClientSide) {
                 be.resetMaterial()
@@ -48,27 +77,7 @@ abstract class IdeaBlock(properties: Properties) : Block(properties), EntityBloc
             }
             return InteractionResult.SUCCESS
         }
-
-        val material = getAcceptedBlockState(level, pos, stack, hit.direction)
-            ?: return InteractionResult.PASS
-
-        val be = level.getBlockEntity(pos) as? IdeaBlockEntity
-            ?: return InteractionResult.PASS
-
-        if (be.material.`is`(material.block)) {
-            if (!be.cycleMaterial())
-                return InteractionResult.PASS
-            level.playSound(null, pos, material.soundType.placeSound, SoundSource.BLOCKS, 0.75f, 0.95f)
-            return InteractionResult.SUCCESS
-        }
-        if (be.hasCustomMaterial)
-            return InteractionResult.PASS
-        if (level.isClientSide)
-            return InteractionResult.SUCCESS
-
-        be.setMaterial(material)
-        level.playSound(null, pos, material.soundType.placeSound, SoundSource.BLOCKS, 1f, 0.75f)
-        return InteractionResult.SUCCESS
+        return InteractionResult.PASS
     }
 
     override fun setPlacedBy(level: Level, pos: BlockPos, state: BlockState, placer: LivingEntity?, stack: ItemStack) {

@@ -8,7 +8,6 @@ import at.petrak.hexcasting.api.casting.iota.GarbageIota
 import at.petrak.hexcasting.api.casting.iota.Iota
 import at.petrak.hexcasting.api.casting.mishaps.MishapInvalidIota
 import cn.xm1221.MieHexRevolution.Miehex_revolution
-import kotlin.collections.plus
 
 class OpMonitorDef : ConstMediaAction {
       override val argc: Int
@@ -20,18 +19,14 @@ class OpMonitorDef : ConstMediaAction {
        ): List<Iota> {
            val target = args.getEntity(env.world, 0, argc)
            if (Miehex_revolution.isMonitorEntity(target.type)) {
-               val res = listOf<Iota>()
+               val res = mutableListOf<Iota>()
                if (env.world.players().size > 1023) {
-                   res.plus(GarbageIota())
+                   res.add(GarbageIota())
                    return res
                }
-               env.world.players().forEach(
-                   action = {
-                       if (it.camera == target) {
-                           res.plus(EntityIota(it))
-                       }
-                   }
-               )
+               for (p in env.world.players()) {
+                   if (p.camera == target) res.add(EntityIota(p))
+               }
                return res
            }
            throw MishapInvalidIota.Companion.of(EntityIota(target), 0, "monitor")

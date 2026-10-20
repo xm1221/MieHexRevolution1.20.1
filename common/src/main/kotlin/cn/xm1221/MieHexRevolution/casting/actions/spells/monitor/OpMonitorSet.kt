@@ -14,9 +14,7 @@ import cn.xm1221.MieHexRevolution.Miehex_revolution
 import cn.xm1221.MieHexRevolution.util.HexMonitorRecords
 import net.minecraft.ChatFormatting
 import net.minecraft.network.chat.Component
-import net.minecraft.network.protocol.game.ClientboundSetCameraPacket
 import net.minecraft.server.level.ServerPlayer
-import net.minecraft.world.entity.Entity
 
 
 class OpMonitorSet : SpellAction {
@@ -40,10 +38,10 @@ class OpMonitorSet : SpellAction {
                    effect = object : RenderedSpell {
                        override fun cast(env: CastingEnvironment) {
                            if (caster is ServerPlayer) {
-                               caster.connection.send(ClientboundSetCameraPacket(monitor))
-                               HexMonitorRecords.CAMERAS[caster] = monitor as Entity?
-                               HexMonitorRecords.CASTERS[monitor as Entity?]=caster
-                               //caster.camera=monitor
+                               // ServerPlayerMixin makes non-spectator setCamera skip the teleport.
+                               caster.setCamera(monitor)
+                               HexMonitorRecords.CAMERAS[caster] = monitor
+                               HexMonitorRecords.CASTERS[monitor] = caster
                                if(monitor is ServerPlayer && monitor.uuid != caster.uuid) {
                                    monitor.sendSystemMessage(Component.translatable("hex_monitor.chat.looking").withStyle(
                                        ChatFormatting.DARK_RED))
