@@ -27,6 +27,7 @@ forge-dependency = "47" # for mods.toml
 # mods
 
 hexcasting = "0.11.4"
+mielib = "0.0.1+1.20.1-SNAPSHOT"
 paucal = "0.6.0-pre-118"
 pkpcpbp = "0.2.0-pre-95"
 
@@ -77,6 +78,9 @@ forge = { module="net.minecraftforge:forge", version.ref="forge" }
 hexcasting-common = { module="at.petra-k.hexcasting:hexcasting-common-1.20.1", version.ref="hexcasting" }
 hexcasting-fabric = { module="at.petra-k.hexcasting:hexcasting-fabric-1.20.1", version.ref="hexcasting" }
 hexcasting-forge  = { module="at.petra-k.hexcasting:hexcasting-forge-1.20.1", version.ref="hexcasting" }
+mielib-common = { module="cn.xm1221.MieLib:mielib-common", version.ref="mielib" }
+mielib-fabric = { module="cn.xm1221.MieLib:mielib-fabric", version.ref="mielib" }
+mielib-forge  = { module="cn.xm1221.MieLib:mielib-forge", version.ref="mielib" }
 
 paucal-common = { module="at.petra-k.paucal:paucal-common-1.20.1", version.ref="paucal" }
 paucal-fabric = { module="at.petra-k.paucal:paucal-fabric-1.20.1", version.ref="paucal" }

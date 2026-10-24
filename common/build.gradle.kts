@@ -19,6 +19,7 @@ dependencies {
     modApi(libs.hexcasting.common)
 
     modApi(libs.clothConfig.common)
+    modCompileOnly(libs.mielib.common) { isTransitive = false }
 
     modApi(libs.hexparse.fabric)
 

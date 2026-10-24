@@ -47,6 +47,7 @@
     "fabric-language-kotlin": ">=${versions.kotlin_fabric}",
     "architectury": ">=${versions.architectury}",
     "hexcasting": ">=${versions.hexcasting}",
+    "mielib": ">=0.0.1",
     "cloth-config": ">=${versions.clothConfig}"
   },
   "suggests": {

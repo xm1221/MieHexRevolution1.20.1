@@ -45,3 +45,10 @@ versionRange = "[${versions.hexcasting},)"
 ordering = "NONE"
 side = "BOTH"
 
+[[dependencies.miehex_revolution]]
+modId = "mielib"
+mandatory = true
+versionRange = "[0.0.1,)"
+ordering = "NONE"
+side = "BOTH"
+

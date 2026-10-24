@@ -58,6 +58,7 @@ miehex_revolutionModDependencies {
     requires("cloth-config")
     requires(curseforge = "hexcasting", modrinth = "hex-casting")
     requires("kotlin-for-forge")
+    requires("mielib")
 }
 
 dependencies {
@@ -79,6 +80,8 @@ dependencies {
     modLocalRuntime(libs.hexparse.forge)
 
     modApi(libs.clothConfig.forge)
+    modImplementation(libs.mielib.forge) { isTransitive = false }
+    include(libs.mielib.forge) { isTransitive = false }
 
     libs.mixinExtras.common.also {
         compileOnly(it)

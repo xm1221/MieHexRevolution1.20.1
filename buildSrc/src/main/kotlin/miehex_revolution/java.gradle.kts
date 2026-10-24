@@ -23,6 +23,7 @@ if (!release) {
 }
 
 repositories {
+    mavenLocal()
     mavenCentral()
     maven { url = uri("https://jitpack.io") }
     maven { url = uri("https://maven.blamejared.com") }
