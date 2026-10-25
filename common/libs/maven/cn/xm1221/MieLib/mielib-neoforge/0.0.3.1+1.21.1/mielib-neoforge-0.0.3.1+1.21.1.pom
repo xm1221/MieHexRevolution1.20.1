@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>cn.xm1221.MieLib</groupId>
+  <artifactId>mielib-neoforge</artifactId>
+  <version>0.0.3.1+1.21.1</version>
+  <dependencies>
+    <dependency>
+      <groupId>me.shedaniel.cloth</groupId>
+      <artifactId>cloth-config-neoforge</artifactId>
+      <version>15.0.140</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>dev.architectury</groupId>
+      <artifactId>architectury-neoforge</artifactId>
+      <version>13.0.8</version>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>thedarkcolour</groupId>
+      <artifactId>kotlinforforge-neoforge</artifactId>
+      <version>5.8.0</version>
+      <scope>runtime</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>net.neoforged.fancymodloader</groupId>
+          <artifactId>loader</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>at.petra-k</groupId>
+      <artifactId>paucal</artifactId>
+      <version>0.7.1-pre-27+1.21.1-neoforge</version>
+      <scope>runtime</scope>
+    </dependency>
+  </dependencies>
+</project>

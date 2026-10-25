@@ -109,7 +109,7 @@ subprojects {
             ])
         }
 
-        // MieLib 1.21 (MieLib branch 1.21 @ 57f6a6f). common + fabric are intermediary
+        // MieLib 1.21 (MieLib branch 1.21 @ 736fb89, 0.0.3.1). common + fabric are intermediary
         // and must be remapped. The NeoForge artifact is Mojmap and must not be.
         // `include` nests the platform jar so Fabric Loader / NeoForge Jar-in-Jar
         // can load modid `mielib` (a flat files() dep has no module capability).
