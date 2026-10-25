@@ -50,3 +50,10 @@ type = "required"
 versionRange = "[15,)"
 ordering = "AFTER"
 side = "BOTH"
+
+[[dependencies.miehex_revolution]]
+modId = "mielib"
+type = "required"
+versionRange = "[0.0.3+1.21.1,)"
+ordering = "AFTER"
+side = "BOTH"

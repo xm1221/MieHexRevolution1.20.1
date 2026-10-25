@@ -7,7 +7,8 @@ import net.minecraft.server.level.ServerPlayer
 /**
  * Server → client: the import keys active in the caster's current cast, as
  * `startDirOrdinal:anglesSignature` strings (see the same encoding in
- * `MieHexRevolutionHelpersKt` and `MixinGuiSpellcasting`). An empty list means no imports
+ * `MieHexRevolutionHelpersKt` and `MixinGuiSpellcasting`, which marks strokes for MieLib's
+ * pattern-color hook). An empty list means no imports
  * are active. Sent on every resolved pattern so the client is always in sync (a new cast
  * without imports clears the previous markings).
  */
