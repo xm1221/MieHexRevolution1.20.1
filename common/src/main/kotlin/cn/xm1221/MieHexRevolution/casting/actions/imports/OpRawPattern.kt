@@ -10,7 +10,8 @@ import cn.xm1221.MieHexRevolution.api.casting.iota.ImportsIota
 
 /**
  * Toggles "raw mode": while active, import bindings are bypassed and patterns run their native
- * action. The flag lives in a transient [CastingImage] component (see [ImportsIota.RAW_COMPONENT]).
+ * action. The flag lives in a per-cast (non-transient) [CastingImage] component (see
+ * [ImportsIota.RAW_COMPONENT]), so it lasts until the cast ends.
  */
 class OpRawPattern: Action {
     override fun operate(

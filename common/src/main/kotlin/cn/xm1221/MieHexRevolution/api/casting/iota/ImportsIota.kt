@@ -42,8 +42,10 @@ import java.util.function.Supplier
  * intended, permanent replacement for the old userData design — not a temporary shim.** Both
  * are registered in `MieHexRevolutionImageComponents`, and every read/write in the addon goes
  * through them ([cn.xm1221.MieHexRevolution.util.executeWithImports], the import ops and
- * `OpRawPattern`). Client-side tinting is separate: it is synced per stroke into
- * [cn.xm1221.MieHexRevolution.util.ClientImportKeys] and never reads the image.
+ * `OpRawPattern`). They are deliberately **not** transient, so they persist for the whole cast
+ * the way the old userData and Hex's own ravenmind do; Hex clears them together with the rest
+ * of the staff image when the stack is cleared. Client-side tinting is separate: it is synced
+ * per stroke into [cn.xm1221.MieHexRevolution.util.ClientImportKeys] and never reads the image.
  */
 class ImportsIota(val imports: Map<HexPattern, Iota>) : Iota(Supplier { Type }) {
 
@@ -158,19 +160,26 @@ class ImportsIota(val imports: Map<HexPattern, Iota>) : Iota(Supplier { Type }) 
             )
 
         /**
-         * Per-cast storage for the imports. Marked transient so it does not leak across separate
-         * staff patterns or slate jumps.
+         * Per-cast storage for the imports. **Not** transient: Hex 0.12's
+         * `CastingVM.queueExecuteAndWrapIotas` calls [at.petrak.hexcasting.api.casting.eval.vm.CastingImage.removeTransientComponents]
+         * after *every* stroke, so a transient component would be dropped before the next pattern
+         * the player draws and the imports would never fire. A non-transient component survives
+         * for the whole staff cast, exactly like Hex's own ravenmind (and like the old
+         * `CastingImage.userData` this replaces). It is cleared when the cast ends: the staff
+         * image lives in the player's `hexcasting:spell_harness` data, and Hex wipes that
+         * (along with the saved patterns) when the stack is cleared.
          */
         @JvmField
-        val COMPONENT: ImageComponentType<ImportsIota> = ImageComponentType(CODEC, STREAM_CODEC, true)
+        val COMPONENT: ImageComponentType<ImportsIota> = ImageComponentType(CODEC, STREAM_CODEC, false)
 
         /**
          * Raw mode flag: while present and `true`, imports are bypassed and every pattern runs its
-         * native action. Transient like [COMPONENT], since it is also per-cast state.
+         * native action. Non-transient for the same reason as [COMPONENT]: it is per-cast state
+         * that has to outlive a single stroke, and it goes away with the rest of the cast image.
          */
         @JvmField
         val RAW_COMPONENT: ImageComponentType<Boolean> =
-            ImageComponentType(Codec.BOOL, ByteBufCodecs.BOOL.cast(), true)
+            ImageComponentType(Codec.BOOL, ByteBufCodecs.BOOL.cast(), false)
     }
 
     object Type : IotaType<ImportsIota>() {

@@ -9,6 +9,11 @@ displayName = "MieHex:Revolution"
 authors = "xm1221"
 description = "MieHex:Revolution addon for Hex Casting."
 
+# FML 4 (NeoForge 1.21.1) requires mixin configs to be declared here; unlike Fabric's
+# fabric.mod.json they are not picked up automatically.
+[[mixins]]
+config = "miehex_revolution-common.mixins.json"
+
 [[dependencies.miehex_revolution]]
 modId = "neoforge"
 type = "required"
@@ -54,6 +59,6 @@ side = "BOTH"
 [[dependencies.miehex_revolution]]
 modId = "mielib"
 type = "required"
-versionRange = "[0.0.3.1+1.21.1,)"
+versionRange = "[0.0.3.2+1.21.1,)"
 ordering = "AFTER"
 side = "BOTH"

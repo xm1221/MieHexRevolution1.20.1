@@ -46,6 +46,13 @@ import kotlin.time.ExperimentalTime
  * (both registered in `MieHexRevolutionImageComponents`). There is deliberately no second
  * storage mechanism.
  *
+ * Neither component is transient. Hex 0.12 calls
+ * [at.petrak.hexcasting.api.casting.eval.vm.CastingImage.removeTransientComponents] at the end of
+ * every `CastingVM.queueExecuteAndWrapIotas`, i.e. after every stroke / slate; a transient import
+ * set would be gone before the next pattern is drawn. Being non-transient, they persist for the
+ * whole staff cast (like the old `userData` and like ravenmind) and disappear when Hex clears the
+ * staff image on stack clear.
+ *
  * The client-side import tint does *not* use these components either: it is synchronized per
  * stroke over the network into [ClientImportKeys]. `MixinGuiSpellcasting` marks the stroke, and
  * MieLib's `DrawPatternHook` paints it.
