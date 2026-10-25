@@ -48,6 +48,9 @@ miehex_revolutionModDependencies {
 }
 
 dependencies {
+    modApi(libs.mielib.fabric) { isTransitive = false }
+    include(libs.mielib.fabric)
+
     modApi(libs.fabric.api)
     modImplementation(libs.fabric.loader)
 

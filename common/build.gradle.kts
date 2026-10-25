@@ -18,6 +18,8 @@ dependencies {
 
     modApi(libs.hexcasting.common)
 
+    modApi(libs.mielib.common) { isTransitive = false }
+
     modApi(libs.clothConfig.common)
 
     modApi(libs.hexparse.fabric)

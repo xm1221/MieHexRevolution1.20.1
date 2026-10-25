@@ -47,6 +47,8 @@ caelus = "3.1.0+1.20"
 
 hexParse = "1.20.1-1.11.2"
 
+mielib = "0.0.1+1.20.1"
+
 # other dependencies
 
 asm = "9.5"
@@ -102,6 +104,10 @@ clothConfig-forge  = { module="me.shedaniel.cloth:cloth-config-forge", version.r
 #hexparse-common = {module="io.yukkuric.hexparse:hexParse-common",version.ref="hexParse"}
 hexparse-fabric = {module="libs:hexParse-fabric",version.ref="hexParse"}
 hexparse-forge = {module="libs:hexParse-forge",version.ref="hexParse"}
+
+mielib-common = { module = "cn.xm1221.MieLib:mielib-common", version.ref = "mielib" }
+mielib-fabric = { module = "cn.xm1221.MieLib:mielib-fabric", version.ref = "mielib" }
+mielib-forge  = { module = "cn.xm1221.MieLib:mielib-forge", version.ref = "mielib" }
 
 caelus = { module="top.theillusivec4.caelus:caelus-forge", version.ref="caelus" }
 

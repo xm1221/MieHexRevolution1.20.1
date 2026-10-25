@@ -61,6 +61,9 @@ miehex_revolutionModDependencies {
 }
 
 dependencies {
+    modApi(libs.mielib.forge) { isTransitive = false }
+    include(libs.mielib.forge)
+
     forge(libs.forge)
     modApi(libs.architectury.forge)
 
