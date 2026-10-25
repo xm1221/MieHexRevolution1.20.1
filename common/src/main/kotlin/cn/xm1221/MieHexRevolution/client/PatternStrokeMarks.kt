@@ -17,17 +17,15 @@ object PatternStrokeMarks {
     @JvmStatic
     fun bind(current: List<ResolvedPattern>) {
         patterns = current
+        if (marked.isEmpty()) return
+        val live: MutableSet<ResolvedPattern> = Collections.newSetFromMap(IdentityHashMap())
+        live.addAll(current)
+        marked.retainAll(live)
     }
 
     @JvmStatic
     fun mark(pattern: ResolvedPattern) {
         marked.add(pattern)
-    }
-
-    @JvmStatic
-    fun clear() {
-        marked.clear()
-        patterns = null
     }
 
     fun isMarked(seed: Double): Boolean {

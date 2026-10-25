@@ -29,11 +29,6 @@ public abstract class MixinGuiSpellcasting {
         PatternStrokeMarks.bind(this.patterns);
     }
 
-    @Inject(method = "removed", at = @At("HEAD"))
-    private void miehex_revolution$clearImportMarks(CallbackInfo ci) {
-        PatternStrokeMarks.clear();
-    }
-
     @Inject(method = "recvServerUpdate", remap = false, at = @At("TAIL"))
     private void miehex_revolution$markImportFired(ExecutionClientView info, int index, CallbackInfo ci) {
         if (index >= 0 && index < this.patterns.size()) {

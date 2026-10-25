@@ -47,7 +47,7 @@ caelus = "3.1.0+1.20"
 
 hexParse = "1.20.1-1.11.2"
 
-mielib = "0.0.2+1.20.1"
+mielib = "0.0.2.1+1.20.1"
 
 # other dependencies
 
