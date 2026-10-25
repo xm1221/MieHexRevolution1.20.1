@@ -1,4 +1,14 @@
 package cn.xm1221.MieHexRevolution.registry
 
-class MieHexRevolutionWorkers {
+import cn.xm1221.MieHexRevolution.Miehex_revolution
+import cn.xm1221.MieHexRevolution.casting.actions.imports.worker.ImportWorker
+import cn.xm1221.MieHexRevolution.casting.actions.useful.envs.worker.RemoteCastEnvWorker
+import cn.xm1221.MieLib.registry.CastingVMHook
+import cn.xm1221.MieLib.worker.CastingVMWorker
+
+object MieHexRevolutionWorkers {
+    fun init(){
+        CastingVMHook.register(Miehex_revolution.id("remote_cast_env"), RemoteCastEnvWorker)
+        CastingVMHook.register(Miehex_revolution.id("import"), ImportWorker)
+    }
 }

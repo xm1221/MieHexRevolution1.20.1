@@ -11,8 +11,6 @@
     "MixinDatagenMain",
     "MixinItemStaff",
     "MixinPlayerSyncedData",
-    "MixinStaffCastEnv",
-    "PatternIotaMixin",
     "ServerPlayerMixin"
   ],
   "plugin": "cn.xm1221.MieHexRevolution.mixin.Miehex_revolutionMixinConfigPlugin",

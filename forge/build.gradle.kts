@@ -20,6 +20,15 @@ loom {
     }
 
     runs {
+        // Forge 开发环境的 Minecraft 已是 Mojmap。legacy mixin AP 的 refmap 存的是中间名
+        // （class_1657），运行时对不回去，注入会失败并让早期加载窗口把进程挂住。
+        // 正式包仍走 refmap，由 Architectury 在 transformProductionForge 里翻成 SRG。
+        listOf("client", "server").forEach { runName ->
+            named(runName) {
+                property("mixin.env.disableRefMap", "true")
+            }
+        }
+
         for ((platform, outputProject) in arrayOf(
             // we're using forge to do the common datagen because fabric's datagen kind of sucks
             "common" to project(":common"),
