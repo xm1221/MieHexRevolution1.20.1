@@ -47,7 +47,8 @@ import kotlin.time.ExperimentalTime
  * storage mechanism.
  *
  * The client-side import tint does *not* use these components either: it is synchronized per
- * stroke over the network into [ClientImportKeys] and applied by `MixinGuiSpellcasting`.
+ * stroke over the network into [ClientImportKeys]. `MixinGuiSpellcasting` marks the stroke, and
+ * MieLib's `DrawPatternHook` paints it.
  *
  * Firing an import consumes one op, and we apply the same op limit a normal cast has
  * ([at.petrak.hexcasting.api.casting.eval.CastingEnvironment.maxOpCount], MishapEvalTooMuch).
@@ -127,7 +128,7 @@ fun PatternIota.executeWithImports(vm: CastingVM?, world: ServerLevel?, continua
 
 /**
  * Stable string key for one import binding key (start dir + angle signature), used both for
- * the S2C sync and, with the same encoding, by `MixinGuiSpellcasting` on the client.
+ * the S2C sync and, with the same encoding, by `MixinGuiSpellcasting` when it marks a stroke.
  */
 fun importKeyString(pattern: HexPattern): String =
     "${pattern.orientation.name}:${pattern.signature.toAnglesString()}"

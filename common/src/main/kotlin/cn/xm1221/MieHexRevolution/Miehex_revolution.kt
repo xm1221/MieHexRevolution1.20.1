@@ -14,6 +14,7 @@ import cn.xm1221.MieHexRevolution.registry.MieHexRevolutionImageComponents
 import cn.xm1221.MieHexRevolution.registry.Miehex_revolutionActions
 import cn.xm1221.MieHexRevolution.registry.Miehex_revolutionBlocks
 import cn.xm1221.MieHexRevolution.registry.Miehex_revolutionBlockEntities
+import cn.xm1221.MieHexRevolution.registry.MieHexRevolutionWorkers
 import cn.xm1221.MieHexRevolution.registry.Miehex_revolutionFrames
 import net.minecraft.core.Registry
 import net.minecraft.core.registries.Registries
@@ -61,6 +62,7 @@ object Miehex_revolution {
         Miehex_revolutionBlockEntities.init()
         Miehex_revolutionNetworking.init()
         ImportsParseCompat.init()
+        MieHexRevolutionWorkers.init()
     }
 
 
