@@ -40,16 +40,9 @@ subprojects {
         maven { url = "https://maven.ladysnake.org/releases" }
         maven { url = "https://maven.minecraftforge.net/" }
         mavenCentral()
-        // Group is exclusive so a 1.20.1 MieLib coordinate cannot be pulled from the
-        // public repo by accident. The vendored repo is checked first: 1.21.1 artifacts
-        // are not on https://xm1221.github.io/maven yet (that repo stops at 0.0.2.1+1.20.1).
+        // Only https://xm1221.github.io/maven supplies cn.xm1221.MieLib (1.21 artifacts
+        // live there; the group is exclusive so other repositories are not queried).
         exclusiveContent {
-            forRepository {
-                maven {
-                    name = "mielibVendor"
-                    url = rootProject.file("common/libs/maven").toURI()
-                }
-            }
             forRepository {
                 maven {
                     name = "xm1221Maven"
@@ -109,7 +102,8 @@ subprojects {
             ])
         }
 
-        // MieLib 1.21 (MieLib branch 1.21, 0.0.3.3). common + fabric are intermediary
+        // MieLib 1.21 (0.0.3.4+1.21.1 from https://xm1221.github.io/maven).
+        // common + fabric are intermediary
         // and must be remapped. The NeoForge artifact is Mojmap and must not be.
         // `include` nests the platform jar so Fabric Loader / NeoForge Jar-in-Jar
         // can load modid `mielib` (a flat files() dep has no module capability).
