@@ -18,10 +18,12 @@ import at.petrak.hexcasting.api.casting.math.HexPattern
 import at.petrak.hexcasting.api.casting.mishaps.Mishap
 import at.petrak.hexcasting.api.casting.mishaps.MishapEvalTooMuch
 import at.petrak.hexcasting.api.casting.mishaps.MishapOthersName
+import at.petrak.hexcasting.api.utils.getCompound
 import at.petrak.hexcasting.common.blocks.akashic.AkashicFloodfiller
 import at.petrak.hexcasting.common.blocks.akashic.BlockAkashicRecord
 import at.petrak.hexcasting.common.blocks.akashic.BlockEntityAkashicBookshelf
 import at.petrak.hexcasting.common.lib.hex.HexEvalSounds
+import cn.xm1221.MieHexRevolution.Miehex_revolution
 import cn.xm1221.MieHexRevolution.api.casting.iota.ImportsIota
 import cn.xm1221.MieHexRevolution.networking.Miehex_revolutionNetworking
 import cn.xm1221.MieHexRevolution.networking.msg.MsgSyncImportKeysS2C
@@ -30,6 +32,7 @@ import net.minecraft.core.Direction
 import net.minecraft.server.level.ServerLevel
 import net.minecraft.server.level.ServerPlayer
 import net.minecraft.util.Mth
+import net.minecraft.world.item.ItemStack
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
 
@@ -200,4 +203,6 @@ fun raninbowWithSystem():Int{
 
     return Mth.hsvToRgb(hue, 1f, 1f)
 }
+
+
 

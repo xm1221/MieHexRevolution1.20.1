@@ -28,11 +28,11 @@ import cn.xm1221.MieHexRevolution.casting.actions.spells.OpWorldLoader
 import cn.xm1221.MieHexRevolution.casting.actions.spells.circle.OpCircleLengthUsed
 import cn.xm1221.MieHexRevolution.casting.actions.spells.idea.OpIdeaBlockSet
 import cn.xm1221.MieHexRevolution.casting.actions.spells.idea.OpIdeaShardWrite
+import cn.xm1221.MieHexRevolution.casting.actions.spells.item.OpItemDisguise
+import cn.xm1221.MieHexRevolution.casting.actions.spells.sky.OpSkyTint
 import cn.xm1221.MieHexRevolution.casting.actions.spells.monitor.OpMonitorGet
 import cn.xm1221.MieHexRevolution.casting.actions.spells.monitor.OpMonitorSet
 import cn.xm1221.MieHexRevolution.casting.actions.spells.psy.OpEntityRot
-import cn.xm1221.MieHexRevolution.casting.actions.useful.OpMax
-import cn.xm1221.MieHexRevolution.casting.actions.useful.OpMin
 import cn.xm1221.MieHexRevolution.casting.actions.useful.OpPages
 import cn.xm1221.MieHexRevolution.casting.actions.useful.envs.OpFaker
 import cn.xm1221.MieHexRevolution.casting.actions.useful.hexextra.OpLLKLoop
@@ -43,8 +43,6 @@ object Miehex_revolutionActions : Miehex_revolutionRegistrar<ActionRegistryEntry
     HexRegistries.ACTION,
     { HexActions.REGISTRY },
 ) {
-    val MAX_VALUE = make("const/max", HexDir.SOUTH_EAST,"eeee", OpMax())
-    val MIN_VALUE = make("const/min", HexDir.SOUTH_WEST,"qqqq", OpMin())
     val PAGE = make("page", HexDir.WEST,"qqadad", OpPages())
     val LOAD = make("loader/time", HexDir.NORTH_EAST,"aawewewaqweedeewqawewe", OpWorldLoader.Load)
     val USE_BLOCK = make("use", HexDir.NORTH_EAST,"deewqqa", OpUseBlock())
@@ -82,6 +80,15 @@ object Miehex_revolutionActions : Miehex_revolutionRegistrar<ActionRegistryEntry
     val IMPORTS_FROM_LIST = make("imports/from_list", HexDir.EAST, "eeeewaq", OpImportsFromList())
 
     val LLKLOOP = make("llk_loop",HexDir.NORTH_WEST,"qaweedwaqqwde", OpLLKLoop())
+
+    val SKY_TINT = make("sky/tint", HexDir.EAST, "edqqwedeeaww", OpSkyTint.Cast)
+    val SKY_TINT_AT = make("sky/tint_at", HexDir.EAST, "eweqaqeawe", OpSkyTint.CastAt)
+    val SKY_TINT_CLEAR = make("sky/tint/clear", HexDir.WEST, "qwddwqedweqeeweeqewd", OpSkyTint.Clear)
+
+    val ITEM_DISGUISE = make("item/disguise", HexDir.NORTH_WEST, "wwqawqw", OpItemDisguise.Target)
+    val ITEM_DISGUISE_SELF = make("item/disguise/self", HexDir.NORTH_EAST, "wewdeww", OpItemDisguise.Self)
+    val ITEM_DISGUISE_CLEAR = make("item/disguise/clear", HexDir.WEST, "qaawae", OpItemDisguise.Clear)
+
     private fun make(name: String, startDir: HexDir, signature: String, action: Action) =
         make(name, startDir, signature) { action }
 

@@ -34,7 +34,6 @@ MieHex:Revolution is a Hex Casting addon introducing new patterns, Idea Blocks, 
 
 | 图案 Pattern | 说明 Description |
 |-------------|-----------------|
-| **极大/极小之精思** *Maximum/Minimum Reflection* | 获取数值极限 / Get max/min numerical limits |
 | **学者之翻页** *Scholar's Page-Turn* | 隔空翻阅副手法术书 / Flip offhand spellbook remotely |
 | **画地为牢之策略** *Delimiting Stratagem* | 以列表为栈执行图案 / Evaluate patterns with a list as stack |
 | **大定位器之策略** *Locator's Stratagem* | 返回列表中所有匹配项的索引 / Return indices of matching list elements |

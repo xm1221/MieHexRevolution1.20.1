@@ -25,7 +25,7 @@ on:
         default: false
 
 env:
-  PYPI_PACKAGE: hexdoc-miehex_revolution
+  PYPI_PACKAGE: hexdoc-miehex-revolution
 
 jobs:
   build:
