@@ -93,6 +93,10 @@ tasks {
     javadoc {
         options {
             this as StandardJavadocDocletOptions
+            // 源码里有中文注释；不指定编码的话 javadoc 会按系统默认（GBK）读 UTF-8 文件，
+            // 报一堆 "unmappable character" 然后让整个 build 挂掉。
+            encoding = "UTF-8"
+            charSet = "UTF-8"
             addStringOption("Xdoclint:none", "-quiet")
         }
     }
