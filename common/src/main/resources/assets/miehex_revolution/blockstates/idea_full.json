@@ -1,5 +1,20 @@
 {
   "variants": {
-    "": { "model": "miehex_revolution:block/idea_base" }
+    "light=0": { "model": "miehex_revolution:block/idea_base" },
+    "light=1": { "model": "miehex_revolution:block/idea_base" },
+    "light=2": { "model": "miehex_revolution:block/idea_base" },
+    "light=3": { "model": "miehex_revolution:block/idea_base" },
+    "light=4": { "model": "miehex_revolution:block/idea_base" },
+    "light=5": { "model": "miehex_revolution:block/idea_base" },
+    "light=6": { "model": "miehex_revolution:block/idea_base" },
+    "light=7": { "model": "miehex_revolution:block/idea_base" },
+    "light=8": { "model": "miehex_revolution:block/idea_base" },
+    "light=9": { "model": "miehex_revolution:block/idea_base" },
+    "light=10": { "model": "miehex_revolution:block/idea_base" },
+    "light=11": { "model": "miehex_revolution:block/idea_base" },
+    "light=12": { "model": "miehex_revolution:block/idea_base" },
+    "light=13": { "model": "miehex_revolution:block/idea_base" },
+    "light=14": { "model": "miehex_revolution:block/idea_base" },
+    "light=15": { "model": "miehex_revolution:block/idea_base" }
   }
 }

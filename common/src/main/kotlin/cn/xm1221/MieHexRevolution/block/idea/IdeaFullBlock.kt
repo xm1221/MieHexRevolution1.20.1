@@ -19,5 +19,11 @@ class IdeaFullBlock : IdeaBlock(
         .dynamicShape()
         .isRedstoneConductor { _, _, _ -> false }
         .isSuffocating { _, _, _ -> false }
-        .isViewBlocking { _, _, _ -> false }
+        // 环境光遮蔽读的是 isViewBlocking + getLightBlock 这两个判据。原版里两者都由
+        // isSolidRender 一个来源决定（默认 isViewBlocking 就是 isSolidRender，
+        // 而默认 getLightBlock 也是在实心时给满 15），所以“照进 15”正是“像实心方块一样”的
+        // 等价说法。只让挡光跟随材质、这两个判据各自为政的话，AO 会把这个光为 0 的格子
+        // 当成“看得见的暗格”平均进邻居顶点的亮度里，方块四周就糊出一圈多余的暗影。
+        // 两个判据都取自方块状态，见 [IdeaBlock.LIGHT]。
+        .isViewBlocking { state, _, _ -> state.getValue(IdeaBlock.LIGHT) >= 15 }
 )

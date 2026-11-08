@@ -26,9 +26,11 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker
 import net.minecraft.world.level.block.entity.BlockEntityType
 import net.minecraft.world.level.block.state.BlockBehaviour
 import net.minecraft.world.level.block.state.BlockState
+import net.minecraft.world.level.block.state.StateDefinition
 import net.minecraft.world.level.block.state.properties.BooleanProperty
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf
 import net.minecraft.world.level.block.state.properties.EnumProperty
+import net.minecraft.world.level.block.state.properties.IntegerProperty
 import net.minecraft.world.level.block.state.properties.Property
 import net.minecraft.world.level.block.state.properties.WallSide
 import net.minecraft.world.phys.BlockHitResult
@@ -43,11 +45,12 @@ import net.minecraft.world.phys.shapes.VoxelShape
  * 形状、碰撞、受光、破坏粒子都按那份状态转发，渲染由 [IdeaBlockEntityRenderer] 贴上去。
  * 因此它可以伪装成不满一格的方块（半砖、楼梯、栅栏、玻璃板、门……），碰撞也随之一同改变。
  *
- * <p>交互约定：
- * - 空手潜行右键：退回“理念本体”的外观；
+ * <p>交互约定（站立 = 不潜行）：
+ * - 潜行空手右键：退回“理念本体”的外观；
  * - 潜行时手持方块：交还原版处理（正常放置方块）；
- * - 非潜行手持方块：换上该方块外观；持同一种方块再右键则循环它的朝向/半砖位置等形态，
- *   没有可循环的属性时按当前邻居刷新连接（栅栏、墙、玻璃板）。
+ * - 站立空手右键、或站立手持**同一种**方块右键：循环当前外观的形态（朝向 / 半砖上下 / 开关），
+ *   若它模仿的是栅栏、墙或玻璃板，则右键点哪一面就切换那一面的连接（对面同步跟着改）；
+ * - 站立手持**另一种**方块右键：直接换上那种方块的外观。
  */
 abstract class IdeaBlock(properties: BlockBehaviour.Properties) : Block(properties), EntityBlock {
 
@@ -75,18 +78,23 @@ abstract class IdeaBlock(properties: BlockBehaviour.Properties) : Block(properti
             return InteractionResult.SUCCESS
         }
 
-        if (stack.item !is BlockItem) return InteractionResult.PASS
+        if (stack.item !is BlockItem) {
+            // 站立空手：和“手持同一种方块”一样，循环当前外观的形态 / 连接；手里是别的物品就放行。
+            if (!stack.isEmpty || !be.hasCustomMaterial) return InteractionResult.PASS
+            if (level.isClientSide) return InteractionResult.SUCCESS
+            val outcome = be.cycleMaterial(hit.direction)
+            if (outcome == IdeaBlockEntity.CycleOutcome.NONE) return InteractionResult.PASS
+            finishCycle(level, pos, be, outcome)
+            return InteractionResult.SUCCESS
+        }
         val material = getMaterialFor(level, pos, stack, hit, player, hand) ?: return InteractionResult.PASS
         if (level.isClientSide) return InteractionResult.SUCCESS
 
         if (be.hasCustomMaterial && be.material.`is`(material.block)) {
             // 同一种方块：依次循环朝向 / 台阶上下 / 开关状态等；没得循环就按当前邻居刷新连接。
-            if (!be.cycleMaterial(hit.direction)) {
-                be.applyMaterial(material)
-            }
-            syncDoorPartner(level, pos, be.material)
-            refreshNeighbourConnections(level, pos, be.material)
-            playApplySound(level, pos, be.material)
+            val outcome = be.cycleMaterial(hit.direction)
+            if (outcome == IdeaBlockEntity.CycleOutcome.NONE) be.applyMaterial(material)
+            finishCycle(level, pos, be, outcome)
             return InteractionResult.SUCCESS
         }
 
@@ -135,13 +143,23 @@ abstract class IdeaBlock(properties: BlockBehaviour.Properties) : Block(properti
         materialAt(level, pos)?.getOcclusionShape(level, pos)
             ?: super.getOcclusionShape(state, level, pos)
 
+    /**
+     * 挡光量直接读方块状态里存好的 [LIGHT]，不现算材质。
+     *
+     * <p>这条是环境光遮蔽与光照引擎共用的判据，两边都会在“拿不到方块实体”的时机问它；
+     * 详见 [LIGHT] 的说明。
+     */
     override fun getLightBlock(state: BlockState, level: BlockGetter, pos: BlockPos): Int =
-        materialAt(level, pos)?.getLightBlock(level, pos)
-            ?: super.getLightBlock(state, level, pos)
+        state.getValue(LIGHT)
 
     override fun propagatesSkylightDown(state: BlockState, level: BlockGetter, pos: BlockPos): Boolean =
         materialAt(level, pos)?.propagatesSkylightDown(level, pos)
             ?: super.propagatesSkylightDown(state, level, pos)
+
+    override fun createBlockStateDefinition(builder: StateDefinition.Builder<Block, BlockState>) {
+        super.createBlockStateDefinition(builder)
+        builder.add(LIGHT)
+    }
 
     // === 掉落 / 多格方块 ===
 
@@ -241,6 +259,20 @@ abstract class IdeaBlock(properties: BlockBehaviour.Properties) : Block(properti
         return result
     }
 
+    /** 切完形态后的收尾：补门另一半、按邻居刷新连接、放声音。手动切连接时对面已经同步过，别再刷回去。 */
+    private fun finishCycle(
+        level: Level,
+        pos: BlockPos,
+        be: IdeaBlockEntity,
+        outcome: IdeaBlockEntity.CycleOutcome,
+    ) {
+        if (outcome != IdeaBlockEntity.CycleOutcome.CONNECTION) {
+            syncDoorPartner(level, pos, be.material)
+            refreshNeighbourConnections(level, pos, be.material)
+        }
+        playApplySound(level, pos, be.material)
+    }
+
     private fun playApplySound(level: Level, pos: BlockPos, material: BlockState) {
         if (material.isAir) return
         level.playSound(null, pos, material.soundType.placeSound, SoundSource.BLOCKS, 1f, 0.75f)
@@ -304,6 +336,18 @@ abstract class IdeaBlock(properties: BlockBehaviour.Properties) : Block(properti
     }
 
     companion object {
+        /**
+         * 材质挡多少光（0..15），跟着材质一起写进方块状态。
+         *
+         * <p>为什么不能像形状那样现查方块实体：光照引擎与环境光遮蔽两边都会问这个值，
+         * 而客户端重建区块网格时拿到的是
+         * [net.minecraft.client.renderer.chunk.RenderChunkRegion]，它的 `getBlockEntity`
+         * 借的是这个渲染块**上一次编译**留下的实体表 —— 刚放下的方块查不到，于是同一块
+         * 方块会时而被当成实心、时而被当成透光，四周的接触阴影跟着忽深忽浅。
+         * 把值放进状态（状态一定随区块数据一起送到重建现场）两边就都稳定了。
+         */
+        val LIGHT: IntegerProperty = IntegerProperty.create("light", 0, 15)
+
         /** 被模仿的方块状态；没有材质时返回 null（避免调用方到处判空）。 */
         fun materialAt(level: BlockGetter, pos: BlockPos): BlockState? {
             val material = (level.getBlockEntity(pos) as? IdeaBlockEntity)?.material ?: return null

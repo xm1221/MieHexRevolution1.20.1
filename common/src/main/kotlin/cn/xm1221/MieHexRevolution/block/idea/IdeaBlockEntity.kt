@@ -9,6 +9,7 @@ import net.minecraft.nbt.NbtUtils
 import net.minecraft.network.protocol.Packet
 import net.minecraft.network.protocol.game.ClientGamePacketListener
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket
+import net.minecraft.world.level.Level
 import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.block.Blocks
 import net.minecraft.world.level.block.DoorBlock
@@ -16,6 +17,10 @@ import net.minecraft.world.level.block.EntityBlock
 import net.minecraft.world.level.block.entity.BlockEntity
 import net.minecraft.world.level.block.entity.BlockEntityType
 import net.minecraft.world.level.block.state.BlockState
+import net.minecraft.world.level.block.state.properties.BooleanProperty
+import net.minecraft.world.level.block.state.properties.EnumProperty
+import net.minecraft.world.level.block.state.properties.Property
+import net.minecraft.world.level.block.state.properties.WallSide
 
 /**
  * 理念方块的方块实体：只存“要模仿成什么样”这一件事。
@@ -39,24 +44,119 @@ class IdeaBlockEntity(
         setChanged()
         val level = level ?: return
         if (level.isClientSide) return
-        level.sendBlockUpdated(worldPosition, blockState, blockState, Block.UPDATE_CLIENTS)
+        syncLightState(level)
+        val updated = level.getBlockState(worldPosition)
+        level.sendBlockUpdated(worldPosition, updated, updated, Block.UPDATE_CLIENTS)
         // 材质的不透明度变了，方块自身的位置要重新算一次光。
         level.lightEngine.checkBlock(worldPosition)
     }
 
+    /**
+     * 把材质挡多少光写进方块状态（[IdeaBlock.LIGHT]）。
+     *
+     * <p>必须走 `setBlock`：状态换了才会带上区块数据重新送到客户端、并触发网格与光照重算。
+     * 同一方块之间的状态变更不会碰掉方块实体（[IdeaBlock.onRemove] 里也按方块类型判过）。
+     */
+    private fun syncLightState(level: Level) {
+        val current = level.getBlockState(worldPosition)
+        if (!current.hasProperty(IdeaBlock.LIGHT)) return
+        val light = if (material.isAir) 0 else material.getLightBlock(level, worldPosition).coerceIn(0, 15)
+        if (current.getValue(IdeaBlock.LIGHT) == light) return
+        level.setBlock(worldPosition, current.setValue(IdeaBlock.LIGHT, light), Block.UPDATE_ALL)
+    }
+
     fun resetMaterial() = applyMaterial(Blocks.AIR.defaultBlockState())
+
+    /** 右键已有材质的结果，调用方靠它决定还要不要“按邻居刷新连接”。 */
+    enum class CycleOutcome {
+        /** 没有能变的东西。 */
+        NONE,
+
+        /** 换的是朝向 / 半砖上下 / 开关这类自身形态。 */
+        VARIANT,
+
+        /** 手动切了某一侧的连接（已经自己同步过对面那一侧）。 */
+        CONNECTION,
+    }
 
     /**
      * 循环材质里可变的形态：朝向 → 半砖上下 → 开关状态等。
      *
+     * <p>栅栏 / 墙 / 玻璃板没有能循环的朝向属性，改成本地规则：右键点哪一面就切换那一侧的
+     * 连接（墙在 NONE → LOW → TALL 之间走三档），并把对面那一侧一起改掉 —— 否则下一次
+     * “按邻居刷新连接”会立刻把它补回来，右键等于白点。
+     *
      * @param face 右键的那一面；点上下两面时优先循环“半”（楼梯/活板门/半砖），更符合直觉
-     * @return 是否真的换了一个状态（没有可循环属性时返回 false，交给调用方刷新连接）
      */
-    fun cycleMaterial(face: Direction?): Boolean {
-        if (!hasCustomMaterial) return false
-        val next = nextVariant(material, face) ?: return false
+    fun cycleMaterial(face: Direction?): CycleOutcome {
+        if (!hasCustomMaterial) return CycleOutcome.NONE
+        if (face != null) {
+            val toggled = toggleConnection(material, face)
+            if (toggled != null) {
+                applyMaterial(toggled)
+                mirrorConnection(face, toggled)
+                return CycleOutcome.CONNECTION
+            }
+        }
+        val next = nextVariant(material, face) ?: return CycleOutcome.NONE
         applyMaterial(next)
-        return true
+        return CycleOutcome.VARIANT
+    }
+
+    /**
+     * 栅栏 / 墙 / 玻璃板：把右键那一侧的连接翻一格。
+     *
+     * <p>只认“名字对得上、而且确实是通/不通开关”的属性。楼梯的 north/east/south/west 是
+     * StairsShape、红石线的是 RedstoneSide，名字撞上了但不是这件事，返 null 交给
+     * [nextVariant] 去循环朝向。
+     */
+    private fun toggleConnection(state: BlockState, face: Direction): BlockState? {
+        if (!face.axis.isHorizontal) return null
+        val property = state.properties.firstOrNull { it.name == face.serializedName } ?: return null
+        return when {
+            property is BooleanProperty -> state.setValue(property, !state.getValue(property))
+            property is EnumProperty<*> && property.valueClass == WallSide::class.java -> {
+                @Suppress("UNCHECKED_CAST")
+                val wallSide = property as Property<WallSide>
+                val next = when (state.getValue(wallSide)) {
+                    WallSide.NONE -> WallSide.LOW
+                    WallSide.LOW -> WallSide.TALL
+                    else -> WallSide.NONE
+                }
+                state.setValue(wallSide, next)
+            }
+            else -> null
+        }
+    }
+
+    /**
+     * 把“我刚才切掉/接上的这一侧”抄到对面那一侧的相对连接上。
+     *
+     * <p>两个理念方块模仿同一种方块时，连接必须两边一致才有意义：只改自己这一侧，对面
+     * 那一侧会继续伸一根对着空气的横杆。
+     */
+    private fun mirrorConnection(face: Direction, state: BlockState) {
+        val level = level ?: return
+        val neighbour = level.getBlockEntity(worldPosition.relative(face)) as? IdeaBlockEntity ?: return
+        val neighbourState = neighbour.material
+        // 只有“同一种方块”的两个理念方块才共享一套连接属性。
+        if (!neighbourState.`is`(state.block)) return
+        val ours = state.properties.firstOrNull { it.name == face.serializedName } ?: return
+        val theirs = neighbourState.properties.firstOrNull { it.name == face.opposite.serializedName } ?: return
+        val mirrored = when {
+            ours is BooleanProperty && theirs is BooleanProperty ->
+                neighbourState.setValue(theirs, state.getValue(ours))
+            ours is EnumProperty<*> && theirs is EnumProperty<*> &&
+                ours.valueClass == WallSide::class.java && theirs.valueClass == WallSide::class.java -> {
+                @Suppress("UNCHECKED_CAST")
+                val ourWall = ours as Property<WallSide>
+                @Suppress("UNCHECKED_CAST")
+                val theirWall = theirs as Property<WallSide>
+                neighbourState.setValue(theirWall, state.getValue(ourWall))
+            }
+            else -> neighbourState
+        }
+        if (mirrored !== neighbourState) neighbour.applyMaterial(mirrored)
     }
 
     /**
