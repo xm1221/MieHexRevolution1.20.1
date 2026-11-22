@@ -1,5 +1,6 @@
 package cn.xm1221.MieHexRevolution.casting.actions.useful.envs.worker
 
+import at.petrak.hexcasting.api.casting.eval.CastingEnvironment
 import at.petrak.hexcasting.api.casting.eval.env.StaffCastEnv
 import at.petrak.hexcasting.api.casting.eval.vm.CastingVM
 import at.petrak.hexcasting.api.casting.eval.vm.SpellContinuation
@@ -14,8 +15,8 @@ import net.minecraft.server.level.ServerLevel
 import net.minecraft.server.level.ServerPlayer
 
 /**
- * 远程施法：在原 executeInner 之前把法杖 VM 的环境换成目标实体的环境。
- * 只在当前仍是 [StaffCastEnv] 时换一次，避免同一条施法里反复嵌套。
+ * 远程施法：在原 executeInner 之前按玩家的远程施法状态同步法杖 VM 的环境。
+ * 支持从 [StaffCastEnv] 进入目标环境，也支持同一条施法内退出或切换目标时恢复/更新环境。
  */
 object RemoteCastEnvWorker : CastingVMWorker(isAfter = false, priority = 1) {
     override fun execute(
@@ -26,18 +27,35 @@ object RemoteCastEnvWorker : CastingVMWorker(isAfter = false, priority = 1) {
         vm: CastingVM,
     ): CastingVMCall {
         val env = vm.env
-        val caster = env.castingEntity
-        if (env is StaffCastEnv && caster is ServerPlayer) {
-            val target = PlayerRemoteCastData.get(caster)
-            if (target != null) {
-                val next = if (target is ServerPlayer) {
-                    PlayersCastingEnv(env, target)
-                } else {
-                    FakeCastingEnv(env, target)
-                }
-                vm.replaceEnv(next)
+        val baseEnv = unwrapStaffEnv(env) ?: return call
+        val caster = baseEnv.castingEntity as? ServerPlayer ?: return call
+        val target = PlayerRemoteCastData.get(caster)
+        if (target == null) {
+            if (env !== baseEnv) {
+                vm.replaceEnv(baseEnv)
             }
+            return call
+        }
+        val alreadyMatches = when (env) {
+            is PlayersCastingEnv -> env.friend == target
+            is FakeCastingEnv -> env.target == target
+            else -> false
+        }
+        if (!alreadyMatches) {
+            val next = if (target is ServerPlayer) {
+                PlayersCastingEnv(baseEnv, target)
+            } else {
+                FakeCastingEnv(baseEnv, target)
+            }
+            vm.replaceEnv(next)
         }
         return call
+    }
+
+    private tailrec fun unwrapStaffEnv(env: CastingEnvironment): StaffCastEnv? = when (env) {
+        is StaffCastEnv -> env
+        is FakeCastingEnv -> unwrapStaffEnv(env.env)
+        is PlayersCastingEnv -> unwrapStaffEnv(env.env)
+        else -> null
     }
 }

@@ -1,7 +1,9 @@
 package cn.xm1221.MieHexRevolution.mixin;
 
 import at.petrak.hexcasting.common.items.ItemStaff;
+import at.petrak.hexcasting.common.lib.HexAttributes;
 import cn.xm1221.MieHexRevolution.util.PlayerRemoteCastData;
+import cn.xm1221.MieHexRevolution.util.RemoteCastDataKeys;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -28,7 +30,12 @@ public abstract class MixinItemStaff {
         Level world, Player player, InteractionHand hand,
         CallbackInfoReturnable<InteractionResultHolder<ItemStack>> cir
     ) {
-        if (!world.isClientSide && player.isShiftKeyDown() && player instanceof ServerPlayer serverPlayer) {
+        if (!player.isShiftKeyDown() || player.getAttributeValue(HexAttributes.FEEBLE_MIND) > 0) {
+            return;
+        }
+        if (world.isClientSide) {
+            RemoteCastDataKeys.reset(player);
+        } else if (player instanceof ServerPlayer serverPlayer) {
             PlayerRemoteCastData.clear(serverPlayer);
         }
     }
