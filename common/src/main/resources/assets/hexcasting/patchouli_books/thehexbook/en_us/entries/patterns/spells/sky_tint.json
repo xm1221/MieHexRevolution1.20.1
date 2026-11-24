@@ -1,0 +1,34 @@
+{
+  "name": "miehex_revolution.entry.sky_tint",
+  "category": "hexcasting:patterns/spells",
+  "icon": "minecraft:light_blue_stained_glass_pane",
+  "sortnum": 8,
+  "advancement": "hexcasting:root",
+  "read_by_default": true,
+  "pages": [
+    {
+      "type": "hexcasting:pattern",
+      "op_id": "miehex_revolution:sky/tint",
+      "anchor": "miehex_revolution:sky/tint",
+      "input": "vector, num, num, num",
+      "output": "",
+      "text": "miehex_revolution.page.sky/tint"
+    },
+    {
+      "type": "hexcasting:pattern",
+      "op_id": "miehex_revolution:sky/tint_at",
+      "anchor": "miehex_revolution:sky/tint_at",
+      "input": "vector, num, num, num, vector",
+      "output": "",
+      "text": "miehex_revolution.page.sky/tint_at"
+    },
+    {
+      "type": "hexcasting:pattern",
+      "op_id": "miehex_revolution:sky/tint/clear",
+      "anchor": "miehex_revolution:sky/tint/clear",
+      "input": "",
+      "output": "",
+      "text": "miehex_revolution.page.sky/tint/clear"
+    }
+  ]
+}

@@ -1,7 +1,9 @@
 package cn.xm1221.MieHexRevolution.mixin;
 
 import at.petrak.hexcasting.common.items.ItemStaff;
+import at.petrak.hexcasting.common.lib.HexAttributes;
 import cn.xm1221.MieHexRevolution.util.PlayerRemoteCastData;
+import cn.xm1221.MieHexRevolution.util.RemoteCastDataKeys;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -19,6 +21,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
  * - method 用 mojmap 名 "use"，靠 refmap 映射（fabric: method_7836, forge: m_7203_），不要写 remap=false。
  * - 用 @At("HEAD") + isShiftKeyDown 判断，避免 @At INVOKE target 里 MC 类 descriptor
  *   （ServerPlayer 等）在 fabric intermediary 环境无法匹配的问题。
+ * - 怯灵（FEEBLE_MIND）时 Hex 自己就不认潜行右键，这里也不该清数据，否则状态与它不一致。
+ * - 客户端只清执行色（那边没有 PlayerRemoteCastData 表，清不到也无所谓），服务端清真正的目标。
  */
 @Mixin(ItemStaff.class)
 public abstract class MixinItemStaff {
@@ -28,7 +32,12 @@ public abstract class MixinItemStaff {
         Level world, Player player, InteractionHand hand,
         CallbackInfoReturnable<InteractionResultHolder<ItemStack>> cir
     ) {
-        if (!world.isClientSide && player.isShiftKeyDown() && player instanceof ServerPlayer serverPlayer) {
+        if (!player.isShiftKeyDown() || player.getAttributeValue(HexAttributes.FEEBLE_MIND) > 0) {
+            return;
+        }
+        if (world.isClientSide) {
+            RemoteCastDataKeys.reset(player);
+        } else if (player instanceof ServerPlayer serverPlayer) {
             PlayerRemoteCastData.clear(serverPlayer);
         }
     }

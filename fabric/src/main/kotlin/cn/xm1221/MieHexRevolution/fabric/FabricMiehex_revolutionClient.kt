@@ -27,6 +27,7 @@ object FabricMiehex_revolutionClient : ClientModInitializer {
             val stack = ItemStack(Miehex_revolutionBlocks.IDEA_SHARD.get())
             (stack.item as? MediaHolderItem)?.setMedia(stack, MediaConstants.QUENCHED_SHARD_UNIT)
             entries.accept(stack)
+            entries.accept(ItemStack(Miehex_revolutionBlocks.IDEA_FULL.get()))
         }
     }
 }

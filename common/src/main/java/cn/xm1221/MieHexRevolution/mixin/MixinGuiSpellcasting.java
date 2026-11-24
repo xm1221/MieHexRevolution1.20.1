@@ -17,8 +17,6 @@ import java.util.List;
 /**
  * 只负责记下「这一笔是导入」。描边换色在 MieLib 的 DrawPatternHook 里完成，
  * 这里不再包 drawPatternFromPoints。
- * 标记的生命周期由 {@link PatternStrokeMarks#bind} 在每次渲染时按当前列表收口，
- * 不再在界面关闭时整表清空。
  */
 @Mixin(GuiSpellcasting.class)
 public abstract class MixinGuiSpellcasting {

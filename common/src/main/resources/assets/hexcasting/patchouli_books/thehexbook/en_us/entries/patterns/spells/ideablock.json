@@ -13,6 +13,10 @@
       "input": "vector",
       "output": "",
       "text": "miehex_revolution.page.idea/set"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "miehex_revolution.page.idea/set.2"
     }
   ]
 }
