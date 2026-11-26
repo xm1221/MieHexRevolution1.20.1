@@ -1,6 +1,9 @@
 name: Release
 
 on:
+  push:
+    tags:
+      - 'v*'
   workflow_dispatch:
     inputs:
       publish_github:
@@ -10,7 +13,7 @@ on:
       publish_curseforge:
         description: Publish to CurseForge
         type: boolean
-        default: true
+        default: false
       publish_modrinth:
         description: Publish to Modrinth
         type: boolean
@@ -34,14 +37,14 @@ jobs:
       contents: write
       pages: read
     with:
-      mod_release: ${{ inputs.publish_curseforge || inputs.publish_modrinth || inputs.publish_github }}
-      hexdoc_release: ${{ inputs.publish_hexdoc }}
-      dry_run: ${{ inputs.dry_run }}
+      mod_release: ${{ github.event_name == 'push' || inputs.publish_curseforge || inputs.publish_modrinth || inputs.publish_github }}
+      hexdoc_release: ${{ github.event_name == 'push' || inputs.publish_hexdoc }}
+      dry_run: ${{ github.event_name != 'push' && inputs.dry_run == true }}
       skip_tests: true
 
   publish-mod:
     needs: build
-    if: inputs.publish_curseforge || inputs.publish_modrinth || inputs.publish_github
+    if: github.event_name == 'push' || inputs.publish_curseforge || inputs.publish_modrinth || inputs.publish_github
     runs-on: ubuntu-latest
     environment:
       name: curseforge-modrinth
@@ -65,15 +68,15 @@ jobs:
       # do this first so we fail if we've already published this version
       # because CurseForge and Modrinth apparently don't care!
       - name: Publish to GitHub
-        if: inputs.publish_github
+        if: github.event_name == 'push' || inputs.publish_github
         env:
           RELEASE: true
-          DRY_RUN: ${{ inputs.dry_run && 'true' || '' }}
+          DRY_RUN: ${{ github.event_name != 'push' && inputs.dry_run && 'true' || '' }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: ./gradlew publishGithub
 
       - name: Publish to CurseForge
-        if: inputs.publish_curseforge
+        if: github.event_name != 'push' && inputs.publish_curseforge
         env:
           RELEASE: true
           DRY_RUN: ${{ inputs.dry_run && 'true' || '' }}
@@ -81,15 +84,15 @@ jobs:
         run: ./gradlew publishCurseforge
 
       - name: Publish to Modrinth
-        if: inputs.publish_modrinth
+        if: github.event_name == 'push' || inputs.publish_modrinth
         env:
           RELEASE: true
-          DRY_RUN: ${{ inputs.dry_run && 'true' || '' }}
+          DRY_RUN: ${{ github.event_name != 'push' && inputs.dry_run && 'true' || '' }}
           MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
         run: ./gradlew publishModrinth
 
       - name: Upload dry run artifact
-        if: inputs.dry_run
+        if: github.event_name != 'push' && inputs.dry_run
         uses: actions/upload-artifact@v4
         with:
           name: dry-run
@@ -98,7 +101,7 @@ jobs:
 
   publish-pypi:
     needs: build
-    if: inputs.publish_hexdoc && !inputs.dry_run
+    if: (github.event_name == 'push' || inputs.publish_hexdoc) && !(github.event_name != 'push' && inputs.dry_run)
     runs-on: ubuntu-latest
     environment:
       name: pypi

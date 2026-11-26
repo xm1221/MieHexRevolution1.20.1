@@ -6,7 +6,6 @@
   "refmap": "miehex_revolution-common.refmap.json",
   "client": [
     "MixinClientLevelSkyColor",
-    "MixinGuiSpellcasting",
     "MixinItemRenderer",
     "MixinParticleEngine"
   ],

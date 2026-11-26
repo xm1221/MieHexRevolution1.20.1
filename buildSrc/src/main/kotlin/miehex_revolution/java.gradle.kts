@@ -56,6 +56,9 @@ repositories {
             includeGroup("cn.xm1221.MieLib")
         }
         forRepository {
+            mavenLocal()
+        }
+        forRepository {
             maven {
                 name = "xm1221Maven"
                 url = uri("https://xm1221.github.io/maven")

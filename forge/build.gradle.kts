@@ -46,6 +46,7 @@ loom {
                 )
                 property("miehex_revolution.apply-datagen-mixin", "true")
                 property("miehex_revolution.$platform-datagen", "true")
+                property("mixin.env.disableRefMap", "true")
             }
         }
     }
