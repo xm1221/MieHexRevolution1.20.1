@@ -2,6 +2,7 @@ package cn.xm1221.MieHexRevolution.registry
 
 import at.petrak.hexcasting.api.misc.MediaConstants
 import cn.xm1221.MieHexRevolution.block.idea.*
+import cn.xm1221.MieHexRevolution.item.ItemCustomPigment
 import cn.xm1221.MieHexRevolution.item.ItemIdeaShard
 import dev.architectury.registry.registries.DeferredRegister
 import dev.architectury.registry.registries.RegistrySupplier
@@ -19,6 +20,9 @@ object Miehex_revolutionBlocks {
     val IDEA_FULL: RegistrySupplier<IdeaFullBlock> = registerBlockItem("idea_full", ::IdeaFullBlock)
     val IDEA_SHARD: RegistrySupplier<ItemIdeaShard> = ITEMS.register("idea_shard") { ItemIdeaShard(Item.Properties().stacksTo(1).rarity(
         Rarity.UNCOMMON)) }
+    val CUSTOM_PIGMENT: RegistrySupplier<ItemCustomPigment> = ITEMS.register("custom_pigment") {
+        ItemCustomPigment(Item.Properties().stacksTo(1))
+    }
 
     fun init() {
         BLOCKS.register()

@@ -12,5 +12,6 @@ import net.fabricmc.api.ModInitializer
 object FabricMiehex_revolution : ModInitializer {
     override fun onInitialize() {
         Miehex_revolution.init()
+        FabricPigmentComponents.register()
     }
 }

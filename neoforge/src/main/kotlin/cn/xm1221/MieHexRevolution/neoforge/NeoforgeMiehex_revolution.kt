@@ -9,6 +9,7 @@ import net.neoforged.fml.common.Mod
 class NeoforgeMiehex_revolution(modBus: IEventBus, container: ModContainer) {
     init {
         setModEventBus(modBus)
+        modBus.addListener(NeoforgePigmentCapabilities::registerCaps)
         Miehex_revolution.init()
     }
 }

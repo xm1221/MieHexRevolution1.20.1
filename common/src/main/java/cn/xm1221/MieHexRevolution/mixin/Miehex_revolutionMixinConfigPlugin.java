@@ -1,6 +1,7 @@
 package cn.xm1221.MieHexRevolution.mixin;
 
 import cn.xm1221.MieHexRevolution.Miehex_revolution;
+import org.apache.logging.log4j.LogManager;
 import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
 import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
@@ -15,7 +16,7 @@ public class Miehex_revolutionMixinConfigPlugin implements IMixinConfigPlugin {
         if (mixinClassName.equals("cn.xm1221.MieHexRevolution.mixin.MixinDatagenMain")) {
             var shouldApply = System.getProperty("miehex_revolution.apply-datagen-mixin", "false").equals("true");
             if (shouldApply) {
-                Miehex_revolution.LOGGER.warn("Applying datagen mixin to {}. This should not happen if not running datagen!", targetClassName);
+                LogManager.getLogger(Miehex_revolution.MODID).warn("Applying datagen mixin to {}. This should not happen if not running datagen!", targetClassName);
             }
             return shouldApply;
         }

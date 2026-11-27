@@ -1,13 +1,17 @@
 package cn.xm1221.MieHexRevolution.fabric
 
+import cn.xm1221.MieHexRevolution.Miehex_revolution
 import cn.xm1221.MieHexRevolution.Miehex_revolutionClient
 import cn.xm1221.MieHexRevolution.block.idea.client.IdeaBlockEntityRenderer
+import cn.xm1221.MieHexRevolution.client.pigment.CustomPigmentTextures
 import cn.xm1221.MieHexRevolution.registry.Miehex_revolutionBlocks
+import dev.architectury.registry.ReloadListenerRegistry
 import net.fabricmc.api.ClientModInitializer
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents
 import at.petrak.hexcasting.api.item.MediaHolderItem
 import at.petrak.hexcasting.api.misc.MediaConstants
 import at.petrak.hexcasting.common.lib.HexCreativeTabs
+import net.minecraft.server.packs.PackType
 import net.minecraft.world.item.ItemStack
 
 /**
@@ -21,6 +25,11 @@ object FabricMiehex_revolutionClient : ClientModInitializer {
     override fun onInitializeClient() {
         Miehex_revolutionClient.init()
         IdeaBlockEntityRenderer.register()
+        ReloadListenerRegistry.register(
+            PackType.CLIENT_RESOURCES,
+            CustomPigmentTextures.RELOAD_LISTENER,
+            Miehex_revolution.id("custom_pigment_textures"),
+        )
 
         // Hex 0.12 exposes the tab as a Holder plus its ResourceKey; Fabric's event takes the key.
         ItemGroupEvents.modifyEntriesEvent(HexCreativeTabs.HEX_KEY).register { entries ->
@@ -28,6 +37,7 @@ object FabricMiehex_revolutionClient : ClientModInitializer {
             (stack.item as? MediaHolderItem)?.setMedia(stack, MediaConstants.QUENCHED_SHARD_UNIT)
             entries.accept(stack)
             entries.accept(ItemStack(Miehex_revolutionBlocks.IDEA_FULL.get()))
+            entries.accept(ItemStack(Miehex_revolutionBlocks.CUSTOM_PIGMENT.get()))
         }
     }
 }

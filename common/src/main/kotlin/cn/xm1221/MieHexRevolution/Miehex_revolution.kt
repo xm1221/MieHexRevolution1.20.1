@@ -31,10 +31,12 @@ import net.minecraft.world.entity.EntityType
 
 object Miehex_revolution {
     const val MODID = "miehex_revolution"
-    val SUMMON_TAG: TagKey<EntityType<*>> = TagKey.create(
-        Registries.ENTITY_TYPE,
-        ResourceLocation.tryBuild(MODID, "monitor")
-    )
+    val SUMMON_TAG: TagKey<EntityType<*>> by lazy {
+        TagKey.create(
+            Registries.ENTITY_TYPE,
+            ResourceLocation.tryBuild(MODID, "monitor")
+        )
+    }
 
     // hexal entity type IDs for cross-mod soft compat
     private val HEXAL_WISP_TYPES = setOf(
