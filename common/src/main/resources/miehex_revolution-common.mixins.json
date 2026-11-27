@@ -10,8 +10,16 @@
     "MixinParticleEngine"
   ],
   "mixins": [
+    "AccessorPridePigmentType",
+    "AccessorUUIDPigmentProvider",
     "MixinDatagenMain",
     "MixinItemStaff",
+    "MixinOpRead",
+    "MixinOpReadable",
+    "MixinOpTheCoolerRead",
+    "MixinOpTheCoolerReadable",
+    "MixinOpTheCoolerWrite",
+    "MixinOpWrite",
     "MixinPlayerSyncedData",
     "ServerPlayerMixin"
   ],

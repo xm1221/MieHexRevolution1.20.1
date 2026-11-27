@@ -1,0 +1,76 @@
+{
+  "name": "miehex_revolution.entry.custom_pigment",
+  "category": "hexcasting:items",
+  "icon": "miehex_revolution:custom_pigment",
+  "sortnum": 11,
+  "advancement": "hexcasting:root",
+  "read_by_default": true,
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "miehex_revolution:custom_pigment",
+      "link_recipe": false,
+      "text": "miehex_revolution.page.custom_pigment.1"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "miehex_revolution.page.custom_pigment.2"
+    },
+    {
+      "type": "hexcasting:manual_pattern",
+      "header": "miehex_revolution.page.custom_pigment.read.header",
+      "anchor": "miehex_revolution:pigment/read",
+      "patterns": [
+        {
+          "startdir": "EAST",
+          "signature": "aqqqqq"
+        }
+      ],
+      "input": "",
+      "output": "vector | [vector]",
+      "text": "miehex_revolution.page.custom_pigment.read"
+    },
+    {
+      "type": "hexcasting:manual_pattern",
+      "header": "miehex_revolution.page.custom_pigment.write.header",
+      "anchor": "miehex_revolution:pigment/write",
+      "patterns": [
+        {
+          "startdir": "EAST",
+          "signature": "deeeee"
+        }
+      ],
+      "input": "vector | [vector]",
+      "output": "",
+      "text": "miehex_revolution.page.custom_pigment.write"
+    },
+    {
+      "type": "hexcasting:manual_pattern",
+      "header": "miehex_revolution.page.custom_pigment.read_entity.header",
+      "anchor": "miehex_revolution:pigment/read_entity",
+      "patterns": [
+        {
+          "startdir": "EAST",
+          "signature": "wawqwqwqwqwqw"
+        }
+      ],
+      "input": "entity",
+      "output": "vector | [vector]",
+      "text": "miehex_revolution.page.custom_pigment.read_entity"
+    },
+    {
+      "type": "hexcasting:manual_pattern",
+      "header": "miehex_revolution.page.custom_pigment.write_entity.header",
+      "anchor": "miehex_revolution:pigment/write_entity",
+      "patterns": [
+        {
+          "startdir": "EAST",
+          "signature": "wdwewewewewew"
+        }
+      ],
+      "input": "entity, vector | [vector]",
+      "output": "",
+      "text": "miehex_revolution.page.custom_pigment.write_entity"
+    }
+  ]
+}

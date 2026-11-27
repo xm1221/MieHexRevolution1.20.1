@@ -1,5 +1,7 @@
 package cn.xm1221.MieHexRevolution.mixin;
 
+import cn.xm1221.MieHexRevolution.client.pigment.CustomPigmentRenderer;
+import cn.xm1221.MieHexRevolution.item.ItemCustomPigment;
 import cn.xm1221.MieHexRevolution.util.IdeaItemAppearance;
 import cn.xm1221.MieHexRevolution.util.RendererHelper;
 import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
@@ -88,15 +90,16 @@ public abstract class MixinItemRenderer {
             return;
         }
         ItemStack faker = RendererHelper.INSTANCE.getFaker(itemStack);
-        if (faker == itemStack) {
-            original.call(itemStack, displayContext, leftHand, poseStack, buffer,
-                    combinedLight, combinedOverlay, model);
+        BakedModel effectiveModel = (faker == itemStack)
+                ? model
+                : ((ItemRenderer) (Object) this).getModel(faker, Minecraft.getInstance().level, null, 0);
+        if (faker.getItem() instanceof ItemCustomPigment &&
+                CustomPigmentRenderer.INSTANCE.render(faker, displayContext, leftHand, poseStack, buffer,
+                        combinedLight, combinedOverlay, effectiveModel)) {
             return;
         }
-        BakedModel fakerModel = ((ItemRenderer) (Object) this)
-                .getModel(faker, Minecraft.getInstance().level, null, 0);
         original.call(faker, displayContext, leftHand, poseStack, buffer,
-                combinedLight, combinedOverlay, fakerModel);
+                combinedLight, combinedOverlay, effectiveModel);
     }
 
     /**
