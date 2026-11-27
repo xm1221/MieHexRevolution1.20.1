@@ -52,7 +52,7 @@ class ItemCustomPigment(properties: Properties) : Item(properties), PigmentItem,
             else intArrayOf(PigmentData.vecToArgb(v))
         }
         is ListIota -> {
-            val size = iota.list.size()
+            val size = iota.list.size
             if (size !in 1..PigmentData.MAX_COLORS) {
                 null
             } else {

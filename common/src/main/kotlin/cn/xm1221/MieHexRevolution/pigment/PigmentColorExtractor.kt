@@ -117,7 +117,7 @@ object PigmentColorExtractor {
         if (stack.isEmpty || stack.item !is ItemCustomPigment) return
         if (PigmentData.hasPigmentData(stack)) return
         val listIota = datum as? ListIota ?: return
-        val size = listIota.list.size()
+        val size = listIota.list.size
         if (size <= PigmentData.MAX_COLORS) return
         for (elem in listIota.list) {
             if (elem !is Vec3Iota) return

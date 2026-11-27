@@ -24,7 +24,14 @@ jobs:
       - uses: gradle/actions/setup-gradle@v4
 
       - name: Build mod
-        run: ./gradlew build
+        run: |
+          set -o pipefail
+          ./gradlew build --console=plain 2>&1 | tee build.log || {
+            { grep -E "(^e: |^FAILURE:|^> Task .* FAILED|Execution failed|Could not |error:|Exception)" build.log || tail -n 8 build.log; } | head -n 8 | while IFS= read -r line; do
+              echo "::error::${line}"
+            done
+            exit 1
+          }
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
