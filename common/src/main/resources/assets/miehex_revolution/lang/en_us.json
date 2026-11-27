@@ -144,14 +144,15 @@
   "pigment_name.miehex_revolution.core.reverie": "Reverie",
   "hexcasting.mishap.miehex_revolution.too_many_pigment_colors": "Too many colors (%s / %s) — chromatic overload blinds the mind's eye!",
   "miehex_revolution.entry.custom_pigment": "Raw Pigment",
-  "miehex_revolution.page.custom_pigment.1": "There are as many shades of pigment as there are singular minds in this world. Through study, I have learned to draw iotas directly from a pigment: breaking it down into its constituent hues, splitting each into its three primary channels, and returning the result as a single vector or a list of vectors. At the same time, I have devised a way to dye my specially prepared Raw Pigment with a vector or a list of vectors — if a mind, or even a soul's glimmer, can be so easily copied and forged, and if I can bend consciousness and wear another's thoughts, then pilfering a sliver of color — or inventing hues that never existed at all — ought to be effortless...",
-  "miehex_revolution.page.custom_pigment.2": "An uncolored Raw Pigment begins as a plain grey stone. Using the patterns that follow, I may inscribe it with a single color vector or a list of 1 to 32 color vectors (if all three components are at most 1 they are read as 0 to 1, otherwise as 0 to 255). Once colored, it takes on its own shifting hue and name, cannot be overwritten, and may be internalized like any other pigment.$(br2)Attempting to pour more than 32 colors into a single Raw Pigment will overwhelm the mind's eye and briefly blind the caster.",
+  "miehex_revolution.page.custom_pigment.1": "As many minds exist in this world, so many colors of pigment there are. I have learned to extract iotas from any pigment — splitting each color into RGB channels and returning a vector or a list of vectors.",
+  "miehex_revolution.page.custom_pigment.2": "I also found a way to dye my Raw Pigment with a vector or a list of 1–32 vectors (0–1 if all components are at most 1, else 0–255). Once dyed, it gains its own look and name, cannot be overwritten, and can be internalized like any pigment.",
   "miehex_revolution.page.custom_pigment.read.header": "Chroma's Reflection",
-  "miehex_revolution.page.custom_pigment.read": "Shares its pattern with Scribe's Reflection. Reads the colors of any pigment held in the offhand: a single color returns one RGB vector (0 to 1), while multi-color pigments return a list of vectors. Auditor's Reflection recognizes pigments as readable as well.",
+  "miehex_revolution.page.custom_pigment.read": "Reads the colors of a pigment in the offhand as an RGB vector (0–1) or a list of vectors.",
   "miehex_revolution.page.custom_pigment.write.header": "Chroma's Gambit",
-  "miehex_revolution.page.custom_pigment.write": "Shares its pattern with Scribe's Gambit. Accepts a color vector or a list of 1 to 32 color vectors and dyes an uncolored Raw Pigment held in the offhand.",
+  "miehex_revolution.page.custom_pigment.write": "Dyes an uncolored Raw Pigment in the offhand with a color vector or a list of 1–32 color vectors.",
   "miehex_revolution.page.custom_pigment.read_entity.header": "Chroma's Purification",
-  "miehex_revolution.page.custom_pigment.read_entity": "Shares its pattern with Chronicler's Purification. Accepts an item entity or item frame holding a pigment within my ambit and extracts its colors as a vector or list of vectors. Auditor's Purification recognizes them as well.",
+  "miehex_revolution.page.custom_pigment.read_entity": "Reads the colors of a pigment inside an item entity or item frame as a vector or list of vectors.",
   "miehex_revolution.page.custom_pigment.write_entity.header": "Chroma's Gambit II",
-  "miehex_revolution.page.custom_pigment.write_entity": "Shares its pattern with Chronicler's Gambit. Accepts an item entity or item frame holding an uncolored Raw Pigment within my ambit, along with a color vector or a list of 1 to 32 color vectors, dyeing it from afar."
+  "miehex_revolution.page.custom_pigment.write_entity": "Dyes an uncolored Raw Pigment inside an item entity or item frame with a color vector or a list of 1–32 color vectors.",
+  "miehex_revolution.page.custom_pigment.3": "— A mind, or a soul's glimmer, is so easily copied and forged. If I can bend consciousness and wear another's thoughts, stealing a bit of color — or inventing hues that never existed — should be effortless..."
 }

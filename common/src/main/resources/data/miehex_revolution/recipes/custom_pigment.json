@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "minecraft:clay_ball"
+    },
+    {
+      "tag": "miehex_revolution:dyes"
+    },
+    {
+      "tag": "miehex_revolution:dyes"
+    },
+    {
+      "tag": "miehex_revolution:dyes"
+    },
+    {
+      "tag": "miehex_revolution:dyes"
+    }
+  ],
+  "result": {
+    "item": "miehex_revolution:custom_pigment"
+  }
+}

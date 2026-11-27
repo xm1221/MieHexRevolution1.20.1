@@ -34,7 +34,10 @@
     "modmenu": [{
       "adapter": "kotlin",
       "value": "cn.xm1221.MieHexRevolution.fabric.FabricMiehex_revolutionModMenu"
-    }]
+    }],
+    "cardinal-components": [
+      "cn.xm1221.MieHexRevolution.fabric.FabricPigmentComponents"
+    ]
   },
   "mixins": [
     "miehex_revolution-common.mixins.json",

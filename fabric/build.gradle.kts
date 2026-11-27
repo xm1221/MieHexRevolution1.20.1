@@ -69,7 +69,7 @@ dependencies {
     // we use modLocalRuntime to add these to the development runtime, but not at compile time or for consumers of this project
     modLocalRuntime(libs.paucal.fabric)
     modLocalRuntime(libs.patchouli.fabric)
-    modLocalRuntime(libs.cardinalComponents)
+    modImplementation(libs.cardinalComponents)
     modLocalRuntime(libs.serializationHooks)
     modLocalRuntime(libs.trinkets)
     modLocalRuntime(libs.inline.fabric) { isTransitive = false }

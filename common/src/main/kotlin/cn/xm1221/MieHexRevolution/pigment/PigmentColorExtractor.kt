@@ -1,6 +1,5 @@
 package cn.xm1221.MieHexRevolution.pigment
 
-import at.petrak.hexcasting.api.casting.eval.CastingEnvironment
 import at.petrak.hexcasting.api.casting.iota.EntityIota
 import at.petrak.hexcasting.api.casting.iota.Iota
 import at.petrak.hexcasting.api.casting.iota.ListIota
@@ -17,6 +16,7 @@ import cn.xm1221.MieHexRevolution.api.casting.mishap.MishapTooManyPigmentColors
 import cn.xm1221.MieHexRevolution.item.ItemCustomPigment
 import cn.xm1221.MieHexRevolution.mixin.AccessorPridePigmentType
 import cn.xm1221.MieHexRevolution.mixin.AccessorUUIDPigmentProvider
+import cn.xm1221.MieLib.worker.CastingVMCall
 import net.minecraft.Util
 import net.minecraft.world.entity.Entity
 import net.minecraft.world.entity.decoration.ItemFrame
@@ -26,8 +26,8 @@ import net.minecraft.world.phys.Vec3
 import java.util.UUID
 
 /**
- * Extracts color iotas from any Hex Casting pigment (or addon pigment) so Scribe's Reflection
- * (`OpRead`) and Scribe's Purification (`OpReadable`) work uniformly on all pigments.
+ * Extracts color iotas from any Hex Casting pigment (or addon pigment) and handles
+ * chromatic-overload mishap detection for [ItemCustomPigment].
  */
 object PigmentColorExtractor {
 
@@ -41,6 +41,26 @@ object PigmentColorExtractor {
 
     private const val AMETHYST_COLOR = 0xFFAB65EB.toInt()
     private val SAMPLE_TIMES = floatArrayOf(0f, 100f, 200f, 300f)
+
+    private val CASTER_UUID_STACK: ThreadLocal<ArrayDeque<Pair<CastingVMCall, UUID>>> =
+        ThreadLocal.withInitial { ArrayDeque() }
+
+    fun pushCasterUuid(call: CastingVMCall, uuid: UUID) {
+        CASTER_UUID_STACK.get().addLast(call to uuid)
+    }
+
+    fun popCasterUuid(call: CastingVMCall) {
+        val deque = CASTER_UUID_STACK.get()
+        while (deque.isNotEmpty() && deque.last().first === call) {
+            deque.removeLast()
+        }
+        if (deque.isEmpty()) {
+            CASTER_UUID_STACK.remove()
+        }
+    }
+
+    fun currentCasterUuid(): UUID =
+        CASTER_UUID_STACK.get().lastOrNull()?.second ?: Util.NIL_UUID
 
     fun extractColors(stack: ItemStack, owner: UUID): IntArray {
         val item = stack.item
@@ -75,52 +95,10 @@ object PigmentColorExtractor {
     fun readColorIota(stack: ItemStack, owner: UUID): Iota =
         PigmentData.colorsToIota(extractColors(stack, owner))
 
-    fun tryReadHeld(env: CastingEnvironment): List<Iota>? {
-        val held = env.getHeldItemToOperateOn { stack ->
-            val dataHolder = IXplatAbstractions.INSTANCE.findDataHolder(stack)
-            val readableHolder = dataHolder != null && (dataHolder.readIota(env.world) != null || dataHolder.emptyIota() != null)
-            readableHolder || IXplatAbstractions.INSTANCE.isPigment(stack)
-        } ?: return null
-
-        val stack = held.stack
-        val dataHolder = IXplatAbstractions.INSTANCE.findDataHolder(stack)
-        if (dataHolder != null && (dataHolder.readIota(env.world) != null || dataHolder.emptyIota() != null)) {
-            return null
-        }
-        if (!IXplatAbstractions.INSTANCE.isPigment(stack)) {
-            return null
-        }
-        val owner = env.castingEntity?.uuid ?: Util.NIL_UUID
-        return listOf(readColorIota(stack, owner))
-    }
-
-    fun isHeldPigmentReadable(env: CastingEnvironment): Boolean {
-        val held = env.getHeldItemToOperateOn { stack ->
-            IXplatAbstractions.INSTANCE.findDataHolder(stack) != null || IXplatAbstractions.INSTANCE.isPigment(stack)
-        } ?: return false
-        val stack = held.stack
-        return IXplatAbstractions.INSTANCE.findDataHolder(stack) == null &&
-            IXplatAbstractions.INSTANCE.isPigment(stack)
-    }
-
     private fun extractEntityItem(entity: Entity): ItemStack? = when (entity) {
         is ItemEntity -> entity.item
         is ItemFrame -> entity.item
         else -> null
-    }
-
-    fun tryReadEntity(args: List<Iota>, env: CastingEnvironment): List<Iota>? {
-        val entity = (args.firstOrNull() as? EntityIota)?.entity ?: return null
-        val stack = extractEntityItem(entity) ?: return null
-        if (stack.isEmpty || !IXplatAbstractions.INSTANCE.isPigment(stack)) return null
-        val owner = env.castingEntity?.uuid ?: Util.NIL_UUID
-        return listOf(readColorIota(stack, owner))
-    }
-
-    fun isEntityPigmentReadable(args: List<Iota>): Boolean {
-        val entity = (args.firstOrNull() as? EntityIota)?.entity ?: return false
-        val stack = extractEntityItem(entity) ?: return false
-        return !stack.isEmpty && IXplatAbstractions.INSTANCE.isPigment(stack)
     }
 
     fun throwIfTooManyColors(args: List<Iota>, mishap: MishapBadOffhandItem) {

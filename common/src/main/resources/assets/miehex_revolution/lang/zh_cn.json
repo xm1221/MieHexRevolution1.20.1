@@ -144,14 +144,15 @@
   "pigment_name.miehex_revolution.core.reverie": "绮梦",
   "hexcasting.mishap.miehex_revolution.too_many_pigment_colors": "色彩过杂（%s / %s）——五色令人目盲！",
   "miehex_revolution.entry.custom_pigment": "原胚染色剂",
-  "miehex_revolution.page.custom_pigment.1": "这个世界上有多少个独一无二的意识，染色剂就有多少种色彩。经过研究，我已经掌握了从染色剂中提取出 Iota 的方法。我将染色剂拆分为一个个颜色，再把每一个独立的颜色按三原色拆分，将最终的颜色结果以向量 Iota 或者向量 Iota 的列表的形式返回。同时我也创造了一种利用向量或者向量列表来对我特制的原胚染色剂进行染色的方法——人的意识或者说灵魂，其闪光的特征是这样容易复制、伪造，既然我可以操纵意识，可以冒充其他心智，那偷来一点点颜色甚至创造一些根本不存在的色彩也应当是轻而易举的……",
-  "miehex_revolution.page.custom_pigment.2": "原胚染色剂未染色时呈灰色。可用下文所述的法术向其中写入一个颜色向量或 1–32 个颜色向量组成的列表（分量均不超过 1 时按 0–1 解释，否则按 0–255 解释）。染色后的原胚会依色彩获得独特的外观与名字，无法再次覆写，并可像其他染色剂一样被内化。$(br2)若试图一次性注入超过 32 种色彩，过载的色光将会反噬施法者，令人短暂失明。",
+  "miehex_revolution.page.custom_pigment.1": "这个世界上有多少个独一无二的意识，染色剂就有多少种色彩。经过研究，我已经掌握了从染色剂中提取出 Iota 的方法。我将染色剂拆分为一个个颜色，再把每一个独立的颜色按三原色拆分，将最终的颜色结果以向量 Iota 或者向量 Iota 列表的形式返回。",
+  "miehex_revolution.page.custom_pigment.2": "我也创造了一种利用向量或者向量列表来对特制的原胚染色剂进行染色的方法。原胚染色剂未染色时呈灰色。可用法术向其中写入一个颜色向量或 1–32 个向量组成的列表（分量均不超过 1 时按 0–1 解释，否则按 0–255 解释）。染色后的原胚无法再次覆写。",
   "miehex_revolution.page.custom_pigment.read.header": "析色之精思",
-  "miehex_revolution.page.custom_pigment.read": "与书吏之精思同形。读取副手中任意染色剂的色彩：单色返回单个 RGB 向量（分量范围 0–1），多色返回颜色向量列表。审计员之精思亦能识别染色剂。",
+  "miehex_revolution.page.custom_pigment.read": "读取副手中任意染色剂的色彩：单色返回单个 RGB 向量（分量范围 0–1），多色返回颜色向量列表。",
   "miehex_revolution.page.custom_pigment.write.header": "赋色之策略",
-  "miehex_revolution.page.custom_pigment.write": "与书吏之策略同形。接受一个颜色向量或 1–32 个颜色向量组成的列表，为副手中未染色的原胚染色剂着色。",
+  "miehex_revolution.page.custom_pigment.write": "接受一个颜色向量或 1–32 个颜色向量组成的列表，为副手中未染色的原胚染色剂着色。",
   "miehex_revolution.page.custom_pigment.read_entity.header": "析色之纯化",
-  "miehex_revolution.page.custom_pigment.read_entity": "与编年史家之纯化同形。接受法域内一个承载染色剂的物品实体或物品展示框，以颜色向量或颜色向量列表的形式提取其中的色彩。审计员之纯化亦同样适用。",
+  "miehex_revolution.page.custom_pigment.read_entity": "接受一个承载染色剂的物品实体或物品展示框，以颜色向量或颜色向量列表的形式提取其中的色彩。",
   "miehex_revolution.page.custom_pigment.write_entity.header": "赋色之策略 第二型",
-  "miehex_revolution.page.custom_pigment.write_entity": "与编年史家之策略同形。接受法域内一个承载未染色原胚染色剂的物品实体或物品展示框，以及颜色向量或 1–32 个颜色向量的列表，远程为其着色。"
+  "miehex_revolution.page.custom_pigment.write_entity": "接受一个承载未染色原胚染色剂的物品实体或物品展示框，以及颜色向量或 1–32 个颜色向量的列表，为其着色。",
+  "miehex_revolution.page.custom_pigment.3": "——人的意识或者说灵魂，其闪光的特征是这样容易复制、伪造，既然我可以操纵意识，可以冒充其他心智，那偷来一点点颜色甚至创造一些根本不存在的色彩也应当是轻而易举的……"
 }

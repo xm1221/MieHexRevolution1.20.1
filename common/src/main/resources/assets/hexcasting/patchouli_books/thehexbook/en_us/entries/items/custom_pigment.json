@@ -7,13 +7,12 @@
   "read_by_default": true,
   "pages": [
     {
-      "type": "patchouli:spotlight",
-      "item": "miehex_revolution:custom_pigment",
-      "link_recipe": false,
+      "type": "patchouli:text",
       "text": "miehex_revolution.page.custom_pigment.1"
     },
     {
-      "type": "patchouli:text",
+      "type": "patchouli:crafting",
+      "recipe": "miehex_revolution:custom_pigment",
       "text": "miehex_revolution.page.custom_pigment.2"
     },
     {
@@ -71,6 +70,10 @@
       "input": "entity, vector | [vector]",
       "output": "",
       "text": "miehex_revolution.page.custom_pigment.write_entity"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "miehex_revolution.page.custom_pigment.3"
     }
   ]
 }
