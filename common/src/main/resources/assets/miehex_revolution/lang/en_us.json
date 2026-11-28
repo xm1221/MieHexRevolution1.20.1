@@ -154,5 +154,5 @@
   "miehex_revolution.page.custom_pigment.read_entity": "Reads the colors of a pigment inside an item entity or item frame as a vector or list of vectors.",
   "miehex_revolution.page.custom_pigment.write_entity.header": "Chroma's Gambit II",
   "miehex_revolution.page.custom_pigment.write_entity": "Dyes an uncolored Raw Pigment inside an item entity or item frame with a color vector or a list of 1–32 color vectors.",
-  "miehex_revolution.page.custom_pigment.3": "— A mind, or a soul's glimmer, is so easily copied and forged. If I can bend consciousness and wear another's thoughts, stealing a bit of color — or inventing hues that never existed — should be effortless..."
+  "miehex_revolution.page.custom_pigment.3": "Though I can easily create a new pigment,the special Soul Glimmer can not be changed,it just can be concealed using a pigment."
 }

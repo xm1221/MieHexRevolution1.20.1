@@ -154,5 +154,5 @@
   "miehex_revolution.page.custom_pigment.read_entity": "接受一个承载染色剂的物品实体或物品展示框，以颜色向量或颜色向量列表的形式提取其中的色彩。",
   "miehex_revolution.page.custom_pigment.write_entity.header": "赋色之策略 第二型",
   "miehex_revolution.page.custom_pigment.write_entity": "接受一个承载未染色原胚染色剂的物品实体或物品展示框，以及颜色向量或 1–32 个颜色向量的列表，为其着色。",
-  "miehex_revolution.page.custom_pigment.3": "——人的意识或者说灵魂，其闪光的特征是这样容易复制、伪造，既然我可以操纵意识，可以冒充其他心智，那偷来一点点颜色甚至创造一些根本不存在的色彩也应当是轻而易举的……"
+  "miehex_revolution.page.custom_pigment.3": "尽管我可以任意的调配染色剂的颜色，但是每一个独特的灵魂独一无二的闪光依然无法被篡改，最多只能用染色剂遮蔽而已。"
 }
